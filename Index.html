@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iGaroto - Seu Portal de Estilo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+        }
+        img {
+            pointer-events: none;
+        }
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .post-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        .sidebar-widget {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Estilo do Logo com Gradiente Animado */
+        .animated-gradient-text {
+            font-weight: 900; /* Poppins Black */
+            background: linear-gradient(90deg, #ff8a8a, #ffc3c3, #ff8a8a);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: -200% center;
+            }
+        }
+
+        /* Estilo do Slider Circular */
+        .story-slider .swiper-slide {
+            text-align: center;
+            font-size: 14px;
+        }
+        .story-slider .story-image-wrapper {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+            margin: 0 auto 8px;
+        }
+        .story-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #fff;
+        }
+
+        /* Ícones Sociais Interativos */
+        .social-icon {
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+        .social-icon:active {
+            transform: scale(0.9);
+            filter: brightness(0.8);
+        }
+
+        /* Dropdown de Tradução */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #ffffff;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 50;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Bloco de Anúncio */
+        .ad-block {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .ad-block .ad-code-title {
+            font-weight: bold;
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+        }
+        .ad-block .ad-responsive-text {
+            background-color: #d1d5db;
+            color: #000000;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div id="app">
+        <div class="bg-white border-b border-gray-200">
+            <div class="main-container px-4 py-2 flex justify-between items-center text-sm text-gray-600">
+                <nav class="flex gap-4">
+                    <a href="#" class="hover:text-indigo-600" data-translate-key="top_about">About</a>
+                    <a href="#" class="hover:text-indigo-600" data-translate-key="top_contact">Contact</a>
+                    <a href="#" class="hover:text-indigo-600" data-translate-key="top_home">Home</a>
+                </nav>
+                <div class="flex gap-4 items-center">
+                    <a href="#" class="hover:opacity-75"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                    <a href="#" class="hover:opacity-75"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <header class="bg-white sticky top-0 z-40 shadow-md">
+            <div class="main-container px-4 py-4 flex justify-between items-center">
+                <a href="#" class="text-4xl animated-gradient-text">iGAROTO</a>
+                
+                <div class="flex items-center gap-4">
+                    <div class="dropdown hidden md:block">
+                        <button class="flex items-center gap-1 font-semibold hover:text-indigo-600">
+                            MENU <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#" data-translate-key="nav_home">Home</a>
+                            <a href="#" data-translate-key="nav_boys">Boys</a>
+                            <a href="#" data-translate-key="nav_signs">Signos</a>
+                            <a href="#" data-translate-key="nav_about">Sobre</a>
+                        </div>
+                    </div>
+
+                    <button class="hover:text-indigo-600"><i data-lucide="search" class="w-6 h-6"></i></button>
+                    
+                    <div class="dropdown">
+                        <button class="hover:text-indigo-600"><i data-lucide="globe" class="w-6 h-6"></i></button>
+                        <div class="dropdown-content">
+                            <a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a>
+                            <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
+                            <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
+                        </div>
+                    </div>
+                    <button class="md:hidden hover:text-indigo-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container px-4 mt-8">
+            <section class="mb-8 story-slider">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="story-image-wrapper"><img src="https://placehold.co/110x110/6d28d9/ffffff?text=Make" alt="Maquiagem"></div>
+                            <span class="font-semibold" data-translate-key="story_makeup">Maquiagem</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="story-image-wrapper"><img src="https://placehold.co/110x110/be185d/ffffff?text=Sobre" alt="Sobre nós"></div>
+                            <span class="font-semibold" data-translate-key="story_about_us">Sobre Nós</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="story-image-wrapper"><img src="https://placehold.co/110x110/1e40af/ffffff?text=Teste" alt="Teste"></div>
+                            <span class="font-semibold" data-translate-key="story_test">Teste</span>
+                        </div>
+                        <div class="swiper-slide">
+                             <div class="story-image-wrapper"><img src="https://placehold.co/110x110/ca8a04/ffffff?text=Signo" alt="Signos"></div>
+                            <span class="font-semibold" data-translate-key="story_signs">Signos</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="story-image-wrapper"><img src="https://placehold.co/110x110/166534/ffffff?text=Moda" alt="Moda"></div>
+                            <span class="font-semibold" data-translate-key="story_fashion">Moda</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="story-image-wrapper"><img src="https://placehold.co/110x110/b91c1c/ffffff?text=News" alt="Novidades"></div>
+                            <span class="font-semibold" data-translate-key="story_news">Novidades</span>
+                        </div>
+                         <div class="swiper-slide">
+                            <div class="story-image-wrapper"><img src="https://placehold.co/110x110/9a3412/ffffff?text=Dicas" alt="Dicas"></div>
+                            <span class="font-semibold" data-translate-key="story_tips">Dicas</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <div class="lg:col-span-2">
+                    <h2 class="text-xl font-bold border-b-4 border-indigo-600 pb-2 mb-6 inline-block" data-translate-key="recent_posts">POSTAGENS RECENTES</h2>
+                    
+                    <div id="posts-container" class="space-y-8">
+                        </div>
+                </div>
+
+                <aside class="lg:col-span-1">
+                    <div class="sidebar-widget">
+                        <h4 class="font-bold border-b pb-2 mb-4" data-translate-key="social_plugin">SOCIAL PLUGIN</h4>
+                        <div class="flex gap-4">
+                            <a href="#" class="social-icon w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                            <a href="#" class="social-icon w-10 h-10 flex items-center justify-center bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                            <a href="#" class="social-icon w-10 h-10 flex items-center justify-center bg-black text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-1.8 13.05h1.56l-4.726-5.462-1.634-1.89-1.56-1.807H3.08l4.726 5.462 1.634 1.89 1.56 1.807Z"/></svg></a>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-widget">
+                         <h4 class="font-bold border-b pb-2 mb-4" data-translate-key="advertise_here">ANUNCIE AQUI</h4>
+                         <div class="space-y-4">
+                            <div class="ad-block"><p class="ad-code-title">AD CODE</p><div class="ad-responsive-text">Responsive Advertisement</div></div>
+                         </div>
+                    </div>
+
+                    <div class="sidebar-widget">
+                        <h4 class="font-bold border-b pb-2 mb-4" data-translate-key="most_popular">MAIS POPULARES</h4>
+                        <div class="space-y-4">
+                            <a href="#" class="flex items-center gap-4 group">
+                                <img src="https://placehold.co/80x80/111827/ffffff?text=1" class="w-16 h-16 object-cover rounded">
+                                <div><p class="font-semibold group-hover:text-indigo-600" data-translate-key="popular1_title">Dicas de estilo para o verão 2024</p><span class="text-xs text-gray-500" data-translate-key="popular1_date">Janeiro 15, 2024</span></div>
+                            </a>
+                             <a href="#" class="flex items-center gap-4 group">
+                                <img src="https://placehold.co/80x80/1e40af/ffffff?text=2" class="w-16 h-16 object-cover rounded">
+                                <div><p class="font-semibold group-hover:text-indigo-600" data-translate-key="popular2_title">Os melhores perfumes masculinos</p><span class="text-xs text-gray-500" data-translate-key="popular2_date">Fevereiro 02, 2024</span></div>
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <footer class="bg-gray-800 text-white mt-12">
+            <div class="main-container px-4 py-8 text-center">
+                <p data-translate-key="footer_rights">&copy; 2024 iGaroto. Todos os direitos reservados.</p>
+                <p class="text-sm text-gray-400 mt-2" data-translate-key="footer_dev">Desenvolvido com &hearts; para a comunidade.</p>
+                 <button id="admin-btn" class="mt-4 text-xs text-gray-500 hover:text-indigo-400" data-translate-key="admin_login">Admin Login</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        // Dicionário de Traduções (sem alteração)
+        const translations = {
+            top_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
+            top_contact: { pt: 'Contato', en: 'Contact', es: 'Contacto' },
+            top_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
+            nav_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
+            nav_boys: { pt: 'Boys', en: 'Boys', es: 'Chicos' },
+            nav_signs: { pt: 'Signos', en: 'Zodiac', es: 'Signos' },
+            nav_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
+            story_makeup: { pt: 'Maquiagem', en: 'Makeup', es: 'Maquillaje' },
+            story_about_us: { pt: 'Sobre Nós', en: 'About Us', es: 'Sobre Nosotros' },
+            story_test: { pt: 'Teste', en: 'Test', es: 'Prueba' },
+            story_signs: { pt: 'Signos', en: 'Zodiac', es: 'Signos' },
+            story_fashion: { pt: 'Moda', en: 'Fashion', es: 'Moda' },
+            story_news: { pt: 'Novidades', en: 'News', es: 'Noticias' },
+            story_tips: { pt: 'Dicas', en: 'Tips', es: 'Consejos' },
+            recent_posts: { pt: 'POSTAGENS RECENTES', en: 'RECENT POSTS', es: 'PUBLICACIONES RECIENTES' },
+            read_more: { pt: 'LEIA MAIS &raquo;', en: 'READ MORE &raquo;', es: 'LEER MÁS &raquo;' },
+            social_plugin: { pt: 'SOCIAL PLUGIN', en: 'SOCIAL PLUGIN', es: 'PLUGIN SOCIAL' },
+            advertise_here: { pt: 'ANUNCIE AQUI', en: 'ADVERTISE HERE', es: 'ANUNCIE AQUÍ' },
+            most_popular: { pt: 'MAIS POPULARES', en: 'MOST POPULAR', es: 'MÁS POPULARES' },
+            popular1_title: { pt: 'Dicas de estilo para o verão 2024', en: 'Style tips for summer 2024', es: 'Consejos de estilo para el verano de 2024' },
+            popular1_date: { pt: 'Janeiro 15, 2024', en: 'January 15, 2024', es: '15 de Enero, 2024' },
+            popular2_title: { pt: 'Os melhores perfumes masculinos', en: 'The best male perfumes', es: 'Los mejores perfumes masculinos' },
+            popular2_date: { pt: 'Fevereiro 02, 2024', en: 'February 02, 2024', es: '02 de Febrero, 2024' },
+            footer_rights: { pt: '&copy; 2024 iGaroto. Todos os direitos reservados.', en: '&copy; 2024 iGaroto. All rights reserved.', es: '&copy; 2024 iGaroto. Todos los derechos reservados.' },
+            footer_dev: { pt: 'Desenvolvido com &hearts; para a comunidade.', en: 'Developed with &hearts; for the community.', es: 'Desarrollado con &hearts; para la comunidad.' },
+            admin_login: { pt: 'Admin Login', en: 'Admin Login', es: 'Acceso Admin' }
+        };
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCMc8VQvtG3ep_Km9ThiyjOGNEyWPIzSc8",
+          authDomain: "site-igaroto.firebaseapp.com",
+          projectId: "site-igaroto",
+          storageBucket: "site-igaroto.firebasestorage.app",
+          messagingSenderId: "819105962628",
+          appId: "1:819105962628:web:1071fc993f8ac2eae940d1",
+          measurementId: "G-JDYQWMJ0TB"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Função para Mudar o Idioma (sem alteração)
+        window.setLanguage = function(lang) {
+            document.documentElement.lang = lang; 
+            document.querySelectorAll('[data-translate-key]').forEach(element => {
+                const key = element.getAttribute('data-translate-key');
+                if (translations[key] && translations[key][lang]) {
+                    element.innerHTML = translations[key][lang];
+                }
+            });
+        }
+
+        // Ativa os ícones do Lucide (sem alteração)
+        lucide.createIcons();
+
+        // Inicializa o Swiper.js para o slider de destaques (sem alteração)
+        const swiper = new Swiper('.story-slider .swiper-container', {
+            slidesPerView: 3,
+            spaceBetween: 10,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                640: { slidesPerView: 4, spaceBetween: 20 },
+                768: { slidesPerView: 5, spaceBetween: 30 },
+                1024: { slidesPerView: 6, spaceBetween: 30 },
+            },
+        });
+
+        // Desabilita o menu de contexto para proteger imagens (sem alteração)
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // --- NOVO CÓDIGO PARA CARREGAR POSTS DO FIREBASE ---
+
+        const postsContainer = document.getElementById('posts-container');
+
+        async function loadPosts() {
+            if (!postsContainer) return;
+
+            // Mostra uma mensagem de carregamento
+            postsContainer.innerHTML = `<p class="text-center text-gray-600">Carregando as últimas novidades...</p>`;
+
+            try {
+                // Busca os posts no Firestore, ordenados pela data de criação (os mais novos primeiro), limitando a 10
+                const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').limit(10).get();
+
+                if (snapshot.empty) {
+                    postsContainer.innerHTML = '<p class="text-center text-gray-600">Ainda não há nenhuma postagem. Volte em breve!</p>';
+                    return;
+                }
+
+                // Limpa a mensagem de carregamento
+                postsContainer.innerHTML = ''; 
+
+                snapshot.forEach(doc => {
+                    const post = { id: doc.id, ...doc.data() };
+                    
+                    // Cria o elemento HTML para cada post
+                    const postElement = document.createElement('article');
+                    postElement.className = 'post-card flex flex-col md:flex-row rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300';
+                    
+                    // Extrai um resumo do conteúdo (primeiros 150 caracteres)
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = post.content;
+                    const description = tempDiv.textContent || tempDiv.innerText || "";
+                    const summary = description.substring(0, 150) + (description.length > 150 ? '...' : '');
+
+                    // Formata a data
+                    const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+                    
+                    // Extrai a primeira imagem do conteúdo do post, se houver. Caso contrário, usa uma imagem padrão.
+                    const firstImageMatch = post.content.match(/<img src="([^"]+)"/);
+                    const imageUrl = firstImageMatch ? firstImageMatch[1] : 'https://placehold.co/400x400/111827/ffffff?text=iGaroto';
+
+                    // Pega a primeira tag como categoria
+                    const category = post.tags && post.tags.length > 0 ? post.tags[0] : 'Novidades';
+
+                    postElement.innerHTML = `
+                        <div class="md:w-1/3"><img src="${imageUrl}" class="w-full h-full object-cover"></div>
+                        <div class="p-6 flex flex-col justify-center md:w-2/3">
+                            <span class="text-white bg-red-600 px-2 py-1 text-xs font-bold rounded self-start mb-2">${category}</span>
+                            <h3 class="text-2xl font-bold mb-2 hover:text-indigo-600"><a href="#">${post.title}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4">${summary}</p>
+                            <div class="text-xs text-gray-500"><span>By <a href="#" class="font-semibold hover:text-black">iGaroto</a></span> - <span>${postDate}</span></div>
+                            <a href="#" class="text-indigo-600 font-semibold mt-4 self-start">LEIA MAIS &raquo;</a>
+                        </div>
+                    `;
+                    
+                    postsContainer.appendChild(postElement);
+                });
+
+            } catch (error) {
+                console.error("Erro ao carregar posts: ", error);
+                postsContainer.innerHTML = `<p class="text-center text-red-500">Não foi possível carregar as postagens. Tente novamente mais tarde.</p>`;
+            }
+        }
+
+        // Chama a função para carregar os posts assim que a página estiver pronta
+        document.addEventListener('DOMContentLoaded', loadPosts);
+
+    </script>
+</body>
+</html>
