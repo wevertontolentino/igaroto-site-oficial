@@ -11,9 +11,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        /* NOVO: Regra para evitar rolagem horizontal no celular */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f0f2f5;
+            position: relative; /* Necessário para o overflow-x funcionar corretamente */
         }
         .main-container {
             max-width: 1100px;
@@ -87,19 +93,31 @@
             z-index: 50;
             border-radius: 8px;
             overflow: hidden;
+            border: 1px solid #ddd;
         }
         .dropdown-content a {
             color: black;
-            padding: 12px 16px;
+            padding: 10px 14px;
             text-decoration: none;
             display: block;
             text-align: left;
+            font-size: 0.9rem;
         }
         .dropdown-content a:hover {
             background-color: #f1f1f1;
         }
         .dropdown:hover .dropdown-content {
             display: block;
+        }
+        .language-btn {
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.2s ease-in-out;
+        }
+        .language-btn:hover {
+            border-color: #c7c7c7;
+            background-color: #f8f8f8;
         }
 
         .ad-block {
@@ -108,19 +126,6 @@
             padding: 1rem;
             border-radius: 4px;
             text-align: center;
-        }
-        .ad-block .ad-code-title {
-            font-weight: bold;
-            font-size: 0.875rem;
-            letter-spacing: 0.1em;
-        }
-        .ad-block .ad-responsive-text {
-            background-color: #d1d5db;
-            color: #000000;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 2px;
         }
         .single-post-content img {
             pointer-events: auto;
@@ -147,11 +152,11 @@
             </div>
         </div>
 
-        <header class="bg-white sticky top-0 z-40 shadow-md">
+        <header class="bg-white sticky top-0 z-30 shadow-md">
             <div class="main-container px-4 py-4 flex justify-between items-center">
                 <a href="index.html" class="text-4xl animated-gradient-text">iGAROTO</a>
                 
-                <nav class="hidden md:flex items-center gap-4">
+                <nav class="hidden md:flex items-center gap-6">
                      <div class="dropdown">
                         <button class="flex items-center gap-1 font-semibold hover:text-indigo-600">
                             MENU <i data-lucide="chevron-down" class="w-4 h-4"></i>
@@ -174,8 +179,11 @@
                     </div>
                     
                     <div class="dropdown">
-                        <button class="hover:text-indigo-600"><i data-lucide="globe" class="w-6 h-6"></i></button>
-                        <div class="dropdown-content">
+                        <button class="language-btn flex items-center gap-2">
+                            <span id="current-language-name">Português</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                        </button>
+                        <div id="language-options" class="dropdown-content">
                             <a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a>
                             <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
                             <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
@@ -184,9 +192,8 @@
                 </nav>
                 
                 <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="flex items-center gap-2 hover:text-indigo-600 font-semibold">
-                        <span>MENU</span>
-                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    <button id="mobile-menu-btn" class="hover:text-indigo-600">
+                        <i data-lucide="menu" class="w-7 h-7"></i>
                     </button>
                 </div>
             </div>
@@ -194,16 +201,24 @@
 
         <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
         <div id="mobile-menu" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
-            <div class="p-4 border-b">
+            <div class="p-4 border-b flex justify-between items-center">
                 <h2 class="font-bold text-xl">Menu</h2>
+                <button id="close-mobile-menu-btn" class="hover:text-red-500"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
             <nav class="mt-4">
                 <a href="index.html" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_home">Home</a>
                 <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_boys">Boys</a>
                 <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_signs">Signos</a>
                 <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_about">Sobre</a>
+                <div class="border-t mx-4 mt-4 pt-4">
+                    <p class="px-4 text-sm font-semibold text-gray-500 mb-2">IDIOMA</p>
+                    <a href="javascript:void(0)" onclick="setLanguage('pt'); closeMenu();" class="block py-3 px-4 text-base hover:bg-gray-100">Português</a>
+                    <a href="javascript:void(0)" onclick="setLanguage('en'); closeMenu();" class="block py-3 px-4 text-base hover:bg-gray-100">English</a>
+                    <a href="javascript:void(0)" onclick="setLanguage('es'); closeMenu();" class="block py-3 px-4 text-base hover:bg-gray-100">Español</a>
+                </div>
             </nav>
         </div>
+        
         <div id="main-content-area" class="main-container px-4 mt-8">
             </div>
 
@@ -273,6 +288,7 @@
             const mainContentArea = document.getElementById('main-content-area');
             const translationCache = {};
             let currentLanguage = 'pt';
+            const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
 
             async function callGemini(prompt) {
                 const response = await fetch('/api/translate', {
@@ -342,6 +358,10 @@
             window.setLanguage = (lang) => {
                 currentLanguage = lang;
                 document.documentElement.lang = lang;
+                const langNameEl = document.getElementById('current-language-name');
+                if (langNameEl) {
+                    langNameEl.textContent = languageNames[lang];
+                }
                 applyTranslation();
             }
             
@@ -578,6 +598,7 @@
                     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                     const mobileMenu = document.getElementById('mobile-menu');
                     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+                    const closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
 
                     const openMenu = () => {
                         mobileMenu.classList.remove('-translate-x-full');
@@ -585,18 +606,19 @@
                         mobileMenuOverlay.classList.remove('hidden');
                     };
 
-                    const closeMenu = () => {
+                    window.closeMenu = () => {
                         mobileMenu.classList.remove('translate-x-0');
                         mobileMenu.classList.add('-translate-x-full');
                         mobileMenuOverlay.classList.add('hidden');
                     };
 
-                    if (mobileMenuBtn && mobileMenu && mobileMenuOverlay) {
+                    if (mobileMenuBtn && mobileMenu && mobileMenuOverlay && closeMobileMenuBtn) {
                         mobileMenuBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
                             openMenu();
                         });
                         mobileMenuOverlay.addEventListener('click', closeMenu);
+                        closeMobileMenuBtn.addEventListener('click', closeMenu);
                     }
                     // --- FIM DA LÓGICA DO MENU MOBILE ---
                     
