@@ -151,8 +151,8 @@
             <div class="main-container px-4 py-4 flex justify-between items-center">
                 <a href="index.html" class="text-4xl animated-gradient-text">iGAROTO</a>
                 
-                <div id="main-menu" class="flex items-center gap-4">
-                     <div class="dropdown hidden md:block">
+                <nav class="hidden md:flex items-center gap-4">
+                     <div class="dropdown">
                         <button class="flex items-center gap-1 font-semibold hover:text-indigo-600">
                             MENU <i data-lucide="chevron-down" class="w-4 h-4"></i>
                         </button>
@@ -163,7 +163,7 @@
                             <a href="#" data-translate-key="nav_about">Sobre</a>
                         </div>
                     </div>
-
+        
                     <div class="relative">
                         <button id="search-icon-btn" class="hover:text-indigo-600"><i data-lucide="search" class="w-6 h-6"></i></button>
                         <div id="search-bar" class="hidden absolute top-full right-0 mt-2 w-64 z-50">
@@ -181,8 +181,20 @@
                             <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
                         </div>
                     </div>
-                    <button class="md:hidden hover:text-indigo-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </nav>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="hover:text-indigo-600">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
                 </div>
+            </div>
+        
+            <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+                <a href="index.html" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_home">Home</a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_boys">Boys</a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_signs">Signos</a>
+                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_about">Sobre</a>
             </div>
         </header>
 
@@ -256,13 +268,11 @@
             const translationCache = {};
             let currentLanguage = 'pt';
 
-            // --- FUNÇÃO CORRIGIDA PARA USAR O SISTEMA SEGURO ---
             async function callGemini(prompt) {
-                // Agora chamamos nosso próprio API seguro na Vercel
                 const response = await fetch('/api/translate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(prompt) // Enviamos o objeto prompt diretamente
+                    body: JSON.stringify(prompt)
                 });
 
                 if (!response.ok) {
@@ -308,7 +318,6 @@
                     el.innerHTML = 'Traduzindo...';
                     
                     try {
-                        // --- PROMPT CORRIGIDO PARA ENVIAR UM OBJETO ---
                         const prompt = {
                             textToTranslate: originalText,
                             targetLang: lang,
@@ -558,6 +567,17 @@
                             window.location.href = `index.html?q=${encodeURIComponent(query)}`;
                         });
                     }
+                    
+                    // --- LÓGICA DO MENU MOBILE ---
+                    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                    const mobileMenu = document.getElementById('mobile-menu');
+
+                    if (mobileMenuBtn && mobileMenu) {
+                        mobileMenuBtn.addEventListener('click', () => {
+                            mobileMenu.classList.toggle('hidden');
+                        });
+                    }
+                    // --- FIM DA LÓGICA DO MENU MOBILE ---
                     
                     lucide.createIcons();
                     
