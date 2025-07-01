@@ -33,9 +33,8 @@
             margin-bottom: 1.5rem;
         }
         
-        /* Estilo do Logo com Gradiente Animado */
         .animated-gradient-text {
-            font-weight: 900; /* Poppins Black */
+            font-weight: 900;
             background: linear-gradient(90deg, #ff8a8a, #ffc3c3, #ff8a8a);
             background-size: 200% 100%;
             -webkit-background-clip: text;
@@ -49,7 +48,6 @@
             }
         }
 
-        /* Estilo do Slider Circular */
         .story-slider .swiper-slide {
             text-align: center;
             font-size: 14px;
@@ -70,7 +68,6 @@
             border: 3px solid #fff;
         }
 
-        /* Ícones Sociais Interativos */
         .social-icon {
             transition: transform 0.2s ease, filter 0.2s ease;
         }
@@ -79,7 +76,6 @@
             filter: brightness(0.8);
         }
 
-        /* Dropdown de Tradução */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -109,7 +105,6 @@
             display: block;
         }
 
-        /* Bloco de Anúncio */
         .ad-block {
             background-color: #000000;
             color: #ffffff;
@@ -223,7 +218,8 @@
                     <h2 class="text-xl font-bold border-b-4 border-indigo-600 pb-2 mb-6 inline-block" data-translate-key="recent_posts">POSTAGENS RECENTES</h2>
                     
                     <div id="posts-container" class="space-y-8">
-                        </div>
+                        <!-- Os posts do Firebase serão inseridos aqui pelo JavaScript -->
+                    </div>
                 </div>
 
                 <aside class="lg:col-span-1">
@@ -269,152 +265,172 @@
         </footer>
     </div>
 
+    <!-- Scripts do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
     <script>
-        // Dicionário de Traduções (sem alteração)
-        const translations = {
-            top_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
-            top_contact: { pt: 'Contato', en: 'Contact', es: 'Contacto' },
-            top_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
-            nav_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
-            nav_boys: { pt: 'Boys', en: 'Boys', es: 'Chicos' },
-            nav_signs: { pt: 'Signos', en: 'Zodiac', es: 'Signos' },
-            nav_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
-            story_makeup: { pt: 'Maquiagem', en: 'Makeup', es: 'Maquillaje' },
-            story_about_us: { pt: 'Sobre Nós', en: 'About Us', es: 'Sobre Nosotros' },
-            story_test: { pt: 'Teste', en: 'Test', es: 'Prueba' },
-            story_signs: { pt: 'Signos', en: 'Zodiac', es: 'Signos' },
-            story_fashion: { pt: 'Moda', en: 'Fashion', es: 'Moda' },
-            story_news: { pt: 'Novidades', en: 'News', es: 'Noticias' },
-            story_tips: { pt: 'Dicas', en: 'Tips', es: 'Consejos' },
-            recent_posts: { pt: 'POSTAGENS RECENTES', en: 'RECENT POSTS', es: 'PUBLICACIONES RECIENTES' },
-            read_more: { pt: 'LEIA MAIS &raquo;', en: 'READ MORE &raquo;', es: 'LEER MÁS &raquo;' },
-            social_plugin: { pt: 'SOCIAL PLUGIN', en: 'SOCIAL PLUGIN', es: 'PLUGIN SOCIAL' },
-            advertise_here: { pt: 'ANUNCIE AQUI', en: 'ADVERTISE HERE', es: 'ANUNCIE AQUÍ' },
-            most_popular: { pt: 'MAIS POPULARES', en: 'MOST POPULAR', es: 'MÁS POPULARES' },
-            popular1_title: { pt: 'Dicas de estilo para o verão 2024', en: 'Style tips for summer 2024', es: 'Consejos de estilo para el verano de 2024' },
-            popular1_date: { pt: 'Janeiro 15, 2024', en: 'January 15, 2024', es: '15 de Enero, 2024' },
-            popular2_title: { pt: 'Os melhores perfumes masculinos', en: 'The best male perfumes', es: 'Los mejores perfumes masculinos' },
-            popular2_date: { pt: 'Fevereiro 02, 2024', en: 'February 02, 2024', es: '02 de Febrero, 2024' },
-            footer_rights: { pt: '&copy; 2024 iGaroto. Todos os direitos reservados.', en: '&copy; 2024 iGaroto. All rights reserved.', es: '&copy; 2024 iGaroto. Todos los derechos reservados.' },
-            footer_dev: { pt: 'Desenvolvido com &hearts; para a comunidade.', en: 'Developed with &hearts; for the community.', es: 'Desarrollado con &hearts; para la comunidad.' },
-            admin_login: { pt: 'Admin Login', en: 'Admin Login', es: 'Acceso Admin' }
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                top_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
+                top_contact: { pt: 'Contato', en: 'Contact', es: 'Contacto' },
+                top_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
+                nav_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
+                nav_boys: { pt: 'Boys', en: 'Boys', es: 'Chicos' },
+                nav_signs: { pt: 'Signos', en: 'Zodiac', es: 'Signos' },
+                nav_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
+                story_makeup: { pt: 'Maquiagem', en: 'Makeup', es: 'Maquillaje' },
+                story_about_us: { pt: 'Sobre Nós', en: 'About Us', es: 'Sobre Nosotros' },
+                story_test: { pt: 'Teste', en: 'Test', es: 'Prueba' },
+                story_signs: { pt: 'Signos', en: 'Zodiac', es: 'Signos' },
+                story_fashion: { pt: 'Moda', en: 'Fashion', es: 'Moda' },
+                story_news: { pt: 'Novidades', en: 'News', es: 'Noticias' },
+                story_tips: { pt: 'Dicas', en: 'Tips', es: 'Consejos' },
+                recent_posts: { pt: 'POSTAGENS RECENTES', en: 'RECENT POSTS', es: 'PUBLICACIONES RECIENTES' },
+                read_more: { pt: 'LEIA MAIS &raquo;', en: 'READ MORE &raquo;', es: 'LEER MÁS &raquo;' },
+                social_plugin: { pt: 'SOCIAL PLUGIN', en: 'SOCIAL PLUGIN', es: 'PLUGIN SOCIAL' },
+                advertise_here: { pt: 'ANUNCIE AQUI', en: 'ADVERTISE HERE', es: 'ANUNCIE AQUÍ' },
+                most_popular: { pt: 'MAIS POPULARES', en: 'MOST POPULAR', es: 'MÁS POPULARES' },
+                popular1_title: { pt: 'Dicas de estilo para o verão 2024', en: 'Style tips for summer 2024', es: 'Consejos de estilo para el verano de 2024' },
+                popular1_date: { pt: 'Janeiro 15, 2024', en: 'January 15, 2024', es: '15 de Enero, 2024' },
+                popular2_title: { pt: 'Os melhores perfumes masculinos', en: 'The best male perfumes', es: 'Los mejores perfumes masculinos' },
+                popular2_date: { pt: 'Fevereiro 02, 2024', en: 'February 02, 2024', es: '02 de Febrero, 2024' },
+                footer_rights: { pt: '&copy; 2024 iGaroto. Todos os direitos reservados.', en: '&copy; 2024 iGaroto. All rights reserved.', es: '&copy; 2024 iGaroto. Todos los derechos reservados.' },
+                footer_dev: { pt: 'Desenvolvido com &hearts; para a comunidade.', en: 'Developed with &hearts; for the community.', es: 'Desarrollado con &hearts; para la comunidad.' },
+                admin_login: { pt: 'Admin Login', en: 'Admin Login', es: 'Acceso Admin' }
+            };
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyCMc8VQvtG3ep_Km9ThiyjOGNEyWPIzSc8",
-          authDomain: "site-igaroto.firebaseapp.com",
-          projectId: "site-igaroto",
-          storageBucket: "site-igaroto.firebasestorage.app",
-          messagingSenderId: "819105962628",
-          appId: "1:819105962628:web:1071fc993f8ac2eae940d1",
-          measurementId: "G-JDYQWMJ0TB"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+            window.setLanguage = function(lang) {
+                document.documentElement.lang = lang; 
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    if (translations[key] && translations[key][lang]) {
+                        element.innerHTML = translations[key][lang];
+                    }
+                });
+            }
 
-        // Função para Mudar o Idioma (sem alteração)
-        window.setLanguage = function(lang) {
-            document.documentElement.lang = lang; 
-            document.querySelectorAll('[data-translate-key]').forEach(element => {
-                const key = element.getAttribute('data-translate-key');
-                if (translations[key] && translations[key][lang]) {
-                    element.innerHTML = translations[key][lang];
-                }
+            lucide.createIcons();
+
+            const swiper = new Swiper('.story-slider .swiper-container', {
+                slidesPerView: 3,
+                spaceBetween: 10,
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                breakpoints: {
+                    640: { slidesPerView: 4, spaceBetween: 20 },
+                    768: { slidesPerView: 5, spaceBetween: 30 },
+                    1024: { slidesPerView: 6, spaceBetween: 30 },
+                },
             });
-        }
 
-        // Ativa os ícones do Lucide (sem alteração)
-        lucide.createIcons();
+            document.addEventListener('contextmenu', event => event.preventDefault());
 
-        // Inicializa o Swiper.js para o slider de destaques (sem alteração)
-        const swiper = new Swiper('.story-slider .swiper-container', {
-            slidesPerView: 3,
-            spaceBetween: 10,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            breakpoints: {
-                640: { slidesPerView: 4, spaceBetween: 20 },
-                768: { slidesPerView: 5, spaceBetween: 30 },
-                1024: { slidesPerView: 6, spaceBetween: 30 },
-            },
-        });
-
-        // Desabilita o menu de contexto para proteger imagens (sem alteração)
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
-        // --- NOVO CÓDIGO PARA CARREGAR POSTS DO FIREBASE ---
-
-        const postsContainer = document.getElementById('posts-container');
-
-        async function loadPosts() {
-            if (!postsContainer) return;
-
-            // Mostra uma mensagem de carregamento
-            postsContainer.innerHTML = `<p class="text-center text-gray-600">Carregando as últimas novidades...</p>`;
-
+            const firebaseConfig = {
+              apiKey: "AIzaSyBYvn_AEoXo2ei2zRSg9EZhAeicF0QfY3s",
+              authDomain: "igaroto-site-oficial.firebaseapp.com",
+              projectId: "igaroto-site-oficial",
+              storageBucket: "igaroto-site-oficial.firebasestorage.app",
+              messagingSenderId: "217633468562",
+              appId: "1:217633468562:web:236b1b72034a5a675cb64b",
+              measurementId: "G-B9NBBEZTSW"
+            };
+            
             try {
-                // Busca os posts no Firestore, ordenados pela data de criação (os mais novos primeiro), limitando a 10
-                const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').limit(10).get();
+                firebase.initializeApp(firebaseConfig);
+                firebase.analytics();
+            } catch(e) {
+                console.error("Erro ao inicializar o Firebase", e);
+            }
 
-                if (snapshot.empty) {
-                    postsContainer.innerHTML = '<p class="text-center text-gray-600">Ainda não há nenhuma postagem. Volte em breve!</p>';
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const postsContainer = document.getElementById('posts-container');
+
+            async function loadPosts() {
+                if (!postsContainer) {
+                    console.error("Elemento 'posts-container' não foi encontrado no HTML.");
                     return;
                 }
 
-                // Limpa a mensagem de carregamento
-                postsContainer.innerHTML = ''; 
+                postsContainer.innerHTML = `<p class="text-center text-gray-600">Carregando as últimas novidades...</p>`;
 
-                snapshot.forEach(doc => {
-                    const post = { id: doc.id, ...doc.data() };
-                    
-                    // Cria o elemento HTML para cada post
-                    const postElement = document.createElement('article');
-                    postElement.className = 'post-card flex flex-col md:flex-row rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300';
-                    
-                    // Extrai um resumo do conteúdo (primeiros 150 caracteres)
-                    const tempDiv = document.createElement("div");
-                    tempDiv.innerHTML = post.content;
-                    const description = tempDiv.textContent || tempDiv.innerText || "";
-                    const summary = description.substring(0, 150) + (description.length > 150 ? '...' : '');
+                try {
+                    const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').limit(10).get();
 
-                    // Formata a data
-                    const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-                    
-                    // Extrai a primeira imagem do conteúdo do post, se houver. Caso contrário, usa uma imagem padrão.
-                    const firstImageMatch = post.content.match(/<img src="([^"]+)"/);
-                    const imageUrl = firstImageMatch ? firstImageMatch[1] : 'https://placehold.co/400x400/111827/ffffff?text=iGaroto';
+                    if (snapshot.empty) {
+                        postsContainer.innerHTML = '<p class="text-center text-gray-600">Ainda não há nenhuma postagem. Volte em breve!</p>';
+                        return;
+                    }
 
-                    // Pega a primeira tag como categoria
-                    const category = post.tags && post.tags.length > 0 ? post.tags[0] : 'Novidades';
+                    postsContainer.innerHTML = ''; 
 
-                    postElement.innerHTML = `
-                        <div class="md:w-1/3"><img src="${imageUrl}" class="w-full h-full object-cover"></div>
-                        <div class="p-6 flex flex-col justify-center md:w-2/3">
-                            <span class="text-white bg-red-600 px-2 py-1 text-xs font-bold rounded self-start mb-2">${category}</span>
-                            <h3 class="text-2xl font-bold mb-2 hover:text-indigo-600"><a href="#">${post.title}</a></h3>
-                            <p class="text-gray-600 text-sm mb-4">${summary}</p>
-                            <div class="text-xs text-gray-500"><span>By <a href="#" class="font-semibold hover:text-black">iGaroto</a></span> - <span>${postDate}</span></div>
-                            <a href="#" class="text-indigo-600 font-semibold mt-4 self-start">LEIA MAIS &raquo;</a>
-                        </div>
-                    `;
-                    
-                    postsContainer.appendChild(postElement);
-                });
+                    snapshot.forEach(doc => {
+                        const post = { id: doc.id, ...doc.data() };
+                        
+                        const postElement = document.createElement('article');
+                        postElement.className = 'post-card flex flex-col md:flex-row rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300';
+                        
+                        const tempDiv = document.createElement("div");
+                        tempDiv.innerHTML = post.content;
+                        const description = tempDiv.textContent || tempDiv.innerText || "";
+                        const summary = description.substring(0, 150) + (description.length > 150 ? '...' : '');
 
-            } catch (error) {
-                console.error("Erro ao carregar posts: ", error);
-                postsContainer.innerHTML = `<p class="text-center text-red-500">Não foi possível carregar as postagens. Tente novamente mais tarde.</p>`;
+                        const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+                        
+                        const firstImageMatch = post.content.match(/<img src="([^"]+)"/);
+                        const imageUrl = firstImageMatch ? firstImageMatch[1] : 'https://placehold.co/400x400/111827/ffffff?text=iGaroto';
+
+                        const category = post.tags && post.tags.length > 0 ? post.tags[0] : 'Novidades';
+
+                        postElement.innerHTML = `
+                            <div class="md:w-1/3"><img src="${imageUrl}" class="w-full h-full object-cover" alt="${post.title}"></div>
+                            <div class="p-6 flex flex-col justify-center md:w-2/3">
+                                <span class="text-white bg-red-600 px-2 py-1 text-xs font-bold rounded self-start mb-2">${category}</span>
+                                <h3 class="text-2xl font-bold mb-2 hover:text-indigo-600"><a href="#">${post.title}</a></h3>
+                                <p class="text-gray-600 text-sm mb-4">${summary}</p>
+                                <div class="text-xs text-gray-500"><span>By <a href="#" class="font-semibold hover:text-black">iGaroto</a></span> - <span>${postDate}</span></div>
+                                <a href="#" class="text-indigo-600 font-semibold mt-4 self-start">LEIA MAIS &raquo;</a>
+                            </div>
+                        `;
+                        
+                        postsContainer.appendChild(postElement);
+                    });
+
+                } catch (error) {
+                    console.error("Erro ao carregar posts do Firestore: ", error);
+                    let userMessage = `Não foi possível carregar as postagens. (Erro: ${error.code})`;
+                     if (error.code === 'unavailable') {
+                        userMessage = 'Não foi possível conectar ao banco de dados. Verifique sua conexão com a internet e confirme se o Cloud Firestore foi criado e ativado no seu painel do Firebase.';
+                    } else if (error.code === 'permission-denied') {
+                        userMessage = 'Erro de permissão. Verifique as regras de segurança do seu Cloud Firestore.';
+                    }
+                    postsContainer.innerHTML = `<p class="text-center text-red-500">${userMessage}</p>`;
+                }
             }
-        }
 
-        // Chama a função para carregar os posts assim que a página estiver pronta
-        document.addEventListener('DOMContentLoaded', loadPosts);
-
+            auth.signInAnonymously()
+                .then(() => {
+                    console.log("Login anônimo no site principal bem-sucedido. Tentando carregar posts...");
+                    loadPosts();
+                })
+                .catch((error) => {
+                    console.error("Erro no login anônimo do site principal:", error);
+                    let userMessage = `Não foi possível conectar aos serviços do Firebase. (Erro: ${error.code})`;
+                    if (error.code === 'auth/operation-not-allowed' || (error.message && error.message.includes("CONFIGURATION_NOT_FOUND"))) {
+                        userMessage = 'O login anônimo não está ativado no seu projeto Firebase. Por favor, vá em "Authentication" > "Sign-in method" e ative o provedor "Anônimo".';
+                    }
+                    
+                    if (postsContainer) {
+                        postsContainer.innerHTML = `<p class="text-center text-red-500">${userMessage}</p>`;
+                    }
+                });
+        });
     </script>
 </body>
 </html>
