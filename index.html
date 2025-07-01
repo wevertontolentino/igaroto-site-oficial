@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* NOVO: Regra para evitar rolagem horizontal no celular */
         html, body {
             overflow-x: hidden;
             width: 100%;
@@ -19,7 +18,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f0f2f5;
-            position: relative; /* Necessário para o overflow-x funcionar corretamente */
+            position: relative;
         }
         .main-container {
             max-width: 1100px;
@@ -71,14 +70,6 @@
             border: 3px solid #fff;
         }
 
-        .social-icon {
-            transition: transform 0.2s ease, filter 0.2s ease;
-        }
-        .social-icon:active {
-            transform: scale(0.9);
-            filter: brightness(0.8);
-        }
-
         .dropdown {
             position: relative;
             display: inline-block;
@@ -118,22 +109,6 @@
         .language-btn:hover {
             border-color: #c7c7c7;
             background-color: #f8f8f8;
-        }
-
-        .ad-block {
-            background-color: #000000;
-            color: #ffffff;
-            padding: 1rem;
-            border-radius: 4px;
-            text-align: center;
-        }
-        .single-post-content img {
-            pointer-events: auto;
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -183,7 +158,7 @@
                             <span id="current-language-name">Português</span>
                             <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
                         </button>
-                        <div id="language-options" class="dropdown-content">
+                        <div class="dropdown-content">
                             <a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a>
                             <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
                             <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
@@ -191,7 +166,15 @@
                     </div>
                 </nav>
                 
-                <div class="md:hidden">
+                <div class="md:hidden flex items-center gap-4">
+                    <div class="dropdown">
+                        <button class="hover:text-indigo-600"><i data-lucide="globe" class="w-6 h-6"></i></button>
+                        <div class="dropdown-content">
+                           <a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a>
+                           <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
+                           <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
+                        </div>
+                    </div>
                     <button id="mobile-menu-btn" class="hover:text-indigo-600">
                         <i data-lucide="menu" class="w-7 h-7"></i>
                     </button>
@@ -210,12 +193,6 @@
                 <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_boys">Boys</a>
                 <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_signs">Signos</a>
                 <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_about">Sobre</a>
-                <div class="border-t mx-4 mt-4 pt-4">
-                    <p class="px-4 text-sm font-semibold text-gray-500 mb-2">IDIOMA</p>
-                    <a href="javascript:void(0)" onclick="setLanguage('pt'); closeMenu();" class="block py-3 px-4 text-base hover:bg-gray-100">Português</a>
-                    <a href="javascript:void(0)" onclick="setLanguage('en'); closeMenu();" class="block py-3 px-4 text-base hover:bg-gray-100">English</a>
-                    <a href="javascript:void(0)" onclick="setLanguage('es'); closeMenu();" class="block py-3 px-4 text-base hover:bg-gray-100">Español</a>
-                </div>
             </nav>
         </div>
         
@@ -264,7 +241,7 @@
                 popular2_title: { pt: 'Os melhores perfumes masculinos', en: 'The best male perfumes', es: 'Los mejores perfumes masculinos' },
                 popular2_date: { pt: 'Fevereiro 02, 2024', en: 'February 02, 2024', es: '02 de Febrero, 2024' },
                 footer_rights: { pt: '&copy; 2024 iGaroto. Todos os direitos reservados.', en: '&copy; 2024 iGaroto. All rights reserved.', es: '&copy; 2024 iGaroto. Todos los derechos reservados.' },
-                footer_dev: { pt: 'Desenvolvido com &hearts; para a comunidade.', en: 'Developed with &hearts; for the community.', es: 'Desarrollado con &hearts; para la comunidad.' },
+                footer_dev: { pt: 'Desenvolvido com &hearts; para a comunidade.', en: 'Developed with &hearts; for the community.', es: 'Desarrollado com &hearts; para la comunidad.' },
                 admin_login: { pt: 'Admin Login', en: 'Admin Login', es: 'Acceso Admin' }
             };
 
@@ -594,7 +571,6 @@
                         });
                     }
                     
-                    // --- LÓGICA DO MENU MOBILE ---
                     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                     const mobileMenu = document.getElementById('mobile-menu');
                     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
@@ -620,11 +596,11 @@
                         mobileMenuOverlay.addEventListener('click', closeMenu);
                         closeMobileMenuBtn.addEventListener('click', closeMenu);
                     }
-                    // --- FIM DA LÓGICA DO MENU MOBILE ---
                     
                     lucide.createIcons();
                     
                     document.documentElement.lang = currentLanguage;
+                    setLanguage(currentLanguage);
 
                 } catch (error) {
                     console.error("Erro ao inicializar o site:", error);
