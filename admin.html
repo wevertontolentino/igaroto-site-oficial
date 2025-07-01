@@ -171,7 +171,7 @@
                 </a>
             </nav>
             <div class="px-4 py-2 border-t">
-                <a href="index.htm" target="_blank" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-200">
+                <a href="index.html" target="_blank" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-200">
                     <i data-lucide="eye" class="w-5 h-5 mr-3 text-gray-500"></i>Ver blog
                 </a>
             </div>
@@ -681,7 +681,7 @@
 
             let lastListView = 'posts';
             let currentEditor = null;
-            let pages = JSON.parse(localStorage.getItem('adminPages')) || [];
+            // let pages = JSON.parse(localStorage.getItem('adminPages')) || []; // Removido
             let comments = JSON.parse(localStorage.getItem('adminComments')) || [];
             let layout = JSON.parse(localStorage.getItem('adminLayout')) || { sidebar: [], 'main-menu': [] };
             let blogSettings = JSON.parse(localStorage.getItem('adminBlogSettings')) || {
@@ -865,35 +865,59 @@
                 }
             };
             
-            const savePages = () => localStorage.setItem('adminPages', JSON.stringify(pages));
-            const renderPages = () => {
+            const renderPages = async () => {
                 if (!elements.pagesContainer) return;
-                elements.pagesContainer.innerHTML = pages.length === 0 ? `<p class="p-4 text-center text-gray-500">Nenhuma página encontrada.</p>` : '';
-                pages.forEach(page => elements.pagesContainer.appendChild(createPageElement(page)));
-                lucide.createIcons();
+                elements.pagesContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando páginas...</p>';
+                try {
+                    const snapshot = await db.collection('pages').orderBy('createdAt', 'desc').get();
+                    if (snapshot.empty) {
+                        elements.pagesContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma página encontrada.</p>`;
+                        return;
+                    }
+                    elements.pagesContainer.innerHTML = '';
+                    snapshot.forEach(doc => {
+                        const page = { id: doc.id, ...doc.data() };
+                        elements.pagesContainer.appendChild(createPageElement(page));
+                    });
+                    lucide.createIcons();
+                } catch (error) {
+                    console.error("Erro ao carregar as páginas: ", error);
+                    elements.pagesContainer.innerHTML = `<p class="p-4 text-center text-red-500">Ocorreu um erro ao carregar as páginas.</p>`;
+                }
             };
             const createPageElement = (page) => {
                 const el = document.createElement('div');
                 el.className = 'list-item flex items-center p-4 border-b last:border-b-0';
-                const pageDate = new Date(page.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+                const pageDate = page.createdAt && page.createdAt.toDate ? new Date(page.createdAt.toDate()).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }) : 'Data indisponível';
                 el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="editPage('${page.id}')"><p class="font-medium text-gray-800 hover:underline">${page.title || '(Sem título)'}</p><div class="text-sm text-gray-500 mt-1"><span>${page.status}</span> &middot; <span>${pageDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="deletePage('${page.id}')" title="Excluir" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
                 return el;
             };
-            window.editPage = (id) => {
-                const page = pages.find(p => p.id === id);
-                if (page) {
-                    currentEditor = 'page';
-                    elements.editorTitleInput.value = page.title;
-                    pageQuill.root.innerHTML = page.content;
-                    elements.publishBtn.dataset.id = id;
-                    switchView('pageEditor');
+            window.editPage = async (id) => {
+                try {
+                    const docRef = db.collection('pages').doc(id);
+                    const docSnap = await docRef.get();
+                    if (docSnap.exists) {
+                        const page = docSnap.data();
+                        currentEditor = 'page';
+                        elements.editorTitleInput.value = page.title;
+                        pageQuill.root.innerHTML = page.content;
+                        elements.publishBtn.dataset.id = id;
+                        switchView('pageEditor');
+                    }
+                } catch (error) {
+                    console.error("Erro ao buscar página para edição: ", error);
+                    alert("Erro ao carregar página.");
                 }
             };
-            window.deletePage = (id) => {
+            window.deletePage = async (id) => {
                 if (confirm('Tem certeza que deseja excluir esta página?')) {
-                    pages = pages.filter(p => p.id !== id);
-                    savePages();
-                    renderPages();
+                    try {
+                        await db.collection('pages').doc(id).delete();
+                        renderPages();
+                    } catch (error) {
+                        console.error("Erro ao deletar página: ", error);
+                        alert("Ocorreu um erro ao deletar a página.");
+                    }
                 }
             };
             
@@ -1128,16 +1152,24 @@
                         alert("Ocorreu um erro ao salvar a postagem. Verifique o console.");
                     }
                 } else if (currentEditor === 'page') {
-                    const content = pageQuill.root.innerHTML;
-                    let pageToSave;
-                    if (id) {
-                        pageToSave = pages.find(p => p.id === id);
-                        pageToSave.title = title; pageToSave.content = content;
-                    } else {
-                        pageToSave = { id: `page_${Date.now()}`, title, content, date: new Date().toISOString(), status: 'Publicada' };
-                        pages.unshift(pageToSave);
+                    const pageData = {
+                        title: title,
+                        content: pageQuill.root.innerHTML,
+                        status: 'Publicada',
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    try {
+                        if (id) {
+                            await db.collection('pages').doc(id).update(pageData);
+                        } else {
+                            pageData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                            await db.collection('pages').add(pageData);
+                        }
+                        switchView('pages');
+                    } catch (error) {
+                        console.error("Erro ao salvar página: ", error);
+                        alert("Ocorreu um erro ao salvar a página.");
                     }
-                    savePages(); renderPages(); switchView('pages');
                 }
             });
 
