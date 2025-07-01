@@ -257,8 +257,12 @@
             let currentLanguage = 'pt';
 
             async function callGemini(prompt) {
-                const apiKey = ""; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const apiKey = ""; // <-- COLOQUE SUA CHAVE DE API AQUI
+                if (!apiKey) {
+                    console.warn("Chave de API do Gemini não configurada.");
+                    return "API Key missing.";
+                }
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ parts: [{ text: prompt }] }] };
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -302,7 +306,8 @@
                     const cacheKey = `${lang}:${originalText}`;
 
                     if (translationCache[cacheKey]) {
-                        el.innerHTML = translationCache[cacheKey];
+                        if (isHtml) el.innerHTML = translationCache[cacheKey];
+                        else el.innerText = translationCache[cacheKey];
                         continue;
                     }
                     
@@ -313,10 +318,11 @@
                         const prompt = `Translate the following ${isHtml ? 'HTML content' : 'text'} to ${lang}. Preserve the HTML tags if they exist. Only return the translated text/HTML, nothing else:\n\n"${originalText}"`;
                         const translatedText = await callGemini(prompt);
                         translationCache[cacheKey] = translatedText;
-                        el.innerHTML = translatedText;
+                        if (isHtml) el.innerHTML = translatedText;
+                        else el.innerText = translatedText;
                     } catch (error) {
                         console.error("Translation error:", error);
-                        el.innerHTML = originalContent; // Reverte em caso de erro
+                        el.innerHTML = originalContent;
                     }
                 }
             }
@@ -326,8 +332,9 @@
                 document.documentElement.lang = lang;
                 applyTranslation();
             }
-
-            function renderHomePage(layout, searchTerm = '') {
+            
+            // --- FUNÇÃO CORRIGIDA ---
+            async function renderHomePage(layout, searchTerm = '') {
                 mainContentArea.innerHTML = `
                     <section class="mb-8 story-slider">
                         <div class="swiper-container">
@@ -369,8 +376,7 @@
                             <div id="posts-container" class="space-y-8"></div>
                         </div>
                         <aside id="sidebar-container" class="lg:col-span-1">
-                            <!-- Gadgets da sidebar serão inseridos aqui -->
-                        </aside>
+                            </aside>
                     </div>
                 `;
                 new Swiper('.story-slider .swiper-container', {
@@ -378,9 +384,12 @@
                     breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
                 });
                 renderGadgets(layout.sidebar, 'sidebar-container');
-                loadPosts(searchTerm);
+                
+                // ALTERAÇÃO AQUI: Esperamos os posts serem carregados
+                await loadPosts(searchTerm);
             }
 
+            // --- FUNÇÃO CORRIGIDA ---
             async function renderSinglePost(postId, layout) {
                 mainContentArea.innerHTML = `<p class="text-center text-gray-600">Carregando postagem...</p>`;
                 try {
@@ -410,8 +419,7 @@
                                     </div>
                                 </div>
                                 <aside id="sidebar-container" class="lg:col-span-1">
-                                    <!-- Gadgets da sidebar serão inseridos aqui -->
-                                </aside>
+                                    </aside>
                             </div>
                         `;
                         renderGadgets(layout.sidebar, 'sidebar-container');
@@ -423,6 +431,8 @@
                     mainContentArea.innerHTML = '<p class="text-center text-red-500">Ocorreu um erro ao carregar a postagem.</p>';
                 }
                 lucide.createIcons();
+                // ALTERAÇÃO AQUI: Traduzimos depois que o post foi inserido na página
+                await applyTranslation();
             }
 
             async function loadPosts(searchTerm = '') {
@@ -512,7 +522,8 @@
                     container.appendChild(widget);
                 });
             }
-
+            
+            // --- FUNÇÃO CORRIGIDA ---
             async function initializeSite() {
                 try {
                     const layoutDoc = await db.collection('settings').doc('layout').get();
@@ -525,10 +536,12 @@
                     const postId = urlParams.get('post');
                     const searchTerm = urlParams.get('q');
 
+                    // ALTERAÇÃO AQUI: As chamadas agora são 'await' e as próprias
+                    // funções se encarregarão de chamar a tradução no momento certo.
                     if (postId) {
                         await renderSinglePost(postId, layout);
                     } else {
-                        renderHomePage(layout, searchTerm);
+                        await renderHomePage(layout, searchTerm);
                     }
                     
                     const searchIconBtn = document.getElementById('search-icon-btn');
@@ -557,7 +570,10 @@
                     }
                     
                     lucide.createIcons();
-                    await setLanguage(currentLanguage);
+                    
+                    // ALTERAÇÃO AQUI: Removemos a chamada de tradução daqui, pois
+                    // ela já foi movida para dentro de renderHomePage e renderSinglePost.
+                    document.documentElement.lang = currentLanguage;
 
                 } catch (error) {
                     console.error("Erro ao inicializar o site:", error);
