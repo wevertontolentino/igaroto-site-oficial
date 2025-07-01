@@ -256,27 +256,21 @@
             const translationCache = {};
             let currentLanguage = 'pt';
 
+            // --- FUNÇÃO CORRIGIDA PARA USAR O SISTEMA SEGURO ---
             async function callGemini(prompt) {
-                const apiKey = ""; // <-- COLOQUE SUA CHAVE DE API AQUI
-                if (!apiKey) {
-                    console.warn("Chave de API do Gemini não configurada.");
-                    return "API Key missing.";
-                }
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ parts: [{ text: prompt }] }] };
-                const response = await fetch(apiUrl, {
+                // Agora chamamos nosso próprio API seguro na Vercel
+                const response = await fetch('/api/translate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(prompt) // Enviamos o objeto prompt diretamente
                 });
+
                 if (!response.ok) {
                     throw new Error(`API call failed with status: ${response.status}`);
                 }
+                
                 const result = await response.json();
-                if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
-                    return result.candidates[0].content.parts[0].text;
-                }
-                throw new Error("Invalid response from API");
+                return result.translatedText;
             }
 
             async function applyTranslation() {
@@ -306,8 +300,7 @@
                     const cacheKey = `${lang}:${originalText}`;
 
                     if (translationCache[cacheKey]) {
-                        if (isHtml) el.innerHTML = translationCache[cacheKey];
-                        else el.innerText = translationCache[cacheKey];
+                        el.innerHTML = translationCache[cacheKey];
                         continue;
                     }
                     
@@ -315,11 +308,15 @@
                     el.innerHTML = 'Traduzindo...';
                     
                     try {
-                        const prompt = `Translate the following ${isHtml ? 'HTML content' : 'text'} to ${lang}. Preserve the HTML tags if they exist. Only return the translated text/HTML, nothing else:\n\n"${originalText}"`;
+                        // --- PROMPT CORRIGIDO PARA ENVIAR UM OBJETO ---
+                        const prompt = {
+                            textToTranslate: originalText,
+                            targetLang: lang,
+                            isHtml: isHtml
+                        };
                         const translatedText = await callGemini(prompt);
                         translationCache[cacheKey] = translatedText;
-                        if (isHtml) el.innerHTML = translatedText;
-                        else el.innerText = translatedText;
+                        el.innerHTML = translatedText;
                     } catch (error) {
                         console.error("Translation error:", error);
                         el.innerHTML = originalContent;
@@ -333,7 +330,6 @@
                 applyTranslation();
             }
             
-            // --- FUNÇÃO CORRIGIDA ---
             async function renderHomePage(layout, searchTerm = '') {
                 mainContentArea.innerHTML = `
                     <section class="mb-8 story-slider">
@@ -376,7 +372,7 @@
                             <div id="posts-container" class="space-y-8"></div>
                         </div>
                         <aside id="sidebar-container" class="lg:col-span-1">
-                            </aside>
+                        </aside>
                     </div>
                 `;
                 new Swiper('.story-slider .swiper-container', {
@@ -385,11 +381,9 @@
                 });
                 renderGadgets(layout.sidebar, 'sidebar-container');
                 
-                // ALTERAÇÃO AQUI: Esperamos os posts serem carregados
                 await loadPosts(searchTerm);
             }
 
-            // --- FUNÇÃO CORRIGIDA ---
             async function renderSinglePost(postId, layout) {
                 mainContentArea.innerHTML = `<p class="text-center text-gray-600">Carregando postagem...</p>`;
                 try {
@@ -419,7 +413,7 @@
                                     </div>
                                 </div>
                                 <aside id="sidebar-container" class="lg:col-span-1">
-                                    </aside>
+                                </aside>
                             </div>
                         `;
                         renderGadgets(layout.sidebar, 'sidebar-container');
@@ -431,7 +425,6 @@
                     mainContentArea.innerHTML = '<p class="text-center text-red-500">Ocorreu um erro ao carregar a postagem.</p>';
                 }
                 lucide.createIcons();
-                // ALTERAÇÃO AQUI: Traduzimos depois que o post foi inserido na página
                 await applyTranslation();
             }
 
@@ -523,7 +516,6 @@
                 });
             }
             
-            // --- FUNÇÃO CORRIGIDA ---
             async function initializeSite() {
                 try {
                     const layoutDoc = await db.collection('settings').doc('layout').get();
@@ -536,8 +528,6 @@
                     const postId = urlParams.get('post');
                     const searchTerm = urlParams.get('q');
 
-                    // ALTERAÇÃO AQUI: As chamadas agora são 'await' e as próprias
-                    // funções se encarregarão de chamar a tradução no momento certo.
                     if (postId) {
                         await renderSinglePost(postId, layout);
                     } else {
@@ -571,8 +561,6 @@
                     
                     lucide.createIcons();
                     
-                    // ALTERAÇÃO AQUI: Removemos a chamada de tradução daqui, pois
-                    // ela já foi movida para dentro de renderHomePage e renderSinglePost.
                     document.documentElement.lang = currentLanguage;
 
                 } catch (error) {
