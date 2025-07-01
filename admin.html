@@ -492,6 +492,10 @@
                     <h4 class="font-semibold">Lista de links</h4>
                     <p class="text-sm text-gray-500">Cria uma lista de links.</p>
                 </div>
+                 <div data-type="social" class="gadget-option p-4 border rounded-lg hover:bg-gray-100 cursor-pointer">
+                    <h4 class="font-semibold">Plugin Social</h4>
+                    <p class="text-sm text-gray-500">Exibe ícones de redes sociais.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -737,7 +741,10 @@
                     if (doc.exists) {
                         layout = doc.data();
                     } else {
-                        // Se não existir, salva um layout padrão
+                        layout = { 
+                            sidebar: [{id: `gadget_${Date.now()}`, type: 'social', title: 'Plugin Social'}], 
+                            'main-menu': [] 
+                        };
                         await saveLayout(false);
                     }
                     renderLayout();
@@ -1300,6 +1307,7 @@
                 container.addEventListener('dragend', e => {
                     draggedItem.classList.remove('dragging');
                     draggedItem = null;
+                    saveLayout(false); // Salva o layout após soltar
                 });
                 container.addEventListener('dragover', e => {
                     e.preventDefault();
@@ -1311,12 +1319,8 @@
                     e.preventDefault();
                     const sectionKey = container.id.replace('-gadgets', '');
                     const newOrder = Array.from(container.querySelectorAll('.gadget')).map(g => g.dataset.id);
-                    layout[sectionKey] = newOrder.map(id => {
-                        for (const key in layout) {
-                            const found = layout[key].find(gadget => gadget.id === id);
-                            if(found) return found;
-                        }
-                    }).filter(Boolean);
+                    const allGadgets = Object.values(layout).flat();
+                    layout[sectionKey] = newOrder.map(id => allGadgets.find(gadget => gadget.id === id)).filter(Boolean);
                 });
             });
             function getDragAfterElement(container, y) {
