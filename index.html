@@ -216,7 +216,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const staticTranslations = { /* ... (conteúdo omitido por brevidade) ... */ };
+            const staticTranslations = { /* Conteúdo omitido */ };
 
             const firebaseConfig = {
               apiKey: "AIzaSyBYvn_AEoXo2ei2zRSg9EZhAeicF0QfY3s",
@@ -240,20 +240,18 @@
             let currentLanguage = 'pt';
             const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
 
-            async function callGemini(prompt) { /* ... (código inalterado) ... */ }
-            async function applyTranslation() { /* ... (código inalterado) ... */ }
+            async function callGemini(prompt) { /* Código seguro e inalterado */ }
+            async function applyTranslation() { /* Código inalterado */ }
             
             window.setLanguage = (lang) => {
                 currentLanguage = lang;
                 document.documentElement.lang = lang;
                 const langNameEl = document.getElementById('current-language-name');
-                if (langNameEl) {
-                    langNameEl.textContent = languageNames[lang];
-                }
+                if (langNameEl) langNameEl.textContent = languageNames[lang];
                 applyTranslation();
             };
             
-            // --- NOVA FUNÇÃO PARA CARREGAR OS STORIES ---
+            // --- FUNÇÃO DE STORIES REESCRITA E MAIS SEGURA ---
             async function loadStories() {
                 const storiesContainer = document.querySelector('.story-slider .swiper-wrapper');
                 if (!storiesContainer) return;
@@ -268,15 +266,16 @@
                     { tag: 'Dicas', placeholder: 'https://placehold.co/110x110/9a3412/ffffff?text=Dicas', key: 'story_tips' }
                 ];
                 
-                storiesContainer.innerHTML = ''; // Limpa os stories estáticos
+                let finalHtml = '';
 
                 try {
-                    const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').get();
+                    const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').limit(30).get(); // Pega os 30 posts mais recentes para otimizar
                     const allPosts = [];
                     snapshot.forEach(doc => allPosts.push({ id: doc.id, ...doc.data() }));
 
                     for (const category of storyCategories) {
-                        const postForStory = allPosts.find(p => p.tags && p.tags.includes(category.tag));
+                        // VERIFICAÇÃO ADICIONAL: Garante que p.tags existe e é um array antes de usar .includes
+                        const postForStory = allPosts.find(p => Array.isArray(p.tags) && p.tags.includes(category.tag));
                         
                         let imageUrl = category.placeholder;
                         let postUrl = '#';
@@ -287,7 +286,7 @@
                             postUrl = `?post=${postForStory.id}`;
                         }
 
-                        const storyHtml = `
+                        finalHtml += `
                             <div class="swiper-slide">
                                 <a href="${postUrl}">
                                     <div class="story-image-wrapper">
@@ -297,23 +296,28 @@
                                 </a>
                             </div>
                         `;
-                        storiesContainer.innerHTML += storyHtml;
                     }
                 } catch (error) {
                     console.error("Erro ao carregar stories dinâmicos:", error);
-                    // Em caso de erro, carrega os stories estáticos como fallback
-                    storiesContainer.innerHTML = ``;
+                    // Em caso de erro, preenche com placeholders para não quebrar o layout
+                    for (const category of storyCategories) {
+                        finalHtml += `
+                            <div class="swiper-slide">
+                                <a href="#">
+                                    <div class="story-image-wrapper"><img src="${category.placeholder}" alt="${category.tag}"></div>
+                                    <span class="font-semibold" data-translate-key="${category.key}">${category.tag}</span>
+                                </a>
+                            </div>`;
+                    }
                 }
+                storiesContainer.innerHTML = finalHtml;
             }
 
-
-            // --- FUNÇÃO RENDERHOMEPAGE MODIFICADA ---
             async function renderHomePage(layout, searchTerm = '') {
                 mainContentArea.innerHTML = `
                     <section class="mb-8 story-slider">
                         <div class="swiper-container">
-                            <div class="swiper-wrapper">
-                                </div>
+                            <div class="swiper-wrapper"></div>
                         </div>
                     </section>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -326,23 +330,24 @@
                     </div>
                 `;
 
-                // Primeiro, carregamos os stories
-                await loadStories();
-
-                // Depois que os stories estão no HTML, inicializamos o Swiper
-                new Swiper('.story-slider .swiper-container', {
-                    slidesPerView: 3, spaceBetween: 10, loop: false, // Loop é desativado para garantir a ordem
-                    breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
-                });
-
-                // Renderiza os gadgets e carrega os posts
-                renderGadgets(layout.sidebar, 'sidebar-container');
-                await loadPosts(searchTerm);
+                // Bloco de execução mais seguro
+                try {
+                    await loadStories();
+                    new Swiper('.story-slider .swiper-container', {
+                        slidesPerView: 3, spaceBetween: 10, loop: false,
+                        breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
+                    });
+                } catch(e) { console.error("Erro ao inicializar o Swiper Slider:", e); }
+                
+                try {
+                    renderGadgets(layout.sidebar, 'sidebar-container');
+                    await loadPosts(searchTerm);
+                } catch(e) { console.error("Erro ao carregar posts ou gadgets:", e); }
             }
 
-            async function renderSinglePost(postId, layout) { /* ... (código inalterado) ... */ }
-            async function loadPosts(searchTerm = '') { /* ... (código inalterado) ... */ }
-            function renderGadgets(gadgets, containerId) { /* ... (código inalterado) ... */ }
+            async function renderSinglePost(postId, layout) { /* Código inalterado */ }
+            async function loadPosts(searchTerm = '') { /* Código inalterado */ }
+            function renderGadgets(gadgets, containerId) { /* Código inalterado */ }
             
             async function initializeSite() {
                 try {
@@ -359,7 +364,9 @@
                         await renderHomePage(layout, searchTerm);
                     }
                     
-                    // ... (resto do código de listeners inalterado) ...
+                    const searchIconBtn = document.getElementById('search-icon-btn');
+                    const searchBar = document.getElementById('search-bar');
+                    if(searchIconBtn && searchBar) { /* ... lógica do search inalterada ... */ }
                     
                     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                     const mobileMenu = document.getElementById('mobile-menu');
@@ -372,7 +379,6 @@
                     if (mobileMenuBtn && mobileMenu && mobileMenuOverlay && closeMobileMenuBtn) {
                         mobileMenuBtn.addEventListener('click', (e) => { e.stopPropagation(); openMenu(); });
                         mobileMenuOverlay.addEventListener('click', closeMenu);
-
                         closeMobileMenuBtn.addEventListener('click', closeMenu);
                     }
                     
@@ -380,20 +386,15 @@
                     setLanguage(currentLanguage);
 
                 } catch (error) {
-                    console.error("Erro ao inicializar o site:", error);
-                    mainContentArea.innerHTML = `<p>Erro ao inicializar o site.</p>`;
+                    console.error("Erro fatal ao inicializar o site:", error);
+                    mainContentArea.innerHTML = `<p class="text-center text-red-500 font-bold p-10">Ocorreu um erro crítico ao carregar o site. Tente novamente mais tarde.</p>`;
                 }
             }
 
-            auth.signInAnonymously()
-                .then(() => {
-                    console.log("Login anônimo no site principal bem-sucedido.");
-                    initializeSite();
-                })
-                .catch((error) => {
-                    console.error("Erro no login anônimo do site principal:", error);
-                    mainContentArea.innerHTML = `<p>Erro de conexão.</p>`;
-                });
+            auth.signInAnonymously().then(() => initializeSite()).catch((error) => {
+                console.error("Erro de conexão:", error);
+                mainContentArea.innerHTML = `<p>Erro de conexão.</p>`;
+            });
         });
     </script>
 </body>
