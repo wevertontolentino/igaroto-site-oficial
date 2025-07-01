@@ -681,9 +681,8 @@
 
             let lastListView = 'posts';
             let currentEditor = null;
-            // let pages = JSON.parse(localStorage.getItem('adminPages')) || []; // Removido
             let comments = JSON.parse(localStorage.getItem('adminComments')) || [];
-            let layout = JSON.parse(localStorage.getItem('adminLayout')) || { sidebar: [], 'main-menu': [] };
+            let layout = { sidebar: [], 'main-menu': [] };
             let blogSettings = JSON.parse(localStorage.getItem('adminBlogSettings')) || {
                 title: 'iGaroto',
                 description: 'Adicionar descrição do blog',
@@ -720,21 +719,44 @@
             const postQuill = new Quill('#post-editor-container', quillOptions);
             const pageQuill = new Quill('#page-editor-container', quillOptions);
 
-            const saveLayout = (showAlert = true) => {
-                localStorage.setItem('adminLayout', JSON.stringify(layout));
-                if (showAlert) {
-                    alert('Layout salvo!');
+            const saveLayout = async (showAlert = true) => {
+                try {
+                    await db.collection('settings').doc('layout').set(layout);
+                    if (showAlert) {
+                        alert('Layout salvo!');
+                    }
+                } catch (error) {
+                    console.error("Erro ao salvar o layout:", error);
+                    alert("Ocorreu um erro ao salvar o layout.");
                 }
             };
+
+            const loadLayout = async () => {
+                try {
+                    const doc = await db.collection('settings').doc('layout').get();
+                    if (doc.exists) {
+                        layout = doc.data();
+                    } else {
+                        // Se não existir, salva um layout padrão
+                        await saveLayout(false);
+                    }
+                    renderLayout();
+                } catch (error) {
+                    console.error("Erro ao carregar o layout:", error);
+                }
+            }
+
             const renderLayout = () => {
                 Object.keys(layout).forEach(sectionKey => {
                     const container = document.getElementById(`${sectionKey}-gadgets`);
                     if (!container) return;
                     container.innerHTML = '';
-                    layout[sectionKey].forEach(gadget => {
-                        const el = createGadgetElement(gadget);
-                        container.appendChild(el);
-                    });
+                    if (layout[sectionKey]) {
+                        layout[sectionKey].forEach(gadget => {
+                            const el = createGadgetElement(gadget);
+                            container.appendChild(el);
+                        });
+                    }
                 });
                 lucide.createIcons();
             };
@@ -1009,7 +1031,7 @@
                 if (viewKey === 'stats') updateDashboard('week');
                 if (viewKey === 'comments') renderComments();
                 if (viewKey === 'pages') renderPages();
-                if (viewKey === 'layout') renderLayout();
+                if (viewKey === 'layout') loadLayout();
                 if(viewKey === 'theme') renderThemeView();
                 if (viewKey === 'settings') renderSettings();
             };
@@ -1203,6 +1225,9 @@
                     const newGadget = { id: `gadget_${Date.now()}`, type: type, title: type.charAt(0).toUpperCase() + type.slice(1) };
                     if (type === 'links') newGadget.links = [];
                     if (type === 'html') newGadget.content = '';
+                    if (!layout[currentGadgetSection]) {
+                        layout[currentGadgetSection] = [];
+                    }
                     layout[currentGadgetSection].push(newGadget);
                     renderLayout();
                     closeGadgetModal();
