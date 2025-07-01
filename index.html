@@ -401,7 +401,13 @@
                 try {
                     await loadStories();
                     new Swiper('.story-slider .swiper-container', {
-                        slidesPerView: 3, spaceBetween: 10, loop: false,
+                        slidesPerView: 3,
+                        spaceBetween: 10,
+                        loop: true,
+                        autoplay: {
+                          delay: 3000,
+                          disableOnInteraction: false,
+                        },
                         breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
                     });
                 } catch(e) { console.error("Erro ao inicializar o Swiper Slider:", e); }
@@ -487,7 +493,29 @@
                 }
             }
 
-            function renderGadgets(gadgets, containerId) { /* Código inalterado */ }
+            function renderGadgets(gadgets, containerId) {
+                const container = document.getElementById(containerId);
+                if (!container || !gadgets) return;
+                container.innerHTML = '';
+                gadgets.forEach(gadget => {
+                    const widget = document.createElement('div');
+                    widget.className = 'sidebar-widget';
+                    let content = `<h4 class="font-bold border-b pb-2 mb-4">${gadget.title}</h4>`;
+                    if (gadget.type === 'search') {
+                        content += `<form action="index.html" method="GET"><input type="text" name="q" placeholder="Pesquisar no blog..." class="w-full border border-gray-300 rounded-md p-2"></form>`;
+                    } else if (gadget.type === 'html') {
+                        content += `<div>${gadget.content || ''}</div>`;
+                    } else if (gadget.type === 'social') {
+                        content += `<div class="flex gap-4">
+                            <a href="https://www.facebook.com/igaroto" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded-lg"><i data-lucide="facebook"></i></a>
+                            <a href="https://www.instagram.com/igaroto" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 text-white rounded-lg"><i data-lucide="instagram"></i></a>
+                            <a href="https://www.x.com/igarotoinsta" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-black text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-1.8 13.05h1.56l-4.726-5.462-1.634-1.89-1.56-1.807H3.08l4.726 5.462 1.634 1.89 1.56 1.807Z"/></svg></a>
+                        </div>`;
+                    }
+                    widget.innerHTML = content;
+                    container.appendChild(widget);
+                });
+            }
             
             async function initializeSite() {
                 try {
@@ -503,23 +531,27 @@
                     }
                     const searchIconBtn = document.getElementById('search-icon-btn');
                     const searchBar = document.getElementById('search-bar');
-                    const searchForm = document.getElementById('search-form');
+
                     if(searchIconBtn && searchBar) {
+                        const searchForm = document.getElementById('search-form');
                         searchIconBtn.addEventListener('click', (e) => { e.stopPropagation(); searchBar.classList.toggle('hidden'); if (!searchBar.classList.contains('hidden')) { searchBar.querySelector('input').focus(); } });
                         document.addEventListener('click', (e) => { if (!searchBar.contains(e.target) && !searchIconBtn.contains(e.target)) { searchBar.classList.add('hidden'); } });
                         searchForm.addEventListener('submit', (e) => { e.preventDefault(); const query = new FormData(e.target).get('q'); window.location.href = `index.html?q=${encodeURIComponent(query)}`; });
                     }
+                    
                     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                     const mobileMenu = document.getElementById('mobile-menu');
                     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
                     const closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
                     const openMenu = () => { mobileMenu.classList.remove('-translate-x-full'); mobileMenu.classList.add('translate-x-0'); mobileMenuOverlay.classList.remove('hidden'); };
                     window.closeMenu = () => { mobileMenu.classList.remove('translate-x-0'); mobileMenu.classList.add('-translate-x-full'); mobileMenuOverlay.classList.add('hidden'); };
+
                     if (mobileMenuBtn && mobileMenu && mobileMenuOverlay && closeMobileMenuBtn) {
                         mobileMenuBtn.addEventListener('click', (e) => { e.stopPropagation(); openMenu(); });
                         mobileMenuOverlay.addEventListener('click', closeMenu);
                         closeMobileMenuBtn.addEventListener('click', closeMenu);
                     }
+                    
                     lucide.createIcons();
                     setLanguage(currentLanguage);
                 } catch (error) {
