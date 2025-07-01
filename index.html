@@ -137,10 +137,8 @@
     <div id="app">
         <div class="bg-white border-b border-gray-200">
             <div class="main-container px-4 py-2 flex justify-between items-center text-sm text-gray-600">
-                <nav class="flex gap-4">
-                    <a href="#" class="hover:text-indigo-600" data-translate-key="top_about">About</a>
-                    <a href="#" class="hover:text-indigo-600" data-translate-key="top_contact">Contact</a>
-                    <a href="index.html" class="hover:text-indigo-600" data-translate-key="top_home">Home</a>
+                <nav id="top-nav" class="flex gap-4">
+                    <!-- Links do menu superior serão inseridos aqui -->
                 </nav>
                 <div class="flex gap-4 items-center">
                     <a href="#" class="hover:opacity-75"><i data-lucide="facebook" class="w-4 h-4"></i></a>
@@ -153,37 +151,15 @@
             <div class="main-container px-4 py-4 flex justify-between items-center">
                 <a href="index.html" class="text-4xl animated-gradient-text">iGAROTO</a>
                 
-                <div class="flex items-center gap-4">
-                    <div class="dropdown hidden md:block">
-                        <button class="flex items-center gap-1 font-semibold hover:text-indigo-600">
-                            MENU <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="index.html" data-translate-key="nav_home">Home</a>
-                            <a href="#" data-translate-key="nav_boys">Boys</a>
-                            <a href="#" data-translate-key="nav_signs">Signos</a>
-                            <a href="#" data-translate-key="nav_about">Sobre</a>
-                        </div>
-                    </div>
-
-                    <button class="hover:text-indigo-600"><i data-lucide="search" class="w-6 h-6"></i></button>
-                    
-                    <div class="dropdown">
-                        <button class="hover:text-indigo-600"><i data-lucide="globe" class="w-6 h-6"></i></button>
-                        <div class="dropdown-content">
-                            <a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a>
-                            <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
-                            <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
-                        </div>
-                    </div>
-                    <button class="md:hidden hover:text-indigo-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                <div id="main-menu" class="flex items-center gap-4">
+                     <!-- Menu principal será inserido aqui -->
                 </div>
             </div>
         </header>
 
         <!-- Este é o container principal que será modificado pelo JavaScript -->
         <div id="main-content-area" class="main-container px-4 mt-8">
-            <!-- Conteúdo da página inicial (será inserido aqui se não houver post ID) -->
+            <!-- Conteúdo da página inicial ou post único será inserido aqui -->
         </div>
 
         <footer class="bg-gray-800 text-white mt-12">
@@ -263,39 +239,12 @@
             const db = firebase.firestore();
             const mainContentArea = document.getElementById('main-content-area');
 
-            function renderHomePage() {
+            function renderHomePage(layout) {
                 mainContentArea.innerHTML = `
                     <section class="mb-8 story-slider">
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="story-image-wrapper"><img src="https://placehold.co/110x110/6d28d9/ffffff?text=Make" alt="Maquiagem"></div>
-                                    <span class="font-semibold" data-translate-key="story_makeup">Maquiagem</span>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="story-image-wrapper"><img src="https://placehold.co/110x110/be185d/ffffff?text=Sobre" alt="Sobre nós"></div>
-                                    <span class="font-semibold" data-translate-key="story_about_us">Sobre Nós</span>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="story-image-wrapper"><img src="https://placehold.co/110x110/1e40af/ffffff?text=Teste" alt="Teste"></div>
-                                    <span class="font-semibold" data-translate-key="story_test">Teste</span>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="story-image-wrapper"><img src="https://placehold.co/110x110/ca8a04/ffffff?text=Signo" alt="Signos"></div>
-                                    <span class="font-semibold" data-translate-key="story_signs">Signos</span>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="story-image-wrapper"><img src="https://placehold.co/110x110/166534/ffffff?text=Moda" alt="Moda"></div>
-                                    <span class="font-semibold" data-translate-key="story_fashion">Moda</span>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="story-image-wrapper"><img src="https://placehold.co/110x110/b91c1c/ffffff?text=News" alt="Novidades"></div>
-                                    <span class="font-semibold" data-translate-key="story_news">Novidades</span>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="story-image-wrapper"><img src="https://placehold.co/110x110/9a3412/ffffff?text=Dicas" alt="Dicas"></div>
-                                    <span class="font-semibold" data-translate-key="story_tips">Dicas</span>
-                                </div>
+                                <!-- Slides do Swiper -->
                             </div>
                         </div>
                     </section>
@@ -304,45 +253,16 @@
                             <h2 class="text-xl font-bold border-b-4 border-indigo-600 pb-2 mb-6 inline-block" data-translate-key="recent_posts">POSTAGENS RECENTES</h2>
                             <div id="posts-container" class="space-y-8"></div>
                         </div>
-                        <aside class="lg:col-span-1">
-                            <div class="sidebar-widget">
-                                <h4 class="font-bold border-b pb-2 mb-4" data-translate-key="social_plugin">SOCIAL PLUGIN</h4>
-                                <div class="flex gap-4">
-                                    <a href="#" class="social-icon w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-                                    <a href="#" class="social-icon w-10 h-10 flex items-center justify-center bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-                                    <a href="#" class="social-icon w-10 h-10 flex items-center justify-center bg-black text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-1.8 13.05h1.56l-4.726-5.462-1.634-1.89-1.56-1.807H3.08l4.726 5.462 1.634 1.89 1.56 1.807Z"/></svg></a>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget">
-                                <h4 class="font-bold border-b pb-2 mb-4" data-translate-key="advertise_here">ANUNCIE AQUI</h4>
-                                <div class="space-y-4">
-                                    <div class="ad-block"><p class="ad-code-title">AD CODE</p><div class="ad-responsive-text">Responsive Advertisement</div></div>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget">
-                                <h4 class="font-bold border-b pb-2 mb-4" data-translate-key="most_popular">MAIS POPULARES</h4>
-                                <div class="space-y-4">
-                                    <a href="#" class="flex items-center gap-4 group">
-                                        <img src="https://placehold.co/80x80/111827/ffffff?text=1" class="w-16 h-16 object-cover rounded">
-                                        <div><p class="font-semibold group-hover:text-indigo-600" data-translate-key="popular1_title">Dicas de estilo para o verão 2024</p><span class="text-xs text-gray-500" data-translate-key="popular1_date">Janeiro 15, 2024</span></div>
-                                    </a>
-                                    <a href="#" class="flex items-center gap-4 group">
-                                        <img src="https://placehold.co/80x80/1e40af/ffffff?text=2" class="w-16 h-16 object-cover rounded">
-                                        <div><p class="font-semibold group-hover:text-indigo-600" data-translate-key="popular2_title">Os melhores perfumes masculinos</p><span class="text-xs text-gray-500" data-translate-key="popular2_date">Fevereiro 02, 2024</span></div>
-                                    </a>
-                                </div>
-                            </div>
+                        <aside id="sidebar-container" class="lg:col-span-1">
+                            <!-- Gadgets da sidebar serão inseridos aqui -->
                         </aside>
                     </div>
                 `;
-                new Swiper('.story-slider .swiper-container', {
-                    slidesPerView: 3, spaceBetween: 10, loop: true, autoplay: { delay: 3000, disableOnInteraction: false },
-                    breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
-                });
+                renderGadgets(layout.sidebar, 'sidebar-container');
                 loadPosts();
             }
 
-            async function renderSinglePost(postId) {
+            async function renderSinglePost(postId, layout) {
                 mainContentArea.innerHTML = `<p class="text-center text-gray-600">Carregando postagem...</p>`;
                 try {
                     const docRef = db.collection('posts').doc(postId);
@@ -352,24 +272,30 @@
                         const post = docSnap.data();
                         const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
                         
-                        document.title = `${post.title} - iGaroto`; // Atualiza o título da página
+                        document.title = `${post.title} - iGaroto`;
 
                         mainContentArea.innerHTML = `
-                            <div class="bg-white p-6 md:p-10 rounded-lg shadow-md max-w-4xl mx-auto">
-                                <a href="index.html" class="inline-flex items-center text-indigo-600 font-semibold mb-6 hover:underline">
-                                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
-                                    Voltar para todos os posts
-                                </a>
-                                <h1 class="text-4xl md:text-5xl font-bold mb-4">${post.title}</h1>
-                                <div class="text-sm text-gray-500 mb-6">
-                                    <span>Por <strong>iGaroto</strong></span> &bull;
-                                    <span>${postDate}</span>
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <div class="lg:col-span-2 bg-white p-6 md:p-10 rounded-lg shadow-md">
+                                    <a href="index.html" class="inline-flex items-center text-indigo-600 font-semibold mb-6 hover:underline">
+                                        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+                                        Voltar para todos os posts
+                                    </a>
+                                    <h1 class="text-4xl md:text-5xl font-bold mb-4">${post.title}</h1>
+                                    <div class="text-sm text-gray-500 mb-6">
+                                        <span>Por <strong>iGaroto</strong></span> &bull;
+                                        <span>${postDate}</span>
+                                    </div>
+                                    <div class="prose lg:prose-xl max-w-none single-post-content">
+                                        ${post.content}
+                                    </div>
                                 </div>
-                                <div class="prose lg:prose-xl max-w-none single-post-content">
-                                    ${post.content}
-                                </div>
+                                <aside id="sidebar-container" class="lg:col-span-1">
+                                    <!-- Gadgets da sidebar serão inseridos aqui -->
+                                </aside>
                             </div>
                         `;
+                        renderGadgets(layout.sidebar, 'sidebar-container');
                     } else {
                         mainContentArea.innerHTML = '<p class="text-center text-red-500">Postagem não encontrada.</p>';
                     }
@@ -426,17 +352,52 @@
                 }
             }
 
-            auth.signInAnonymously()
-                .then(() => {
+            function renderGadgets(gadgets, containerId) {
+                const container = document.getElementById(containerId);
+                if (!container || !gadgets) return;
+                container.innerHTML = '';
+
+                gadgets.forEach(gadget => {
+                    const widget = document.createElement('div');
+                    widget.className = 'sidebar-widget';
+                    let content = `<h4 class="font-bold border-b pb-2 mb-4">${gadget.title}</h4>`;
+
+                    if (gadget.type === 'search') {
+                        content += `<input type="text" placeholder="Pesquisar no blog..." class="w-full border border-gray-300 rounded-md p-2">`;
+                    } else if (gadget.type === 'html') {
+                        content += `<div>${gadget.content || ''}</div>`;
+                    }
+                    // Adicionar mais tipos de gadget aqui (pages, links, etc.)
+                    
+                    widget.innerHTML = content;
+                    container.appendChild(widget);
+                });
+            }
+
+            async function initializeSite() {
+                try {
+                    const layoutDoc = await db.collection('settings').doc('layout').get();
+                    const layout = layoutDoc.exists ? layoutDoc.data() : { sidebar: [], 'main-menu': [] };
+
                     const urlParams = new URLSearchParams(window.location.search);
                     const postId = urlParams.get('post');
 
                     if (postId) {
-                        renderSinglePost(postId);
+                        renderSinglePost(postId, layout);
                     } else {
-                        renderHomePage();
+                        renderHomePage(layout);
                     }
                     lucide.createIcons();
+                } catch (error) {
+                    console.error("Erro ao inicializar o site:", error);
+                    mainContentArea.innerHTML = `<p class="text-center text-red-500">Ocorreu um erro fatal ao carregar a configuração do site.</p>`;
+                }
+            }
+
+            auth.signInAnonymously()
+                .then(() => {
+                    console.log("Login anônimo no site principal bem-sucedido.");
+                    initializeSite();
                 })
                 .catch((error) => {
                     console.error("Erro no login anônimo do site principal:", error);
