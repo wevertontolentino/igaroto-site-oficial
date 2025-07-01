@@ -184,20 +184,26 @@
                 </nav>
                 
                 <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="hover:text-indigo-600">
+                    <button id="mobile-menu-btn" class="flex items-center gap-2 hover:text-indigo-600 font-semibold">
+                        <span>MENU</span>
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                 </div>
             </div>
-        
-            <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
-                <a href="index.html" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_home">Home</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_boys">Boys</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_signs">Signos</a>
-                <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100" data-translate-key="nav_about">Sobre</a>
-            </div>
         </header>
 
+        <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+        <div id="mobile-menu" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="p-4 border-b">
+                <h2 class="font-bold text-xl">Menu</h2>
+            </div>
+            <nav class="mt-4">
+                <a href="index.html" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_home">Home</a>
+                <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_boys">Boys</a>
+                <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_signs">Signos</a>
+                <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_about">Sobre</a>
+            </nav>
+        </div>
         <div id="main-content-area" class="main-container px-4 mt-8">
             </div>
 
@@ -571,11 +577,26 @@
                     // --- LÓGICA DO MENU MOBILE ---
                     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                     const mobileMenu = document.getElementById('mobile-menu');
+                    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
 
-                    if (mobileMenuBtn && mobileMenu) {
-                        mobileMenuBtn.addEventListener('click', () => {
-                            mobileMenu.classList.toggle('hidden');
+                    const openMenu = () => {
+                        mobileMenu.classList.remove('-translate-x-full');
+                        mobileMenu.classList.add('translate-x-0');
+                        mobileMenuOverlay.classList.remove('hidden');
+                    };
+
+                    const closeMenu = () => {
+                        mobileMenu.classList.remove('translate-x-0');
+                        mobileMenu.classList.add('-translate-x-full');
+                        mobileMenuOverlay.classList.add('hidden');
+                    };
+
+                    if (mobileMenuBtn && mobileMenu && mobileMenuOverlay) {
+                        mobileMenuBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openMenu();
                         });
+                        mobileMenuOverlay.addEventListener('click', closeMenu);
                     }
                     // --- FIM DA LÓGICA DO MENU MOBILE ---
                     
