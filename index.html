@@ -551,7 +551,7 @@
                     }
                     
                     lucide.createIcons();
-                    setLanguage(currentLanguage); // Aplica a tradução ao conteúdo recém-renderizado
+                    await setLanguage(currentLanguage);
 
                 } catch (error) {
                     console.error("Erro ao inicializar o site:", error);
