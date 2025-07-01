@@ -254,6 +254,7 @@
             const db = firebase.firestore();
             const mainContentArea = document.getElementById('main-content-area');
             const translationCache = {};
+            let currentLanguage = 'pt';
 
             async function callGemini(prompt) {
                 const apiKey = ""; 
@@ -275,6 +276,7 @@
             }
 
             window.setLanguage = async (lang) => {
+                currentLanguage = lang;
                 document.documentElement.lang = lang;
                 
                 document.querySelectorAll('[data-translate-key]').forEach(element => {
@@ -518,7 +520,7 @@
                     const searchTerm = urlParams.get('q');
 
                     if (postId) {
-                        renderSinglePost(postId, layout);
+                        await renderSinglePost(postId, layout);
                     } else {
                         renderHomePage(layout, searchTerm);
                     }
@@ -549,6 +551,7 @@
                     }
                     
                     lucide.createIcons();
+                    setLanguage(currentLanguage); // Aplica a tradução ao conteúdo recém-renderizado
 
                 } catch (error) {
                     console.error("Erro ao inicializar o site:", error);
