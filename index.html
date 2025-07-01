@@ -275,9 +275,8 @@
                 throw new Error("Invalid response from API");
             }
 
-            window.setLanguage = async (lang) => {
-                currentLanguage = lang;
-                document.documentElement.lang = lang;
+            async function applyTranslation() {
+                const lang = currentLanguage;
                 
                 document.querySelectorAll('[data-translate-key]').forEach(element => {
                     const key = element.getAttribute('data-translate-key');
@@ -307,6 +306,7 @@
                         continue;
                     }
                     
+                    const originalContent = el.innerHTML;
                     el.innerHTML = 'Traduzindo...';
                     
                     try {
@@ -316,9 +316,15 @@
                         el.innerHTML = translatedText;
                     } catch (error) {
                         console.error("Translation error:", error);
-                        el.innerHTML = originalText;
+                        el.innerHTML = originalContent; // Reverte em caso de erro
                     }
                 }
+            }
+            
+            window.setLanguage = (lang) => {
+                currentLanguage = lang;
+                document.documentElement.lang = lang;
+                applyTranslation();
             }
 
             function renderHomePage(layout, searchTerm = '') {
