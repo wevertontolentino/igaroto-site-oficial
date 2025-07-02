@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@vercel/blob": "latest",
-    "next": "latest"
+    "@vercel/blob": "latest"
   }
 }
