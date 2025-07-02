@@ -293,7 +293,18 @@
             let lastListView = 'posts';
             let currentEditor = null;
             const uploadModal = document.getElementById('upload-modal');
-            let comments = []; let layout = { sidebar: [], 'main-menu': [] }; let blogSettings = {}; const availableThemes = []; let themeSettings = {}; let charts = {}; let currentGadgetSection = null; let editingGadgetId = null;
+            let comments = JSON.parse(localStorage.getItem('adminComments')) || [];
+            let layout = { sidebar: [], 'main-menu': [] };
+            let blogSettings = JSON.parse(localStorage.getItem('adminBlogSettings')) || { title: 'iGaroto', description: 'Adicionar descrição do blog', language: 'pt-br' };
+            const availableThemes = [
+                { id: 'simple', name: 'Simples', thumbnail: 'https://placehold.co/400x250/f1f3f4/333?text=Simples' },
+                { id: 'dark', name: 'Escuro', thumbnail: 'https://placehold.co/400x250/333/f1f3f4?text=Escuro' },
+                { id: 'vibrant', name: 'Vibrante', thumbnail: 'https://placehold.co/400x250/db2777/fff?text=Vibrante' },
+            ];
+            let themeSettings = JSON.parse(localStorage.getItem('adminThemeSettings')) || { activeThemeId: 'simple', customizations: { simple: { bg: '#ffffff', text: '#333333', link: '#0000ff' }, dark: { bg: '#333333', text: '#ffffff', link: '#60a5fa' }, vibrant: { bg: '#ffffff', text: '#1f2937', link: '#db2777' }}};
+            let charts = {};
+            let currentGadgetSection = null;
+            let editingGadgetId = null;
 
             async function vercelBlobUpload(file) {
                 uploadModal.classList.remove('hidden');
@@ -321,7 +332,7 @@
             }
 
             const quillOptions = { modules: { toolbar: { container: [
-                [{ 'font': [] }, { 'header': [1, 2, 3, false] }],
+                [{ 'font': ['roboto', 'lato', 'merriweather', 'arial'] }], [{ 'header': [1, 2, 3, false] }],
                 ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'],
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                 [{ 'align': [] }], ['link', 'image'], ['clean']
@@ -329,21 +340,27 @@
             const postQuill = new Quill('#post-editor-container', quillOptions);
             const pageQuill = new Quill('#page-editor-container', { theme: 'snow', placeholder: 'Conteúdo da página...'});
 
-            const renderPosts = async () => { try { elements.postsContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando...</p>'; const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').get(); elements.postsContainer.innerHTML = ''; if (snapshot.empty) { elements.postsContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma postagem.</p>`; return; } snapshot.forEach(doc => { const post = { id: doc.id, ...doc.data() }; const el = document.createElement('div'); el.className = 'list-item flex items-center p-4 border-b last:border-b-0'; const postDate = post.createdAt?.toDate().toLocaleDateString('pt-BR') || ''; el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="window.editPost('${post.id}')"><p class="font-medium">${post.title||'(S/ Título)'}</p></div><div class="item-actions"><button onclick="window.deletePost('${post.id}')" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`; elements.postsContainer.appendChild(el); }); lucide.createIcons(); } catch (error) { console.error("Erro ao carregar posts:", error); }};
+            const renderPosts = async () => { try { elements.postsContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando...</p>'; const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').get(); elements.postsContainer.innerHTML = ''; if (snapshot.empty) { elements.postsContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma postagem.</p>`; return; } snapshot.forEach(doc => { const post = { id: doc.id, ...doc.data() }; const el = document.createElement('div'); el.className = 'list-item flex items-center p-4 border-b last:border-b-0'; const postDate = post.createdAt?.toDate().toLocaleDateString('pt-BR', {day:'numeric', month:'short'}) || ''; el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="window.editPost('${post.id}')"><p class="font-medium">${post.title||'(S/ Título)'}</p><div class="text-sm text-gray-500 mt-1"><span>Publicada</span> &middot; <span>${postDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="window.deletePost('${post.id}')" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`; elements.postsContainer.appendChild(el); }); lucide.createIcons(); } catch (error) { console.error("Erro ao carregar posts:", error); }};
             window.editPost = async (id) => { const docSnap = await db.collection('posts').doc(id).get(); if (docSnap.exists) { const post = docSnap.data(); currentEditor = 'post'; elements.editorTitleInput.value = post.title; elements.tagsInput.value = post.tags?.join(', ') || ''; postQuill.root.innerHTML = post.content; elements.publishBtn.dataset.id = id; switchView('postEditor'); }};
             window.deletePost = async (id) => { if (confirm('Excluir este post?')) { await db.collection('posts').doc(id).delete(); renderPosts(); }};
+            const renderPages = async () => { try { views.pages.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando...</p>'; const snapshot = await db.collection('pages').orderBy('createdAt', 'desc').get(); views.pages.innerHTML = `<div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-normal text-gray-800">Páginas</h2><button id="new-page-btn-inner" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-md inline-flex items-center shadow hover:bg-orange-600 transition-colors"><i data-lucide="plus" class="w-5 h-5 mr-2"></i>NOVA PÁGINA</button></div><div id="pages-container" class="bg-white rounded-lg shadow-sm border border-gray-200"></div>`; const pagesContainer = document.getElementById('pages-container'); if (snapshot.empty) { pagesContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma página.</p>`; return; } snapshot.forEach(doc => { const page = { id: doc.id, ...doc.data() }; const el = document.createElement('div'); el.className = 'list-item flex items-center p-4 border-b last:border-b-0'; el.innerHTML = `<div class="flex-1"><p class="font-medium">${page.title||'(S/ Título)'}</p></div>`; pagesContainer.appendChild(el); }); lucide.createIcons(); } catch (e) { console.error(e); }};
+            const updateDashboard = async () => { try { views.stats.innerHTML = `<div class="space-y-6"><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="bg-white p-4 rounded-lg shadow-sm border flex items-center justify-between"><span class="text-gray-600">Postagens</span><span id="stats-posts-count" class="text-2xl font-bold">0</span></div></div><div class="bg-white p-6 rounded-lg shadow-sm border"><h3 class="text-lg font-medium">Visualizações</h3><div class="relative h-72"><canvas id="overallViewsChart"></canvas></div></div></div>`; const posts = await db.collection('posts').get(); document.getElementById('stats-posts-count').textContent = posts.size; } catch (e) { console.error(e); }};
+            const renderComments = () => { views.comments.innerHTML = `<h2 class="text-2xl">Comentários</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de comentários em breve.</p>`; };
+            const loadLayout = async () => { views.layout.innerHTML = `<div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-normal text-gray-800">Layout</h2><button id="save-layout-btn" class="bg-orange-500 text-white font-bold py-2 px-6 rounded-md shadow hover:bg-orange-600 transition-colors">Salvar</button></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-2 space-y-6"><div class="bg-white p-6 rounded-lg shadow-sm border"><h3 class="text-lg font-medium mb-4">Menu Principal</h3><div id="main-menu-gadgets" class="gadget-container space-y-3"></div><button data-section="main-menu" class="add-gadget-btn mt-4 text-sm text-blue-600 hover:text-blue-800">+ Adicionar Gadget</button></div></div><div class="space-y-6"><div class="bg-white p-6 rounded-lg shadow-sm border"><h3 class="text-lg font-medium mb-4">Barra Lateral</h3><div id="sidebar-gadgets" class="gadget-container space-y-3"></div><button data-section="sidebar" class="add-gadget-btn mt-4 text-sm text-blue-600 hover:text-blue-800">+ Adicionar Gadget</button></div></div></div>`; };
+            const renderThemeView = () => { views.theme.innerHTML = `<h2 class="text-2xl font-normal text-gray-800 mb-6">Tema</h2><div class="bg-white p-6 rounded-lg shadow-sm border"><h3 class="text-lg font-medium mb-4">Meu tema</h3><p>Funcionalidades de tema em breve.</p></div>`; };
+            const renderSettings = () => { views.settings.innerHTML = `<h2 class="text-2xl font-normal text-gray-800 mb-6">Configurações</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidades de configurações em breve.</p>`; };
 
             elements.publishBtn.addEventListener('click', async () => {
                 const id = elements.publishBtn.dataset.id;
                 const title = elements.editorTitleInput.value.trim();
                 if (!title) return alert('Adicione um título.');
-                const dataToSave = { title, content: postQuill.root.innerHTML, tags: elements.tagsInput.value.split(',').map(t => t.trim()).filter(Boolean), updatedAt: new Date() };
+                const dataToSave = { title: title, content: postQuill.root.innerHTML, tags: elements.tagsInput.value.split(',').map(t => t.trim()).filter(Boolean), updatedAt: new Date() };
                 try { if (id) { await db.collection('posts').doc(id).update(dataToSave); } else { dataToSave.createdAt = new Date(); await db.collection('posts').add(dataToSave); } switchView('posts'); renderPosts(); } catch (error) { console.error("Erro ao salvar post:", error); alert("Erro ao salvar post."); }
             });
             
             const switchView = (viewKey) => {
-                Object.values(views).forEach(v => v.style.display = 'none');
-                views[viewKey].style.display = 'block';
+                Object.values(views).forEach(v => { if(v) v.style.display = 'none'});
+                if(views[viewKey]) views[viewKey].style.display = 'block';
                 const isEditor = viewKey === 'postEditor' || viewKey === 'pageEditor';
                 document.getElementById('main-header').style.display = isEditor ? 'none' : 'flex';
                 document.getElementById('editor-header').style.display = isEditor ? 'flex' : 'none';
@@ -353,30 +370,24 @@
             };
             
             Object.keys(navLinks).forEach(key => {
-                navLinks[key]?.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    switchView(key);
-                    if(key === 'posts') renderPosts();
-                    if(key === 'pages') renderPages();
-                    if(key === 'stats') updateDashboard();
-                    if(key === 'comments') renderComments();
-                    if(key === 'layout') loadLayout();
-                    if(key === 'theme') renderThemeView();
-                    if(key === 'settings') renderSettings();
-                });
+                if(navLinks[key]) {
+                    navLinks[key].addEventListener('click', (e) => {
+                        e.preventDefault();
+                        switchView(key);
+                        if(key === 'posts') renderPosts();
+                        if(key === 'pages') renderPages();
+                        if(key === 'stats') updateDashboard();
+                        if(key === 'comments') renderComments();
+                        if(key === 'layout') loadLayout();
+                        if(key === 'theme') renderThemeView();
+                        if(key === 'settings') renderSettings();
+                    });
+                }
             });
-
-            // O restante das funções de renderização que foram removidas por engano
-            const renderPages = () => { views.pages.innerHTML = `<h2 class="text-2xl">Páginas</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de páginas em breve.</p>`; };
-            const updateDashboard = () => { views.stats.innerHTML = `<h2 class="text-2xl">Estatísticas</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de estatísticas em breve.</p>`; };
-            const renderComments = () => { views.comments.innerHTML = `<h2 class="text-2xl">Comentários</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de comentários em breve.</p>`; };
-            const loadLayout = () => { views.layout.innerHTML = `<h2 class="text-2xl">Layout</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de layout em breve.</p>`; };
-            const renderThemeView = () => { views.theme.innerHTML = `<h2 class="text-2xl">Tema</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de tema em breve.</p>`; };
-            const renderSettings = () => { views.settings.innerHTML = `<h2 class="text-2xl">Configurações</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de configurações em breve.</p>`; };
 
             elements.newPostBtn.addEventListener('click', () => { currentEditor = 'post'; elements.editorTitleInput.value = ''; elements.tagsInput.value = ''; postQuill.root.innerHTML = ''; elements.publishBtn.dataset.id = ''; switchView('postEditor'); });
             elements.backBtn.addEventListener('click', () => { switchView(lastListView); });
-            elements.newPageBtn.addEventListener('click', () => alert('Funcionalidade de nova página em breve!'));
+            elements.newPageBtn?.addEventListener('click', () => alert('Funcionalidade de nova página em breve!'));
 
             lucide.createIcons();
             switchView('posts');
