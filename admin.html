@@ -21,31 +21,82 @@
 
 
     <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #f1f3f4; }
-        .sidebar-item.active { background-color: #e8f0fe; color: #1967d2; font-weight: 700; }
-        .sidebar-item.active i { color: #1967d2; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f1f3f4;
+        }
+        .sidebar-item.active {
+            background-color: #e8f0fe;
+            color: #1967d2;
+            font-weight: 700;
+        }
+        .sidebar-item.active i {
+            color: #1967d2;
+        }
         .admin-view { display: none; }
         .active-view { display: block !important; }
-        #post-editor-container, #page-editor-container { height: 60vh; background-color: white; border-radius: 8px; border: 1px solid #d1d5db; }
-        .ql-toolbar.ql-snow { border-top-left-radius: 8px; border-top-right-radius: 8px; border-color: #d1d5db; }
-        .ql-container.ql-snow { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-color: #d1d5db; border-top: 0px; }
+        #post-editor-container, #page-editor-container {
+            height: 60vh;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+        }
+        .ql-toolbar.ql-snow {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-color: #d1d5db;
+        }
+        .ql-container.ql-snow {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-color: #d1d5db;
+            border-top: 0px;
+        }
         .ql-font-roboto { font-family: 'Roboto', sans-serif; }
         .ql-font-lato { font-family: 'Lato', sans-serif; }
         .ql-font-merriweather { font-family: 'Merriweather', serif; }
         .ql-font-arial { font-family: Arial, sans-serif; }
-        .list-item .item-actions, .gadget .gadget-actions { opacity: 0; transition: opacity 0.2s ease-in-out; }
+        .list-item .item-actions, .gadget .gadget-actions {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
         .list-item:hover .item-actions, .gadget:hover .gadget-actions { opacity: 1; }
         .dropdown { position: relative; display: inline-block; }
-        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 50; right: 0; border-radius: 8px; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 50;
+            right: 0;
+            border-radius: 8px;
+        }
         .dropdown-content a:hover {background-color: #f1f1f1}
         .dropdown:hover .dropdown-content { display: block; }
         .comment-actions { opacity: 0; transition: opacity 0.2s ease-in-out; }
         .comment-item:hover .comment-actions { opacity: 1; }
         .comments-tab.active { border-color: #1967d2; color: #1967d2; }
-        .gadget-container { border: 2px dashed #d1d5db; padding: 1rem; border-radius: 8px; min-height: 100px; }
+        .gadget-container {
+            border: 2px dashed #d1d5db;
+            padding: 1rem;
+            border-radius: 8px;
+            min-height: 100px;
+        }
         .gadget { cursor: grab; user-select: none; }
         .gadget.dragging { opacity: 0.5; background: #e8f0fe; }
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
         .theme-card { border: 2px solid transparent; transition: border-color 0.2s ease-in-out; }
         .theme-card.active { border-color: #1967d2; }
         .theme-card .apply-button-container { display: none; }
@@ -275,11 +326,57 @@
 
         function runApp() {
             const elements = {
-                publishBtn: document.getElementById('publish-btn'), editorTitleInput: document.getElementById('editor-title-input'), tagsInput: document.getElementById('tags-input'), postsContainer: document.getElementById('posts-container'), newPostBtn: document.getElementById('new-post-btn'), backBtn: document.getElementById('back-btn'), newPageBtn: document.getElementById('new-page-btn'), postsLink: document.getElementById('posts-link'), statsLink: document.getElementById('stats-link'), commentsLink: document.getElementById('comments-link'), pagesLink: document.getElementById('pages-link'), layoutLink: document.getElementById('layout-link'), themeLink: document.getElementById('theme-link'), settingsLink: document.getElementById('settings-link'),
-                pagesContainer: document.getElementById('pages-container'), publishedCommentsList: document.getElementById('published-comments-list'), spamCommentsList: document.getElementById('spam-comments-list'), commentsTabs: document.getElementById('comments-tabs'), timeFilterOptions: document.getElementById('time-filter-options'), timeFilterLabel: document.getElementById('time-filter-label'),
-                saveLayoutBtn: document.getElementById('save-layout-btn'), addGadgetBtns: document.querySelectorAll('.add-gadget-btn'), addGadgetModal: document.getElementById('add-gadget-modal'), closeGadgetModalBtn: document.getElementById('close-gadget-modal-btn'), gadgetOptions: document.querySelectorAll('.gadget-option'), configureGadgetModal: document.getElementById('configure-gadget-modal'), closeConfigureModalBtn: document.getElementById('close-configure-modal-btn'), configureModalTitle: document.getElementById('configure-modal-title'), gadgetTitleInput: document.getElementById('gadget-title-input'), gadgetSpecificConfig: document.getElementById('gadget-specific-config'), saveConfigureBtn: document.getElementById('save-configure-btn'), cancelConfigureBtn: document.getElementById('cancel-configure-btn'),
-                themeGallery: document.getElementById('theme-gallery'), currentThemeThumbnail: document.getElementById('current-theme-thumbnail'), currentThemeName: document.getElementById('current-theme-name'), customizeThemeBtn: document.getElementById('customize-theme-btn'), editHtmlBtn: document.getElementById('edit-html-btn'), backToThemesBtn: document.getElementById('back-to-themes-btn'), saveCustomizationsBtn: document.getElementById('save-customizations-btn'), bgColorPicker: document.getElementById('bg-color-picker'), textColorPicker: document.getElementById('text-color-picker'), linkColorPicker: document.getElementById('link-color-picker'), editHtmlModal: document.getElementById('edit-html-modal'), closeHtmlModalBtn: document.getElementById('close-html-modal-btn'), cancelHtmlEditBtn: document.getElementById('cancel-html-edit-btn'), saveHtmlEditBtn: document.getElementById('save-html-edit-btn'), themeHtmlEditor: document.getElementById('theme-html-editor'),
-                settingsModal: document.getElementById('settings-modal'), closeSettingsModalBtn: document.getElementById('close-settings-modal-btn'), settingsModalTitle: document.getElementById('settings-modal-title'), settingsModalContent: document.getElementById('settings-modal-content'), saveSettingsBtn: document.getElementById('save-settings-btn'), cancelSettingsBtn: document.getElementById('cancel-settings-btn'),
+                mainHeader: document.getElementById('main-header'),
+                editorHeader: document.getElementById('editor-header'),
+                backBtn: document.getElementById('back-btn'),
+                publishBtn: document.getElementById('publish-btn'),
+                editorTitleInput: document.getElementById('editor-title-input'),
+                newPostBtn: document.getElementById('new-post-btn'),
+                postsContainer: document.getElementById('posts-container'),
+                tagsInput: document.getElementById('tags-input'),
+                newPageBtn: document.getElementById('new-page-btn'),
+                pagesContainer: document.getElementById('pages-container'),
+                commentsTabs: document.getElementById('comments-tabs'),
+                publishedCommentsList: document.getElementById('published-comments-list'),
+                spamCommentsList: document.getElementById('spam-comments-list'),
+                timeFilterOptions: document.getElementById('time-filter-options'),
+                timeFilterLabel: document.getElementById('time-filter-label'),
+                statsFollowersCount: document.getElementById('stats-followers-count'),
+                statsPostsCount: document.getElementById('stats-posts-count'),
+                statsCommentsCount: document.getElementById('stats-comments-count'),
+                saveLayoutBtn: document.getElementById('save-layout-btn'),
+                addGadgetBtns: document.querySelectorAll('.add-gadget-btn'),
+                addGadgetModal: document.getElementById('add-gadget-modal'),
+                closeGadgetModalBtn: document.getElementById('close-gadget-modal-btn'),
+                gadgetOptions: document.querySelectorAll('.gadget-option'),
+                configureGadgetModal: document.getElementById('configure-gadget-modal'),
+                closeConfigureModalBtn: document.getElementById('close-configure-modal-btn'),
+                configureModalTitle: document.getElementById('configure-modal-title'),
+                gadgetTitleInput: document.getElementById('gadget-title-input'),
+                gadgetSpecificConfig: document.getElementById('gadget-specific-config'),
+                saveConfigureBtn: document.getElementById('save-configure-btn'),
+                cancelConfigureBtn: document.getElementById('cancel-configure-btn'),
+                themeGallery: document.getElementById('theme-gallery'),
+                currentThemeThumbnail: document.getElementById('current-theme-thumbnail'),
+                currentThemeName: document.getElementById('current-theme-name'),
+                customizeThemeBtn: document.getElementById('customize-theme-btn'),
+                editHtmlBtn: document.getElementById('edit-html-btn'),
+                backToThemesBtn: document.getElementById('back-to-themes-btn'),
+                saveCustomizationsBtn: document.getElementById('save-customizations-btn'),
+                bgColorPicker: document.getElementById('bg-color-picker'),
+                textColorPicker: document.getElementById('text-color-picker'),
+                linkColorPicker: document.getElementById('link-color-picker'),
+                editHtmlModal: document.getElementById('edit-html-modal'),
+                closeHtmlModalBtn: document.getElementById('close-html-modal-btn'),
+                cancelHtmlEditBtn: document.getElementById('cancel-html-edit-btn'),
+                saveHtmlEditBtn: document.getElementById('save-html-edit-btn'),
+                themeHtmlEditor: document.getElementById('theme-html-editor'),
+                settingsModal: document.getElementById('settings-modal'),
+                closeSettingsModalBtn: document.getElementById('close-settings-modal-btn'),
+                settingsModalTitle: document.getElementById('settings-modal-title'),
+                settingsModalContent: document.getElementById('settings-modal-content'),
+                saveSettingsBtn: document.getElementById('save-settings-btn'),
+                cancelSettingsBtn: document.getElementById('cancel-settings-btn'),
             };
 
             const views = {
@@ -334,38 +431,54 @@
                 [{ 'align': [] }], ['link', 'image'], ['clean']
             ], handlers: { 'image': imageHandler }}}, theme: 'snow', placeholder: 'Comece a escrever...'};
             const postQuill = new Quill('#post-editor-container', quillOptions);
-            const pageQuill = new Quill('#page-editor-container', { theme: 'snow', placeholder: 'Conteúdo da página...'});
+            const pageQuill = new Quill('#page-editor-container', quillOptions);
 
-            const renderPosts = async () => { try { elements.postsContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando...</p>'; const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').get(); elements.postsContainer.innerHTML = ''; if (snapshot.empty) { elements.postsContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma postagem.</p>`; return; } snapshot.forEach(doc => { const post = { id: doc.id, ...doc.data() }; const el = document.createElement('div'); el.className = 'list-item flex items-center p-4 border-b last:border-b-0'; const postDate = post.createdAt?.toDate().toLocaleDateString('pt-BR', {day:'numeric', month:'short'}) || ''; el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="window.editPost('${post.id}')"><p class="font-medium text-gray-800 hover:underline">${post.title||'(S/ Título)'}</p><div class="text-sm text-gray-500 mt-1"><span>Publicada</span> &middot; <span>${postDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="window.deletePost('${post.id}')" title="Excluir" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`; elements.postsContainer.appendChild(el); }); lucide.createIcons(); } catch (error) { console.error("Erro ao carregar posts:", error); }};
+            const renderPosts = async () => { try { elements.postsContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando...</p>'; const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').get(); elements.postsContainer.innerHTML = ''; if (snapshot.empty) { elements.postsContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma postagem.</p>`; return; } snapshot.forEach(doc => { const post = { id: doc.id, ...doc.data() }; const el = document.createElement('div'); el.className = 'list-item flex items-center p-4 border-b last:border-b-0'; const postDate = post.createdAt?.toDate().toLocaleDateString('pt-BR', {day:'numeric', month:'short'}) || ''; el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="window.editPost('${post.id}')"><p class="font-medium text-gray-800 hover:underline">${post.title||'(S/ Título)'}</p><div class="text-sm text-gray-500 mt-1"><span>${post.status}</span> &middot; <span>${postDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="window.deletePost('${post.id}')" title="Excluir" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`; elements.postsContainer.appendChild(el); }); lucide.createIcons(); } catch (error) { console.error("Erro ao carregar posts:", error); }};
             window.editPost = async (id) => { const docSnap = await db.collection('posts').doc(id).get(); if (docSnap.exists) { const post = docSnap.data(); currentEditor = 'post'; elements.editorTitleInput.value = post.title; elements.tagsInput.value = post.tags?.join(', ') || ''; postQuill.root.innerHTML = post.content; elements.publishBtn.dataset.id = id; switchView('postEditor'); }};
             window.deletePost = async (id) => { if (confirm('Excluir este post?')) { await db.collection('posts').doc(id).delete(); renderPosts(); }};
-            const renderPages = async () => { try { views.pages.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando...</p>'; const snapshot = await db.collection('pages').orderBy('createdAt', 'desc').get(); const container = document.getElementById('pages-container'); container.innerHTML = ''; if(snapshot.empty){ container.innerHTML = '<p class="p-4 text-center text-gray-500">Nenhuma página.</p>'; } snapshot.forEach(doc => { const page = { id: doc.id, ...doc.data() }; const el = document.createElement('div'); el.className = 'list-item flex items-center p-4 border-b last:border-b-0'; el.innerHTML = `<div class="flex-1"><p class="font-medium">${page.title||'(S/ Título)'}</p></div>`; container.appendChild(el); }); } catch (e) { console.error(e); }};
+            
+            const renderPages = async () => { try { elements.pagesContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando...</p>'; const snapshot = await db.collection('pages').orderBy('createdAt', 'desc').get(); elements.pagesContainer.innerHTML = ''; if (snapshot.empty) { elements.pagesContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma página.</p>`; return; } snapshot.forEach(doc => { const page = { id: doc.id, ...doc.data() }; const el = document.createElement('div'); el.className = 'list-item flex items-center p-4 border-b last:border-b-0'; const pageDate = page.createdAt?.toDate().toLocaleDateString('pt-BR', {day:'numeric', month:'short'}) || ''; el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="editPage('${page.id}')"><p class="font-medium">${page.title||'(S/ Título)'}</p><div class="text-sm text-gray-500 mt-1"><span>${page.status}</span> &middot; <span>${pageDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="deletePage('${page.id}')" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`; elements.pagesContainer.appendChild(el); }); lucide.createIcons(); } catch (e) { console.error(e); }};
+            window.editPage = async (id) => { try { const docSnap = await db.collection('pages').doc(id).get(); if(docSnap.exists) { const page = docSnap.data(); currentEditor = 'page'; elements.editorTitleInput.value = page.title; pageQuill.root.innerHTML = page.content; elements.publishBtn.dataset.id = id; switchView('pageEditor'); } } catch(e) { console.error(e); } };
+            window.deletePage = async (id) => { if (confirm('Excluir esta página?')) { await db.collection('pages').doc(id).delete(); renderPages(); } };
+
             const updateDashboard = async () => { try { document.getElementById('stats-posts-count').textContent = (await db.collection('posts').get()).size; document.getElementById('stats-comments-count').textContent = comments.filter(c => c.status === 'published').length; createLineChart('overallViewsChart', ['21 jun', '22 jun', '23 jun', '24 jun', '25 jun', '26 jun', '27 jun'], [3, 2, 2, 2, 6, 3, 6], 'Visualizações'); createDonutChart('countryDonutChart', ['Brasil', 'EUA', 'Austrália'], [62, 14, 6], ['#ef4444', '#f97316', '#22c55e']); createDonutChart('browserDonutChart', ['Chrome', 'Firefox', 'Safari'], [70, 20, 10], ['#ef4444', '#f97316', '#22c55e']); createDonutChart('osDonutChart', ['Windows', 'Macintosh', 'Linux'], [65, 25, 10], ['#ef4444', '#f97316', '#22c55e']); fetch('https://unpkg.com/world-atlas/countries-110m.json').then(r => r.json()).then(mapData => { const countries = ChartGeo.topojson.feature(mapData, mapData.objects.countries).features; createMapChart('countryMapChart', countries, [ { feature: countries.find(c => c.properties.name === 'Brazil'), value: 62 }, { feature: countries.find(c => c.properties.name === 'United States of America'), value: 14 }, { feature: countries.find(c => c.properties.name === 'Australia'), value: 6 }, ]); }); } catch(e) { console.error("Erro ao carregar dashboard:", e) }};
-            const renderComments = () => { views.comments.innerHTML = `<h2 class="text-2xl font-normal text-gray-800 mb-4">Comentários</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de comentários em breve.</p>`; };
-            const loadLayout = async () => { try { const doc = await db.collection('settings').doc('layout').get(); if (doc.exists) { layout = doc.data(); } else { layout = { sidebar: [{id: `gadget_${Date.now()}`, type: 'social', title: 'Plugin Social'}], 'main-menu': [] }; } renderLayout(); } catch (e) { console.error(e); } };
-            const renderThemeView = () => { const activeTheme = availableThemes.find(t => t.id === themeSettings.activeThemeId); if(activeTheme) { document.getElementById('current-theme-name').textContent = activeTheme.name; document.getElementById('current-theme-thumbnail').innerHTML = `<img src="${activeTheme.thumbnail}" alt="${activeTheme.name}" class="w-full rounded-lg border">`; } };
+            const renderComments = () => { if (!elements.publishedCommentsList) return; elements.publishedCommentsList.innerHTML = ''; elements.spamCommentsList.innerHTML = ''; const published = comments.filter(c => c.status === 'published'); const spam = comments.filter(c => c.status === 'spam'); elements.publishedCommentsList.innerHTML = published.length === 0 ? `<div class="text-center py-12 bg-white rounded-lg border"><p class="text-gray-500">Nenhum comentário.</p></div>` : ''; published.forEach(c => elements.publishedCommentsList.appendChild(createCommentElement(c))); elements.spamCommentsList.innerHTML = spam.length === 0 ? `<div class="text-center py-12 bg-white rounded-lg border"><p class="text-gray-500">Nenhum spam.</p></div>` : ''; spam.forEach(c => elements.spamCommentsList.appendChild(createCommentElement(c))); lucide.createIcons(); };
+            const createCommentElement = (comment) => { const el = document.createElement('div'); el.className = 'comment-item bg-white p-4 border rounded-lg mb-4 group'; const commentDate = new Date(comment.date).toLocaleDateString('pt-BR', {day: 'numeric', month: 'long', year: 'numeric'}); const isSpam = comment.status === 'spam'; const moveIcon = isSpam ? 'shield-check' : 'shield-alert'; const moveText = isSpam ? 'Não é spam' : 'Spam'; const moveTarget = isSpam ? 'published' : 'spam'; el.innerHTML = `<div class="flex items-start space-x-4"><img src="${comment.avatar}" alt="Avatar" class="w-10 h-10 rounded-full"><div class="flex-1"><div class="flex items-center justify-between"><div><span class="font-semibold">${comment.author}</span><span class="text-sm text-gray-500 ml-2">${commentDate}</span></div><div class="comment-actions flex items-center space-x-3 text-gray-500"><button onclick="replyToComment('${comment.id}')" title="Responder"><i data-lucide="corner-up-left" class="w-4 h-4"></i></button><button onclick="editComment('${comment.id}')" title="Editar"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="moveComment('${comment.id}', '${moveTarget}')" title="${moveText}"><i data-lucide="${moveIcon}" class="w-4 h-4"></i></button><button onclick="deleteComment('${comment.id}')" title="Excluir"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div><p class="text-gray-600 mt-2">${comment.content}</p><p class="text-sm text-gray-400 mt-2">em: <a href="#" class="hover:underline">${comment.postTitle}</a></p></div></div>`; return el; };
+            const loadLayout = async () => { try { const doc = await db.collection('settings').doc('layout').get(); if (doc.exists) { layout = doc.data(); } else { layout = { sidebar: [{id: `gadget_${Date.now()}`, type: 'social', title: 'Plugin Social'}], 'main-menu': [] }; await saveLayout(false); } renderLayout(); } catch (e) { console.error(e); } };
+            const renderThemeView = () => { const activeTheme = availableThemes.find(t => t.id === themeSettings.activeThemeId); if(activeTheme) { elements.currentThemeName.textContent = activeTheme.name; elements.currentThemeThumbnail.innerHTML = `<img src="${activeTheme.thumbnail}" alt="${activeTheme.name}" class="w-full rounded-lg border">`; } };
             const renderSettings = () => { document.getElementById('setting-title-value').textContent = blogSettings.title; document.getElementById('setting-description-value').textContent = blogSettings.description; document.getElementById('setting-language-value').textContent = blogSettings.language === 'pt-br' ? 'Português (Brasil)' : blogSettings.language; };
             const createLineChart = (id, labels, data, label) => { if (charts[id]) charts[id].destroy(); const ctx = document.getElementById(id); if(ctx) charts[id] = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label, data, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } } }); };
             const createDonutChart = (id, labels, data, colors) => { if (charts[id]) charts[id].destroy(); const ctx = document.getElementById(id); if(ctx) charts[id] = new Chart(ctx, { type: 'doughnut', data: { labels, datasets: [{ data, backgroundColor: colors }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } } }); };
             const createMapChart = (id, features, data) => { if (charts[id]) charts[id].destroy(); const ctx = document.getElementById(id); if(ctx) charts[id] = new Chart(ctx, { type: 'choropleth', data: { labels: features.map(f => f.properties.name), datasets: [{ label: 'Países', outline: features, data: data.map(d => ({ feature: d.feature, value: d.value })) }] }, options: { showOutline: true, showGraticule: false, plugins: { legend: { display: false } }, scales: { xy: { projection: 'equalEarth' }, color: { axis: 'x', interpolate: (v) => v < 0.5 ? '#ccebc5' : '#7bccc4' } } } }); };
+            const saveBlogSettings = () => { localStorage.setItem('adminBlogSettings', JSON.stringify(blogSettings)); renderSettings(); };
+            const openSettingsModal = (setting) => { elements.settingsModal.classList.remove('hidden'); let content = ''; let title = ''; switch(setting) { case 'title': title = 'Título do blog'; content = `<input type="text" id="modal-input" class="w-full border-gray-300 rounded-md" value="${blogSettings.title}">`; break; case 'description': title = 'Descrição'; content = `<textarea id="modal-input" class="w-full h-24 border-gray-300 rounded-md">${blogSettings.description}</textarea>`; break; } elements.settingsModalTitle.textContent = title; elements.settingsModalContent.innerHTML = content; elements.saveSettingsBtn.dataset.setting = setting; };
 
             elements.publishBtn.addEventListener('click', async () => {
                 const id = elements.publishBtn.dataset.id;
                 const title = elements.editorTitleInput.value.trim();
                 if (!title) return alert('Adicione um título.');
-                const dataToSave = { title, content: postQuill.root.innerHTML, tags: elements.tagsInput.value.split(',').map(t => t.trim()).filter(Boolean), updatedAt: new Date() };
-                try { if (id) { await db.collection('posts').doc(id).update(dataToSave); } else { dataToSave.createdAt = new Date(); await db.collection('posts').add(dataToSave); } switchView('posts'); renderPosts(); } catch (error) { console.error("Erro ao salvar:", error); alert("Erro ao salvar."); }
+                let content = '';
+                if(currentEditor === 'post') content = postQuill.root.innerHTML;
+                if(currentEditor === 'page') content = pageQuill.root.innerHTML;
+                const dataToSave = { title, content, updatedAt: new Date() };
+                if (currentEditor === 'post') dataToSave.tags = elements.tagsInput.value.split(',').map(t => t.trim()).filter(Boolean);
+                try { 
+                    if (id) { await db.collection(currentEditor + 's').doc(id).update(dataToSave); } 
+                    else { dataToSave.createdAt = new Date(); await db.collection(currentEditor + 's').add(dataToSave); } 
+                    switchView(currentEditor + 's'); 
+                    if(currentEditor === 'post') renderPosts();
+                    if(currentEditor === 'page') renderPages();
+                } catch (error) { console.error("Erro ao salvar:", error); alert("Erro ao salvar."); }
             });
             
             const switchView = (viewKey) => {
-                Object.values(views).forEach(v => { if(v) v.style.display = 'none'});
-                if(views[viewKey]) views[viewKey].style.display = 'block';
+                Object.values(views).forEach(v => v.classList.remove('active-view'));
+                if(views[viewKey]) views[viewKey].classList.add('active-view');
                 const isEditor = viewKey === 'postEditor' || viewKey === 'pageEditor';
-                document.getElementById('main-header').style.display = isEditor ? 'none' : 'flex';
-                document.getElementById('editor-header').style.display = isEditor ? 'flex' : 'none';
+                elements.mainHeader.style.display = isEditor ? 'none' : 'flex';
+                elements.editorHeader.style.display = isEditor ? 'flex' : 'none';
                 Object.values(navLinks).forEach(l => l.classList.remove('active'));
-                navLinks[viewKey]?.classList.add('active');
-                if(!isEditor) lastListView = viewKey;
+                if(navLinks[viewKey]) { navLinks[viewKey].classList.add('active'); if(!isEditor) lastListView = viewKey; }
             };
             
             Object.keys(navLinks).forEach(key => {
@@ -385,8 +498,8 @@
             });
 
             elements.newPostBtn.addEventListener('click', () => { currentEditor = 'post'; elements.editorTitleInput.value = ''; elements.tagsInput.value = ''; postQuill.root.innerHTML = ''; elements.publishBtn.dataset.id = ''; switchView('postEditor'); });
-            elements.backBtn.addEventListener('click', () => { switchView(lastListView); renderPosts(); });
-            elements.newPageBtn?.addEventListener('click', () => alert('Funcionalidade de nova página em breve!'));
+            elements.newPageBtn.addEventListener('click', () => { currentEditor = 'page'; elements.editorTitleInput.value = ''; pageQuill.root.innerHTML = ''; elements.publishBtn.dataset.id = ''; switchView('pageEditor'); });
+            elements.backBtn.addEventListener('click', () => { switchView(lastListView); });
 
             lucide.createIcons();
             switchView('posts');
