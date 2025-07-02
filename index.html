@@ -366,7 +366,6 @@
 
                 let slidesHtml = '<div class="swiper-container"><div class="swiper-wrapper">';
                 uniqueTags.forEach(tag => {
-                    // LÓGICA PARA ACHAR IMAGEM DO POST MAIS RECENTE DO MARCADOR
                     const latestPostForTag = (posts || []).find(p => p && Array.isArray(p.tags) && p.tags.includes(tag));
                     let imageUrl = '';
 
@@ -377,7 +376,6 @@
                         }
                     }
 
-                    // Se não encontrou imagem, usa o placeholder
                     if (!imageUrl) {
                         const color = stringToColor(tag);
                         const textColor = 'ffffff';
@@ -399,17 +397,24 @@
                 slidesHtml += '</div></div>';
                 sliderContainer.innerHTML = slidesHtml;
                 
-                // Inicializa o Swiper com AUTOPLAY e LOOP
-                new Swiper('.story-slider .swiper-container', {
+                // Lógica de Autoplay Inteligente
+                const maxSlidesPerView = 6;
+                const swiperOptions = {
                     slidesPerView: 3,
                     spaceBetween: 10,
-                    loop: true,
-                    autoplay: {
+                    breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: maxSlidesPerView } },
+                };
+
+                // Ativa o loop e autoplay apenas se houver mais slides do que o visível na maior tela
+                if (uniqueTags.length > maxSlidesPerView) {
+                    swiperOptions.loop = true;
+                    swiperOptions.autoplay = {
                         delay: 3000,
                         disableOnInteraction: false,
-                    },
-                    breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
-                });
+                    };
+                }
+
+                new Swiper('.story-slider .swiper-container', swiperOptions);
             }
 
             function stringToColor(str) {
