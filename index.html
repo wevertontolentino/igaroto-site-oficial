@@ -261,7 +261,6 @@
             const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
             let allPosts = [];
 
-            // FUNÇÕES DE TRADUÇÃO QUE ESTAVAM FALTANDO
             async function callGemini(prompt) {
                 const response = await fetch('/api/translate', {
                     method: 'POST',
@@ -313,7 +312,7 @@
                         el.innerHTML = translatedText;
                     } catch (error) {
                         console.error("Translation error:", error);
-                        el.innerHTML = originalContent; // Reverte em caso de erro
+                        el.innerHTML = originalContent;
                     }
                 }
             }
@@ -367,14 +366,30 @@
 
                 let slidesHtml = '<div class="swiper-container"><div class="swiper-wrapper">';
                 uniqueTags.forEach(tag => {
-                    const color = stringToColor(tag);
-                    const textColor = 'ffffff';
-                    const placeholderLetter = encodeURIComponent(tag.charAt(0).toUpperCase());
+                    // LÓGICA PARA ACHAR IMAGEM DO POST MAIS RECENTE DO MARCADOR
+                    const latestPostForTag = (posts || []).find(p => p && Array.isArray(p.tags) && p.tags.includes(tag));
+                    let imageUrl = '';
+
+                    if (latestPostForTag && latestPostForTag.content) {
+                        const firstImageMatch = (latestPostForTag.content || '').match(/<img src="([^"]+)"/);
+                        if (firstImageMatch) {
+                            imageUrl = firstImageMatch[1];
+                        }
+                    }
+
+                    // Se não encontrou imagem, usa o placeholder
+                    if (!imageUrl) {
+                        const color = stringToColor(tag);
+                        const textColor = 'ffffff';
+                        const placeholderLetter = encodeURIComponent(tag.charAt(0).toUpperCase());
+                        imageUrl = `https://placehold.co/110x110/${color.substring(1)}/${textColor}?text=${placeholderLetter}`;
+                    }
+
                     slidesHtml += `
                         <div class="swiper-slide">
                             <a href="?tag=${encodeURIComponent(tag)}">
-                                <div class="story-image-wrapper" style="background: ${color};">
-                                    <img src="https://placehold.co/110x110/${color.substring(1)}/${textColor}?text=${placeholderLetter}" alt="${tag}">
+                                <div class="story-image-wrapper">
+                                    <img src="${imageUrl}" alt="${tag}">
                                 </div>
                                 <span class="font-semibold">${tag}</span>
                             </a>
@@ -384,8 +399,15 @@
                 slidesHtml += '</div></div>';
                 sliderContainer.innerHTML = slidesHtml;
                 
+                // Inicializa o Swiper com AUTOPLAY e LOOP
                 new Swiper('.story-slider .swiper-container', {
-                    slidesPerView: 3, spaceBetween: 10, loop: false,
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                    loop: true,
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    },
                     breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
                 });
             }
