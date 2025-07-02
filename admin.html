@@ -109,7 +109,6 @@
 </head>
 <body class="bg-gray-100">
 
-    <!-- Tela de Login -->
     <div id="login-screen" class="flex items-center justify-center h-screen">
         <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
             <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin iGaroto</h2>
@@ -132,7 +131,6 @@
         </div>
     </div>
 
-    <!-- Painel de Administração (inicialmente escondido) -->
     <div id="app-container" class="hidden h-screen bg-gray-100">
         <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
             <div class="px-6 py-4 border-b flex justify-between items-center">
@@ -534,7 +532,6 @@
     </div>
 
 
-    <!-- Scripts do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -1166,13 +1163,13 @@
                         content: postQuill.root.innerHTML,
                         tags: elements.tagsInput.value.split(',').map(t => t.trim()).filter(t => t),
                         status: 'Publicada',
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        updatedAt: new Date()
                     };
                     try {
                         if (id) {
                             await db.collection('posts').doc(id).update(postData);
                         } else {
-                            postData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                            postData.createdAt = new Date();
                             await db.collection('posts').add(postData);
                         }
                         switchView('posts');
@@ -1185,13 +1182,13 @@
                         title: title,
                         content: pageQuill.root.innerHTML,
                         status: 'Publicada',
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        updatedAt: new Date()
                     };
                     try {
                         if (id) {
                             await db.collection('pages').doc(id).update(pageData);
                         } else {
-                            pageData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                            pageData.createdAt = new Date();
                             await db.collection('pages').add(pageData);
                         }
                         switchView('pages');
@@ -1307,7 +1304,7 @@
                 container.addEventListener('dragend', e => {
                     draggedItem.classList.remove('dragging');
                     draggedItem = null;
-                    saveLayout(false); // Salva o layout após soltar
+                    saveLayout(false);
                 });
                 container.addEventListener('dragover', e => {
                     e.preventDefault();
