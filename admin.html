@@ -538,7 +538,6 @@
     
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Flag para garantir que a app só inicialize uma vez
         let appInitialized = false;
 
         const firebaseConfig = {
@@ -628,8 +627,7 @@
                     });
 
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Falha no upload');
+                        throw new Error(`Erro do servidor: ${response.statusText}`);
                     }
                     
                     const newBlob = await response.json();
@@ -639,7 +637,7 @@
 
                 } catch (error) {
                     console.error('Erro no upload para a API da Vercel:', error);
-                    alert(`Ocorreu um erro ao enviar a imagem: ${error.message}`);
+                    alert(`Ocorreu um erro ao enviar a imagem. Verifique se a chave BLOB_READ_WRITE_TOKEN está configurada corretamente na Vercel. Erro: ${error.message}`);
                     quillInstance.deleteText(range.index, 19);
                 }
             };
@@ -652,7 +650,6 @@
         }
 
         function runApp() {
-            // TRAVA DE SEGURANÇA PARA EVITAR REINICIALIZAÇÃO
             if (appInitialized) {
                 return;
             }
@@ -785,7 +782,6 @@
             pageQuill.getModule('toolbar').addHandler('image', () => {
                 selectLocalImage(pageQuill);
             });
-
 
             const saveLayout = async (showAlert = true) => {
                 try {
@@ -1121,8 +1117,18 @@
             };
             const renderThemeView = () => {
                 const activeTheme = availableThemes.find(t => t.id === themeSettings.activeThemeId);
+                // CORREÇÃO DO BUG: `activeTheme` pode ser `undefined` se o ID não for encontrado
+                if (!activeTheme) {
+                    console.error("Tema ativo não encontrado! Voltando para o tema padrão.");
+                    themeSettings.activeThemeId = 'simple'; // Volta para um tema seguro
+                    saveThemeSettings();
+                    renderThemeView(); // Tenta renderizar novamente
+                    return;
+                }
                 elements.currentThemeName.textContent = activeTheme.name;
-                elements.currentThemeThumbnail.innerHTML = `<img src="${activeTheme.thumbnail}" alt="${active.name}" class="w-full rounded-lg border">`;
+                // CORREÇÃO DO TYPO: era `active.name`, agora é `activeTheme.name`
+                elements.currentThemeThumbnail.innerHTML = `<img src="${activeTheme.thumbnail}" alt="${activeTheme.name}" class="w-full rounded-lg border">`;
+                
                 elements.themeGallery.innerHTML = '';
                 availableThemes.forEach(theme => {
                     if (theme.id === themeSettings.activeThemeId) return;
