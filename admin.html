@@ -21,95 +21,27 @@
 
 
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f1f3f4;
-        }
-        .sidebar-item.active {
-            background-color: #e8f0fe;
-            color: #1967d2;
-            font-weight: 700;
-        }
-        .sidebar-item.active i {
-            color: #1967d2;
-        }
+        body { font-family: 'Roboto', sans-serif; background-color: #f1f3f4; }
+        .sidebar-item.active { background-color: #e8f0fe; color: #1967d2; font-weight: 700; }
+        .sidebar-item.active i { color: #1967d2; }
         .admin-view { display: none; }
         .active-view { display: block !important; }
-        #post-editor-container, #page-editor-container {
-            height: 60vh;
-            background-color: white;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-        }
-        .ql-toolbar.ql-snow {
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            border-color: #d1d5db;
-        }
-        .ql-container.ql-snow {
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            border-color: #d1d5db;
-            border-top: 0px;
-        }
+        #post-editor-container, #page-editor-container { height: 60vh; background-color: white; border-radius: 8px; border: 1px solid #d1d5db; }
+        .ql-toolbar.ql-snow { border-top-left-radius: 8px; border-top-right-radius: 8px; border-color: #d1d5db; }
+        .ql-container.ql-snow { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-color: #d1d5db; border-top: 0px; }
         .ql-font-roboto { font-family: 'Roboto', sans-serif; }
         .ql-font-lato { font-family: 'Lato', sans-serif; }
         .ql-font-merriweather { font-family: 'Merriweather', serif; }
         .ql-font-arial { font-family: Arial, sans-serif; }
-        .list-item .item-actions, .gadget .gadget-actions {
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out;
-        }
+        .list-item .item-actions, .gadget .gadget-actions { opacity: 0; transition: opacity 0.2s ease-in-out; }
         .list-item:hover .item-actions, .gadget:hover .gadget-actions { opacity: 1; }
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 50;
-            right: 0;
-            border-radius: 8px;
-        }
-        .dropdown-content a:hover {background-color: #f1f1f1}
-        .dropdown:hover .dropdown-content { display: block; }
-        .comment-actions { opacity: 0; transition: opacity 0.2s ease-in-out; }
-        .comment-item:hover .comment-actions { opacity: 1; }
-        .comments-tab.active { border-color: #1967d2; color: #1967d2; }
-        .gadget-container {
-            border: 2px dashed #d1d5db;
-            padding: 1rem;
-            border-radius: 8px;
-            min-height: 100px;
-        }
-        .gadget { cursor: grab; user-select: none; }
-        .gadget.dragging { opacity: 0.5; background: #e8f0fe; }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .theme-card { border: 2px solid transparent; transition: border-color 0.2s ease-in-out; }
-        .theme-card.active { border-color: #1967d2; }
-        .theme-card .apply-button-container { display: none; }
-        .theme-card.active .apply-button-container { display: block; }
-        .setting-item { padding: 1rem 0; border-bottom: 1px solid #e5e7eb; }
-        .setting-item:last-child { border-bottom: none; }
-        .setting-item h4 { font-size: 1rem; font-weight: 500; color: #111827; }
-        .setting-item p { font-size: 0.875rem; color: #6b7280; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .spinner { border: 4px solid rgba(255, 255, 255, 0.3); width: 36px; height: 36px; border-radius: 50%; border-left-color: #ffffff; animation: spin 1s ease infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-gray-100">
 
-    <!-- Tela de Login -->
     <div id="login-screen" class="flex items-center justify-center h-screen">
         <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
             <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin iGaroto</h2>
@@ -123,304 +55,89 @@
                     <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
                 </div>
                 <div class="flex items-center justify-between">
-                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
-                        Entrar
-                    </button>
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Entrar</button>
                 </div>
                 <p id="login-error" class="text-red-500 text-xs italic mt-4 text-center"></p>
             </form>
         </div>
     </div>
 
-    <!-- Painel de Administração (inicialmente escondido) -->
     <div id="app-container" class="hidden h-screen bg-gray-100">
         <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
             <div class="px-6 py-4 border-b flex justify-between items-center">
                 <h1 class="text-2xl font-bold text-gray-700">iGAROTO</h1>
-                <button id="logout-btn" title="Sair" class="text-gray-500 hover:text-red-600">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                </button>
+                <button id="logout-btn" title="Sair" class="text-gray-500 hover:text-red-600"><i data-lucide="log-out" class="w-5 h-5"></i></button>
             </div>
             <div class="p-4">
                 <button id="new-post-btn" class="w-full bg-orange-500 text-white font-bold py-3 px-4 rounded-lg inline-flex items-center justify-center shadow hover:bg-orange-600 transition-colors">
-                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
-                    <span>NOVA POSTAGEM</span>
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i><span>NOVA POSTAGEM</span>
                 </button>
             </div>
             <nav id="sidebar-nav" class="flex-1 py-2 px-2 space-y-1">
-                <a href="#" id="posts-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200">
-                    <i data-lucide="layout-list" class="w-5 h-5 mr-3 text-gray-500"></i>Postagens
-                </a>
-                <a href="#" id="stats-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200">
-                    <i data-lucide="bar-chart-3" class="w-5 h-5 mr-3 text-gray-500"></i>Estatísticas
-                </a>
-                <a href="#" id="comments-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200">
-                    <i data-lucide="message-square" class="w-5 h-5 mr-3 text-gray-500"></i>Comentários
-                </a>
-                <a href="#" id="pages-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200">
-                    <i data-lucide="file-text" class="w-5 h-5 mr-3 text-gray-500"></i>Páginas
-                </a>
-                <a href="#" id="layout-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200">
-                    <i data-lucide="layout-template" class="w-5 h-5 mr-3 text-gray-500"></i>Layout
-                </a>
-                <a href="#" id="theme-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200">
-                    <i data-lucide="palette" class="w-5 h-5 mr-3 text-gray-500"></i>Tema
-                </a>
-                <a href="#" id="settings-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200">
-                    <i data-lucide="settings" class="w-5 h-5 mr-3 text-gray-500"></i>Configurações
-                </a>
+                <a href="#" id="posts-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200"><i data-lucide="layout-list" class="w-5 h-5 mr-3 text-gray-500"></i>Postagens</a>
+                <a href="#" id="stats-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200"><i data-lucide="bar-chart-3" class="w-5 h-5 mr-3 text-gray-500"></i>Estatísticas</a>
+                <a href="#" id="comments-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200"><i data-lucide="message-square" class="w-5 h-5 mr-3 text-gray-500"></i>Comentários</a>
+                <a href="#" id="pages-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200"><i data-lucide="file-text" class="w-5 h-5 mr-3 text-gray-500"></i>Páginas</a>
+                <a href="#" id="layout-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200"><i data-lucide="layout-template" class="w-5 h-5 mr-3 text-gray-500"></i>Layout</a>
+                <a href="#" id="theme-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200"><i data-lucide="palette" class="w-5 h-5 mr-3 text-gray-500"></i>Tema</a>
+                <a href="#" id="settings-link" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-r-full hover:bg-gray-200"><i data-lucide="settings" class="w-5 h-5 mr-3 text-gray-500"></i>Configurações</a>
             </nav>
             <div class="px-4 py-2 border-t">
-                <a href="index.html" target="_blank" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-200">
-                    <i data-lucide="eye" class="w-5 h-5 mr-3 text-gray-500"></i>Ver blog
-                </a>
+                <a href="index.html" target="_blank" class="sidebar-item flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-200"><i data-lucide="eye" class="w-5 h-5 mr-3 text-gray-500"></i>Ver blog</a>
             </div>
         </aside>
 
         <div class="flex-1 flex flex-col overflow-hidden">
-            <header id="main-header" class="bg-white border-b border-gray-200 p-2">
-                 <div class="flex items-center justify-between">
-                    <div class="relative w-full max-w-md">
-                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-                        <input type="text" placeholder="Pesquisar" class="w-full bg-gray-100 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <button class="text-gray-500 hover:text-gray-800"><i data-lucide="help-circle" class="w-6 h-6"></i></button>
-                        <img id="user-avatar" src="https://placehold.co/40x40/ff8a8a/ffffff?text=W" alt="User Avatar" class="w-8 h-8 rounded-full cursor-pointer">
-                    </div>
+            <header id="main-header" class="bg-white border-b border-gray-200 p-2 flex items-center justify-between">
+                 <div class="relative w-full max-w-md">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    <input type="text" placeholder="Pesquisar" class="w-full bg-gray-100 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="text-gray-500 hover:text-gray-800"><i data-lucide="help-circle" class="w-6 h-6"></i></button>
+                    <img id="user-avatar" src="https://placehold.co/40x40/ff8a8a/ffffff?text=W" alt="User Avatar" class="w-8 h-8 rounded-full cursor-pointer">
                 </div>
             </header>
             <header id="editor-header" class="hidden bg-white border-b border-gray-200 p-2 items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <button id="back-btn" class="text-gray-500 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100">
-                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
-                    </button>
-                    <input id="editor-title-input" type="text" placeholder="Título" class="text-2xl bg-transparent focus:outline-none w-full placeholder-gray-400 font-normal">
+                    <button id="back-btn" class="text-gray-500 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
+                    <input id="editor-title-input" type="text" placeholder="Título da postagem" class="text-2xl bg-transparent focus:outline-none w-full placeholder-gray-400 font-normal">
                 </div>
                 <div class="flex items-center gap-3 mr-4">
-                    <button class="text-sm text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-md border">Visualizar</button>
                     <button id="publish-btn" class="text-sm text-white bg-orange-500 hover:bg-orange-600 px-5 py-2 rounded-md font-bold">Publicar</button>
                 </div>
             </header>
 
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-f1f3f4 p-6">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
                 
-                <div id="posts-list-view" class="admin-view">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-normal text-gray-800">Postagens</h2>
-                    </div>
-                    <div id="posts-container" class="bg-white rounded-lg shadow-sm border border-gray-200"></div>
-                </div>
-
-                <div id="post-editor-view" class="admin-view">
-                     <div class="flex flex-col lg:flex-row gap-6">
-                         <div class="flex-1">
-                             <div id="post-editor-wrapper">
-                                 <div id="post-editor-container"></div>
-                             </div>
-                         </div>
-                         <aside class="w-full lg:w-80">
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 space-y-6">
-                                <div>
-                                    <h3 class="font-bold text-sm mb-3 border-b pb-2">Configurações da postagem</h3>
-                                    <label for="tags-input" class="block text-sm font-medium text-gray-700 mb-1">Marcadores</label>
-                                    <input type="text" id="tags-input" placeholder="Separe com vírgulas" class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-sm mb-2 border-b pb-2 pt-2">Opções</h3>
-                                    <label for="post-comments-select" class="block text-sm font-medium text-gray-700 mb-1">Comentários</label>
-                                    <select id="post-comments-select" class="w-full border border-gray-300 rounded-md p-2 text-sm">
-                                        <option value="allow">Permitir</option>
-                                        <option value="disallow">Não permitir</option>
-                                    </select>
-                                </div>
-                            </div>
-                         </aside>
-                     </div>
-                </div>
-                
-                <div id="pages-list-view" class="admin-view">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-normal text-gray-800">Páginas</h2>
-                        <button id="new-page-btn" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-md inline-flex items-center shadow hover:bg-orange-600 transition-colors">
-                            <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
-                            NOVA PÁGINA
-                        </button>
-                    </div>
-                    <div id="pages-container" class="bg-white rounded-lg shadow-sm border border-gray-200"></div>
-                </div>
-
-                <div id="page-editor-view" class="admin-view">
-                     <div class="flex flex-col lg:flex-row gap-6">
-                         <div class="flex-1">
-                             <div id="page-editor-wrapper">
-                                 <div id="page-editor-container"></div>
-                             </div>
-                         </div>
-                         <aside class="w-full lg:w-80">
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 space-y-6">
-                                <div>
-                                    <h3 class="font-bold text-sm mb-3 border-b pb-2">Opções</h3>
-                                    <label for="page-comments-select" class="block text-sm font-medium text-gray-700 mb-1">Comentários</label>
-                                    <select id="page-comments-select" class="w-full border border-gray-300 rounded-md p-2 text-sm">
-                                        <option value="allow">Permitir</option>
-                                        <option value="disallow" selected>Não permitir</option>
-                                    </select>
-                                </div>
-                            </div>
-                         </aside>
-                     </div>
-                </div>
-
-                <div id="settings-view" class="admin-view">
-                    <h2 class="text-2xl font-normal text-gray-800 mb-6">Configurações</h2>
-                    <div class="max-w-4xl mx-auto space-y-8">
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">Básico</h3>
-                            <div class="space-y-4">
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-title">Título</h4><p id="setting-title-value" class="text-gray-500">iGaroto</p></div>
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-description">Descrição</h4><p id="setting-description-value" class="text-gray-500">Adicionar descrição do blog</p></div>
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-language">Idioma do blog</h4><p id="setting-language-value" class="text-gray-500">Português (Brasil)</p></div>
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-favicon">Favicon</h4><p class="text-gray-500">Nenhum favicon selecionado</p></div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">Publicação</h3>
-                            <div class="space-y-4">
-                                <div class="setting-item"><h4>Endereço do blog</h4><p class="text-gray-500">igaroto.com</p></div>
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-custom-domain">Domínio personalizado</h4><p class="text-gray-500">Aponte um URL de seu domínio para o blog</p></div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                             <h3 class="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">HTTPS</h3>
-                             <div class="setting-item flex justify-between items-center">
-                                <div><h4>Redirecionamento para HTTPS</h4><p>Redirecionar visitantes de http:// para https://</p></div>
-                                <label class="flex items-center cursor-pointer"><div class="relative"><input type="checkbox" class="sr-only" checked><div class="block bg-blue-500 w-14 h-8 rounded-full"></div><div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform translate-x-full"></div></div></label>
-                             </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">Permissões</h3>
-                            <div class="space-y-4">
-                                <div class="setting-item"><h4>Administradores e autores do blog</h4><p class="text-gray-500">iGaroto (Admin)</p></div>
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-invite-authors">Convidar mais autores</h4></div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">Gerenciar blog</h3>
-                            <div class="space-y-4">
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-import">Importar conteúdo</h4><p>Importar postagens e comentários de um arquivo .xml</p></div>
-                                <div class="setting-item"><h4 class="cursor-pointer hover:text-blue-600" id="setting-backup">Fazer backup do conteúdo</h4><p>Fazer o download de postagens e comentários</p></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="stats-view" class="admin-view">
-                    <div class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                             <div class="bg-white p-4 rounded-lg shadow-sm border flex items-center justify-between">
-                                <span class="text-gray-600">Seguidores</span><span id="stats-followers-count" class="text-2xl font-bold">0</span>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm border flex items-center justify-between">
-                                <span class="text-gray-600">Postagens</span><span id="stats-posts-count" class="text-2xl font-bold">0</span>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm border flex items-center justify-between">
-                                <span class="text-gray-600">Comentários</span><span id="stats-comments-count" class="text-2xl font-bold">0</span>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-sm border">
-                            <div class="flex justify-between items-start mb-4">
-                                <h3 class="text-lg font-medium">Visualizações do iGaroto</h3>
-                                <div class="dropdown">
-                                    <button class="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900">
-                                        <span id="time-filter-label">Última semana</span>
-                                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                                    </button>
-                                    <div id="time-filter-options" class="dropdown-content">
-                                        <a href="#" data-period="week">Última semana</a>
-                                        <a href="#" data-period="month">Últimos 30 dias</a>
-                                        <a href="#" data-period="all">Todo o período</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="relative h-72"><canvas id="overallViewsChart"></canvas></div>
-                        </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                                <h3 class="text-lg font-medium mb-4">Locais principais</h3>
-                                <div class="relative h-96"><canvas id="countryMapChart"></canvas></div>
-                            </div>
-                            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                                <h3 class="text-lg font-medium mb-4">Público-alvo por país</h3>
-                                <div class="relative h-96"><canvas id="countryDonutChart"></canvas></div>
-                            </div>
-                        </div>
-                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                                <h3 class="text-lg font-medium mb-4">Navegadores</h3>
-                                <div class="relative h-72"><canvas id="browserDonutChart"></canvas></div>
-                            </div>
-                            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                                <h3 class="text-lg font-medium mb-4">Sistemas Operacionais</h3>
-                                <div class="relative h-72"><canvas id="osDonutChart"></canvas></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="comments-view" class="admin-view">
-                    <h2 class="text-2xl font-normal text-gray-800 mb-4">Comentários</h2>
-                    <div class="border-b border-gray-200">
-                        <nav id="comments-tabs" class="-mb-px flex space-x-8" aria-label="Tabs">
-                            <a href="#" data-tab="published" class="comments-tab border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Publicados</a>
-                            <a href="#" data-tab="spam" class="comments-tab border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Spam</a>
-                        </nav>
-                    </div>
-                    <div id="published-comments-list" class="mt-6"></div>
-                    <div id="spam-comments-list" class="hidden mt-6"></div>
-                </div>
-
-                <div id="layout-view" class="admin-view">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-normal text-gray-800">Layout</h2>
-                        <button id="save-layout-btn" class="bg-orange-500 text-white font-bold py-2 px-6 rounded-md shadow hover:bg-orange-600 transition-colors">Salvar</button>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 space-y-6">
-                             <div class="bg-white p-6 rounded-lg shadow-sm border">
-                                <h3 class="text-lg font-medium mb-4">Menu Principal</h3>
-                                <div id="main-menu-gadgets" class="gadget-container space-y-3"></div>
-                                <button data-section="main-menu" class="add-gadget-btn mt-4 text-sm text-blue-600 hover:text-blue-800">+ Adicionar um Gadget</button>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                                <h3 class="text-lg font-medium mb-4">Barra Lateral</h3>
-                                <div id="sidebar-gadgets" class="gadget-container space-y-3"></div>
-                                <button data-section="sidebar" class="add-gadget-btn mt-4 text-sm text-blue-600 hover:text-blue-800">+ Adicionar um Gadget</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div id="posts-list-view" class="admin-view"></div>
+                <div id="post-editor-view" class="admin-view"></div>
+                <div id="pages-list-view" class="admin-view"></div>
+                <div id="page-editor-view" class="admin-view"></div>
+                <div id="settings-view" class="admin-view"></div>
+                <div id="stats-view" class="admin-view"></div>
+                <div id="comments-view" class="admin-view"></div>
+                <div id="layout-view" class="admin-view"></div>
                 
                 <div id="theme-view" class="admin-view">
-                    <h2 class="text-2xl font-normal text-gray-800 mb-6">Tema</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-normal text-gray-800">Tema</h2>
+                    </div>
                     <div class="bg-white p-6 rounded-lg shadow-sm border">
                         <h3 class="text-lg font-medium mb-4">Meu tema</h3>
-                        <div class="flex gap-6">
-                            <div id="current-theme-thumbnail" class="w-1/3"></div>
+                        <div class="flex gap-6 items-center">
+                            <div id="current-theme-thumbnail" class="w-1/3">
+                                <img src="https://placehold.co/400x250/f1f3f4/333?text=Simples" alt="Tema Simples" class="w-full rounded-lg border">
+                            </div>
                             <div class="flex-1">
-                                <h4 id="current-theme-name" class="text-xl font-semibold"></h4>
+                                <h4 id="current-theme-name" class="text-xl font-semibold">Simples</h4>
                                 <p class="text-gray-600 mb-4">Este é o tema que está ativo no seu blog.</p>
                                 <div class="flex gap-4">
                                     <button id="customize-theme-btn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700">Personalizar</button>
-                                    <button id="edit-html-btn" class="border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-md hover:bg-gray-100">Editar HTML</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="theme-gallery" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        </div>
                 </div>
 
                 <div id="theme-customizer-view" class="admin-view">
@@ -428,6 +145,7 @@
                         <h2 class="text-2xl font-normal text-gray-800">Personalizar Tema</h2>
                         <div class="flex gap-4">
                             <button id="back-to-themes-btn" class="border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-md hover:bg-gray-100">Voltar</button>
+                            <button id="restore-theme-btn" class="border border-gray-300 text-red-600 font-semibold py-2 px-4 rounded-md hover:bg-gray-100">Restaurar Padrão</button>
                             <button id="save-customizations-btn" class="bg-orange-500 text-white font-bold py-2 px-6 rounded-md shadow hover:bg-orange-600">Salvar</button>
                         </div>
                     </div>
@@ -435,15 +153,15 @@
                         <div class="space-y-6">
                             <div>
                                 <label for="bg-color-picker" class="block text-sm font-medium text-gray-700">Cor de fundo principal</label>
-                                <input type="color" id="bg-color-picker" class="mt-1 w-full h-10 p-1 border border-gray-300 rounded-md">
+                                <input type="color" id="bg-color-picker" value="#f0f2f5" class="mt-1 w-full h-10 p-1 border border-gray-300 rounded-md">
                             </div>
                              <div>
                                 <label for="text-color-picker" class="block text-sm font-medium text-gray-700">Cor do texto principal</label>
-                                <input type="color" id="text-color-picker" class="mt-1 w-full h-10 p-1 border border-gray-300 rounded-md">
+                                <input type="color" id="text-color-picker" value="#374151" class="mt-1 w-full h-10 p-1 border border-gray-300 rounded-md">
                             </div>
                              <div>
-                                <label for="link-color-picker" class="block text-sm font-medium text-gray-700">Cor dos links</label>
-                                <input type="color" id="link-color-picker" class="mt-1 w-full h-10 p-1 border border-gray-300 rounded-md">
+                                <label for="link-color-picker" class="block text-sm font-medium text-gray-700">Cor dos links e detalhes</label>
+                                <input type="color" id="link-color-picker" value="#4f46e5" class="mt-1 w-full h-10 p-1 border border-gray-300 rounded-md">
                             </div>
                         </div>
                     </div>
@@ -452,109 +170,24 @@
             </main>
         </div>
     </div>
-
-    <div id="edit-html-modal" class="modal-overlay hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl h-5/6 flex flex-col">
-            <div class="p-4 border-b flex justify-between items-center">
-                <h3 class="text-xl font-medium">Editar HTML do Tema</h3>
-                <button id="close-html-modal-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
-            </div>
-            <div class="p-4 flex-1">
-                <textarea id="theme-html-editor" class="w-full h-full border border-gray-300 rounded-md font-mono text-sm p-2 resize-none"></textarea>
-            </div>
-             <div class="p-4 bg-gray-50 rounded-b-lg flex justify-end gap-4">
-                <button id="cancel-html-edit-btn" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md border">Cancelar</button>
-                <button id="save-html-edit-btn" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md">Salvar Tema</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="add-gadget-modal" class="modal-overlay hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg">
-            <div class="p-6 border-b flex justify-between items-center">
-                <h3 class="text-xl font-medium">Adicionar um Gadget</h3>
-                <button id="close-gadget-modal-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
-            </div>
-            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div data-type="pages" class="gadget-option p-4 border rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <h4 class="font-semibold">Páginas</h4>
-                    <p class="text-sm text-gray-500">Exibe uma lista de páginas.</p>
-                </div>
-                <div data-type="search" class="gadget-option p-4 border rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <h4 class="font-semibold">Pesquisa do blog</h4>
-                    <p class="text-sm text-gray-500">Adiciona uma caixa de pesquisa.</p>
-                </div>
-                <div data-type="html" class="gadget-option p-4 border rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <h4 class="font-semibold">HTML/JavaScript</h4>
-                    <p class="text-sm text-gray-500">Adiciona código de terceiros.</p>
-                </div>
-                <div data-type="links" class="gadget-option p-4 border rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <h4 class="font-semibold">Lista de links</h4>
-                    <p class="text-sm text-gray-500">Cria uma lista de links.</p>
-                </div>
-                 <div data-type="social" class="gadget-option p-4 border rounded-lg hover:bg-gray-100 cursor-pointer">
-                    <h4 class="font-semibold">Plugin Social</h4>
-                    <p class="text-sm text-gray-500">Exibe ícones de redes sociais.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="configure-gadget-modal" class="modal-overlay hidden">
-         <div class="bg-white rounded-lg shadow-xl w-full max-w-lg">
-            <div class="p-6 border-b flex justify-between items-center">
-                <h3 id="configure-modal-title" class="text-xl font-medium">Configurar Gadget</h3>
-                <button id="close-configure-modal-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
-            </div>
-            <div class="p-6 space-y-4">
-                <div>
-                    <label for="gadget-title-input" class="block text-sm font-medium text-gray-700">Título</label>
-                    <input type="text" id="gadget-title-input" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3">
-                </div>
-                <div id="gadget-specific-config" class="space-y-4"></div>
-            </div>
-            <div class="p-6 bg-gray-50 rounded-b-lg flex justify-end gap-4">
-                <button id="cancel-configure-btn" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md border">Cancelar</button>
-                <button id="save-configure-btn" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md">Salvar</button>
-            </div>
-        </div>
-    </div>
     
-    <div id="settings-modal" class="modal-overlay hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg">
-            <div class="p-6 border-b flex justify-between items-center">
-                <h3 id="settings-modal-title" class="text-xl font-medium"></h3>
-                <button id="close-settings-modal-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
-            </div>
-            <div id="settings-modal-content" class="p-6 space-y-4"></div>
-            <div class="p-4 bg-gray-50 rounded-b-lg flex justify-end gap-4">
-                <button id="cancel-settings-btn" class="text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md border">Cancelar</button>
-                <button id="save-settings-btn" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md">Salvar</button>
-            </div>
-        </div>
-    </div>
+    <div id="upload-modal" class="modal-overlay hidden"><div class="spinner"></div></div>
 
-
-    <!-- Scripts do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-    
         const firebaseConfig = {
           apiKey: "AIzaSyBYvn_AEoXo2ei2zRSg9EZhAeicF0QfY3s",
           authDomain: "igaroto-site-oficial.firebaseapp.com",
           projectId: "igaroto-site-oficial",
           storageBucket: "igaroto-site-oficial.firebasestorage.app",
           messagingSenderId: "217633468562",
-          appId: "1:217633468562:web:236b1b72034a5a675cb64b",
-          measurementId: "G-B9NBBEZTSW"
+          appId: "1:217633468562:web:236b1b72034a5a675cb64b"
         };
-        
         firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
         
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -563,24 +196,15 @@
         const appContainer = document.getElementById('app-container');
         const loginForm = document.getElementById('login-form');
         const logoutBtn = document.getElementById('logout-btn');
-        const loginError = document.getElementById('login-error');
-
-        function showApp() {
-            loginScreen.style.display = 'none';
-            appContainer.style.display = 'flex';
-            runApp();
-        }
-
-        function showLogin() {
-            loginScreen.style.display = 'flex';
-            appContainer.style.display = 'none';
-        }
 
         auth.onAuthStateChanged(user => {
             if (user && !user.isAnonymous) {
-                showApp();
+                loginScreen.style.display = 'none';
+                appContainer.style.display = 'flex';
+                runApp();
             } else {
-                showLogin();
+                loginScreen.style.display = 'flex';
+                appContainer.style.display = 'none';
             }
         });
 
@@ -588,791 +212,211 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            loginError.textContent = '';
-
-            auth.signInWithEmailAndPassword(email, password)
-                .catch(error => {
-                    console.error('Erro de login:', error);
-                    loginError.textContent = 'E-mail ou senha inválidos.';
-                });
+            auth.signInWithEmailAndPassword(email, password).catch(error => {
+                document.getElementById('login-error').textContent = 'E-mail ou senha inválidos.';
+            });
         });
 
-        logoutBtn.addEventListener('click', () => {
-            auth.signOut();
-        });
+        logoutBtn.addEventListener('click', () => auth.signOut());
 
         function runApp() {
             const elements = {
-                mainHeader: document.getElementById('main-header'),
-                editorHeader: document.getElementById('editor-header'),
-                backBtn: document.getElementById('back-btn'),
-                publishBtn: document.getElementById('publish-btn'),
-                editorTitleInput: document.getElementById('editor-title-input'),
-                
-                newPostBtn: document.getElementById('new-post-btn'),
-                postsContainer: document.getElementById('posts-container'),
-                tagsInput: document.getElementById('tags-input'),
-                
-                newPageBtn: document.getElementById('new-page-btn'),
-                pagesContainer: document.getElementById('pages-container'),
-
-                commentsTabs: document.getElementById('comments-tabs'),
-                publishedCommentsList: document.getElementById('published-comments-list'),
-                spamCommentsList: document.getElementById('spam-comments-list'),
-
-                timeFilterOptions: document.getElementById('time-filter-options'),
-                timeFilterLabel: document.getElementById('time-filter-label'),
-
-                saveLayoutBtn: document.getElementById('save-layout-btn'),
-                addGadgetBtns: document.querySelectorAll('.add-gadget-btn'),
-                addGadgetModal: document.getElementById('add-gadget-modal'),
-                closeGadgetModalBtn: document.getElementById('close-gadget-modal-btn'),
-                gadgetOptions: document.querySelectorAll('.gadget-option'),
-                configureGadgetModal: document.getElementById('configure-gadget-modal'),
-                closeConfigureModalBtn: document.getElementById('close-configure-modal-btn'),
-                configureModalTitle: document.getElementById('configure-modal-title'),
-                gadgetTitleInput: document.getElementById('gadget-title-input'),
-                gadgetSpecificConfig: document.getElementById('gadget-specific-config'),
-                saveConfigureBtn: document.getElementById('save-configure-btn'),
-                cancelConfigureBtn: document.getElementById('cancel-configure-btn'),
-
-                themeGallery: document.getElementById('theme-gallery'),
-                currentThemeThumbnail: document.getElementById('current-theme-thumbnail'),
-                currentThemeName: document.getElementById('current-theme-name'),
-                customizeThemeBtn: document.getElementById('customize-theme-btn'),
-                editHtmlBtn: document.getElementById('edit-html-btn'),
-                backToThemesBtn: document.getElementById('back-to-themes-btn'),
-                saveCustomizationsBtn: document.getElementById('save-customizations-btn'),
-                bgColorPicker: document.getElementById('bg-color-picker'),
-                textColorPicker: document.getElementById('text-color-picker'),
-                linkColorPicker: document.getElementById('link-color-picker'),
-                editHtmlModal: document.getElementById('edit-html-modal'),
-                closeHtmlModalBtn: document.getElementById('close-html-modal-btn'),
-                cancelHtmlEditBtn: document.getElementById('cancel-html-edit-btn'),
-                saveHtmlEditBtn: document.getElementById('save-html-edit-btn'),
-                themeHtmlEditor: document.getElementById('theme-html-editor'),
-
-                settingsModal: document.getElementById('settings-modal'),
-                closeSettingsModalBtn: document.getElementById('close-settings-modal-btn'),
-                settingsModalTitle: document.getElementById('settings-modal-title'),
-                settingsModalContent: document.getElementById('settings-modal-content'),
-                saveSettingsBtn: document.getElementById('save-settings-btn'),
-                cancelSettingsBtn: document.getElementById('cancel-settings-btn'),
+                publishBtn: document.getElementById('publish-btn'), editorTitleInput: document.getElementById('editor-title-input'), tagsInput: document.getElementById('tags-input'), postsContainer: document.getElementById('posts-container'), newPostBtn: document.getElementById('new-post-btn'), backBtn: document.getElementById('back-btn'), 
+                mainHeader: document.getElementById('main-header'), editorHeader: document.getElementById('editor-header'),
+                pagesLink: document.getElementById('pages-link'), newPageBtn: document.getElementById('new-page-btn'), pagesContainer: document.getElementById('pages-container'),
+                themeLink: document.getElementById('theme-link'), customizeThemeBtn: document.getElementById('customize-theme-btn'), backToThemesBtn: document.getElementById('back-to-themes-btn'),
+                saveCustomizationsBtn: document.getElementById('save-customizations-btn'), restoreThemeBtn: document.getElementById('restore-theme-btn'), bgColorPicker: document.getElementById('bg-color-picker'), textColorPicker: document.getElementById('text-color-picker'), linkColorPicker: document.getElementById('link-color-picker'),
             };
 
             const views = {
-                posts: document.getElementById('posts-list-view'),
-                postEditor: document.getElementById('post-editor-view'),
-                pages: document.getElementById('pages-list-view'),
-                pageEditor: document.getElementById('page-editor-view'),
-                stats: document.getElementById('stats-view'),
-                comments: document.getElementById('comments-view'),
-                layout: document.getElementById('layout-view'),
-                theme: document.getElementById('theme-view'),
-                themeCustomizer: document.getElementById('theme-customizer-view'),
-                settings: document.getElementById('settings-view'),
+                posts: document.getElementById('posts-list-view'), postEditor: document.getElementById('post-editor-view'), pages: document.getElementById('pages-list-view'), pageEditor: document.getElementById('page-editor-view'), stats: document.getElementById('stats-view'), comments: document.getElementById('comments-view'), layout: document.getElementById('layout-view'), theme: document.getElementById('theme-view'), settings: document.getElementById('settings-view'), themeCustomizer: document.getElementById('theme-customizer-view')
             };
 
             const navLinks = {
-                posts: document.getElementById('posts-link'),
-                stats: document.getElementById('stats-link'),
-                comments: document.getElementById('comments-link'),
-                pages: document.getElementById('pages-link'),
-                layout: document.getElementById('layout-link'),
-                theme: document.getElementById('theme-link'),
-                settings: document.getElementById('settings-link'),
+                posts: document.getElementById('posts-link'), stats: document.getElementById('stats-link'), comments: document.getElementById('comments-link'), pages: document.getElementById('pages-link'), layout: document.getElementById('layout-link'), theme: document.getElementById('theme-link'), settings: document.getElementById('settings-link'),
             };
 
             let lastListView = 'posts';
             let currentEditor = null;
-            let comments = JSON.parse(localStorage.getItem('adminComments')) || [];
-            let layout = { sidebar: [], 'main-menu': [] };
-            let blogSettings = JSON.parse(localStorage.getItem('adminBlogSettings')) || {
-                title: 'iGaroto',
-                description: 'Adicionar descrição do blog',
-                language: 'pt-br',
-            };
-            const availableThemes = [
-                { id: 'simple', name: 'Simples', thumbnail: 'https://placehold.co/400x250/f1f3f4/333?text=Simples' },
-                { id: 'dark', name: 'Escuro', thumbnail: 'https://placehold.co/400x250/333/f1f3f4?text=Escuro' },
-                { id: 'vibrant', name: 'Vibrante', thumbnail: 'https://placehold.co/400x250/db2777/fff?text=Vibrante' },
-            ];
-            let themeSettings = JSON.parse(localStorage.getItem('adminThemeSettings')) || {
-                activeThemeId: 'simple',
-                customizations: {
-                    simple: { bg: '#ffffff', text: '#333333', link: '#0000ff' },
-                    dark: { bg: '#333333', text: '#ffffff', link: '#60a5fa' },
-                    vibrant: { bg: '#ffffff', text: '#1f2937', link: '#db2777' },
-                }
-            };
-            let charts = {};
+            const uploadModal = document.getElementById('upload-modal');
             
-            let currentGadgetSection = null;
-            let editingGadgetId = null;
+            async function vercelBlobUpload(file) {
+                uploadModal.classList.remove('hidden');
+                const response = await fetch(`/api/upload-image?filename=${file.name}`, { method: 'POST', body: file });
+                if (!response.ok) { throw new Error('A resposta da rede para o upload não foi ok.'); }
+                const newBlob = await response.json();
+                uploadModal.classList.add('hidden');
+                return newBlob.url;
+            }
+            
+            function imageHandler() {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'file'); input.setAttribute('accept', 'image/*');
+                input.click();
+                input.onchange = async () => {
+                    const file = input.files[0]; if (!file) return;
+                    if (/^image\//.test(file.type)) {
+                        try {
+                            const url = await vercelBlobUpload(file);
+                            const range = this.quill.getSelection(true);
+                            this.quill.insertEmbed(range.index, 'image', url);
+                        } catch (error) { console.error('Falha no upload da imagem:', error); alert('Falha no upload da imagem.'); uploadModal.classList.add('hidden');}
+                    } else { alert('Por favor, selecione um arquivo de imagem válido.'); }
+                };
+            }
 
-            const quillOptions = {
-                modules: { toolbar: [
-                    [{ 'font': ['roboto', 'lato', 'merriweather', 'arial'] }], [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'indent': '-1'}, { 'indent': '+1' }],
-                    [{ 'align': [] }], ['link', 'image'], ['clean']
-                ]},
-                theme: 'snow',
-                placeholder: 'Comece a escrever...'
-            };
+            const quillOptions = { modules: { toolbar: { container: [
+                [{ 'font': [] }, { 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'align': [] }], ['link', 'image'], ['clean']
+            ], handlers: { 'image': imageHandler }}}, theme: 'snow', placeholder: 'Comece a escrever...'};
             const postQuill = new Quill('#post-editor-container', quillOptions);
-            const pageQuill = new Quill('#page-editor-container', quillOptions);
-
-            const saveLayout = async (showAlert = true) => {
-                try {
-                    await db.collection('settings').doc('layout').set(layout);
-                    if (showAlert) {
-                        alert('Layout salvo!');
-                    }
-                } catch (error) {
-                    console.error("Erro ao salvar o layout:", error);
-                    alert("Ocorreu um erro ao salvar o layout.");
-                }
-            };
-
-            const loadLayout = async () => {
-                try {
-                    const doc = await db.collection('settings').doc('layout').get();
-                    if (doc.exists) {
-                        layout = doc.data();
-                    } else {
-                        layout = { 
-                            sidebar: [{id: `gadget_${Date.now()}`, type: 'social', title: 'Plugin Social'}], 
-                            'main-menu': [] 
-                        };
-                        await saveLayout(false);
-                    }
-                    renderLayout();
-                } catch (error) {
-                    console.error("Erro ao carregar o layout:", error);
-                }
-            }
-
-            const renderLayout = () => {
-                Object.keys(layout).forEach(sectionKey => {
-                    const container = document.getElementById(`${sectionKey}-gadgets`);
-                    if (!container) return;
-                    container.innerHTML = '';
-                    if (layout[sectionKey]) {
-                        layout[sectionKey].forEach(gadget => {
-                            const el = createGadgetElement(gadget);
-                            container.appendChild(el);
-                        });
-                    }
-                });
-                lucide.createIcons();
-            };
-            const createGadgetElement = (gadget) => {
-                const el = document.createElement('div');
-                el.className = 'gadget bg-gray-100 p-3 rounded-md border flex justify-between items-center';
-                el.setAttribute('draggable', true);
-                el.dataset.id = gadget.id;
-                el.innerHTML = `
-                    <span class="font-medium">${gadget.title}</span>
-                    <div class="gadget-actions flex items-center gap-2 text-gray-500">
-                        <button onclick="editGadget('${gadget.id}')" title="Editar" class="hover:text-blue-600"><i data-lucide="pencil" class="w-4 h-4"></i></button>
-                        <button onclick="deleteGadget('${gadget.id}')" title="Remover" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    </div>
-                `;
-                return el;
-            };
-            window.editGadget = (gadgetId) => {
-                editingGadgetId = gadgetId;
-                let gadget;
-                for (const section in layout) {
-                    const found = layout[section].find(g => g.id === gadgetId);
-                    if (found) { gadget = found; break; }
-                }
-                if (!gadget) return;
-                elements.configureModalTitle.textContent = `Configurar ${gadget.type}`;
-                elements.gadgetTitleInput.value = gadget.title;
-                elements.gadgetSpecificConfig.innerHTML = '';
-                if (gadget.type === 'links') {
-                    let linksHtml = '<div id="links-container" class="space-y-2">';
-                    if(gadget.links) {
-                        gadget.links.forEach((link) => {
-                            linksHtml += `<div class="flex items-center gap-2"><input type="text" value="${link.name}" placeholder="Nome do site" class="link-name-input w-1/2 border-gray-300 rounded-md"><input type="url" value="${link.url}" placeholder="URL do site" class="link-url-input w-1/2 border-gray-300 rounded-md"><button onclick="this.parentElement.remove()" class="text-red-500">&times;</button></div>`;
-                        });
-                    }
-                    linksHtml += '</div><button id="add-link-btn" type="button" class="mt-2 text-sm text-blue-600">+ Adicionar novo link</button>';
-                    elements.gadgetSpecificConfig.innerHTML = linksHtml;
-                    document.getElementById('add-link-btn').onclick = () => {
-                        const div = document.createElement('div');
-                        div.className = 'flex items-center gap-2';
-                        div.innerHTML = `<input type="text" placeholder="Nome do site" class="link-name-input w-1/2 border-gray-300 rounded-md"><input type="url" placeholder="URL do site" class="link-url-input w-1/2 border-gray-300 rounded-md"><button onclick="this.parentElement.remove()" class="text-red-500">&times;</button>`;
-                        document.getElementById('links-container').appendChild(div);
-                    };
-                } else if (gadget.type === 'html') {
-                     elements.gadgetSpecificConfig.innerHTML = `<textarea id="html-content-input" class="w-full h-32 border-gray-300 rounded-md">${gadget.content || ''}</textarea>`;
-                }
-                elements.configureGadgetModal.classList.remove('hidden');
-            };
-            window.deleteGadget = (gadgetId) => {
-                for (const section in layout) {
-                    layout[section] = layout[section].filter(g => g.id !== gadgetId);
-                }
-                saveLayout(false); 
-                renderLayout();
-            };
-
-            const openGadgetModal = (section) => {
-                currentGadgetSection = section;
-                elements.addGadgetModal.classList.remove('hidden');
-            };
-            const closeGadgetModal = () => elements.addGadgetModal.classList.add('hidden');
-            const closeConfigureModal = () => {
-                 elements.configureGadgetModal.classList.add('hidden');
-                 editingGadgetId = null;
-            }
+            const pageQuill = new Quill('#page-editor-container', {theme: 'snow', placeholder: 'Conteúdo da página...'});
 
             const renderPosts = async () => {
-                if (!elements.postsContainer) return;
-                elements.postsContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando postagens...</p>';
                 try {
+                    views.posts.innerHTML = `<div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-normal text-gray-800">Postagens</h2></div><div id="posts-container" class="bg-white rounded-lg shadow-sm border border-gray-200"><p class="p-4 text-center">Carregando...</p></div>`;
+                    const container = document.getElementById('posts-container');
                     const snapshot = await db.collection('posts').orderBy('createdAt', 'desc').get();
-                    if (snapshot.empty) {
-                        elements.postsContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma postagem encontrada.</p>`;
-                        return;
-                    }
-                    elements.postsContainer.innerHTML = '';
+                    container.innerHTML = '';
+                    if (snapshot.empty) { container.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma postagem encontrada.</p>`; return; }
                     snapshot.forEach(doc => {
                         const post = { id: doc.id, ...doc.data() };
-                        elements.postsContainer.appendChild(createPostElement(post));
+                        const el = document.createElement('div');
+                        el.className = 'list-item flex items-center p-4 border-b last:border-b-0';
+                        const postDate = post.createdAt?.toDate().toLocaleDateString('pt-BR', {day:'numeric', month:'short'}) || '';
+                        el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="window.editPost('${post.id}')"><p class="font-medium text-gray-800 hover:underline">${post.title||'(Sem Título)'}</p><div class="text-sm text-gray-500 mt-1"><span>Publicada</span> &middot; <span>${postDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="window.deletePost('${post.id}')" title="Excluir" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+                        container.appendChild(el);
                     });
                     lucide.createIcons();
-                } catch (error) {
-                    console.error("Erro ao carregar as postagens: ", error);
-                    elements.postsContainer.innerHTML = `<p class="p-4 text-center text-red-500">Ocorreu um erro ao carregar as postagens. Verifique o console (F12).</p>`;
-                }
-            };
-            
-            const createPostElement = (post) => {
-                const el = document.createElement('div');
-                el.className = 'list-item flex items-center p-4 border-b last:border-b-0';
-                const postDate = post.createdAt && post.createdAt.toDate ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }) : 'Data indisponível';
-                el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="editPost('${post.id}')"><p class="font-medium text-gray-800 hover:underline">${post.title || '(Sem título)'}</p><div class="text-sm text-gray-500 mt-1"><span>${post.status}</span> &middot; <span>${postDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="deletePost('${post.id}')" title="Excluir" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
-                return el;
+                } catch (e) { console.error("Erro ao carregar posts:", e); }
             };
 
             window.editPost = async (id) => {
-                try {
-                    const docRef = db.collection('posts').doc(id);
-                    const docSnap = await docRef.get();
-                    if (docSnap.exists) {
-                        const post = docSnap.data();
-                        currentEditor = 'post';
-                        elements.editorTitleInput.value = post.title;
-                        elements.tagsInput.value = post.tags ? post.tags.join(', ') : '';
-                        postQuill.root.innerHTML = post.content;
-                        elements.publishBtn.dataset.id = id;
-                        switchView('postEditor');
-                    } else {
-                        console.log("Nenhum documento encontrado com esse ID!");
-                        alert("Postagem não encontrada!");
-                    }
-                } catch (error) {
-                    console.error("Erro ao buscar postagem para edição: ", error);
-                    alert("Erro ao carregar postagem.");
+                const docSnap = await db.collection('posts').doc(id).get();
+                if (docSnap.exists) {
+                    const post = docSnap.data();
+                    currentEditor = 'post';
+                    elements.editorTitleInput.value = post.title;
+                    elements.tagsInput.value = post.tags?.join(', ') || '';
+                    postQuill.root.innerHTML = post.content;
+                    elements.publishBtn.dataset.id = id;
+                    switchView('postEditor');
                 }
             };
-
             window.deletePost = async (id) => {
-                if (confirm('Tem certeza que deseja excluir esta postagem permanentemente? Esta ação não pode ser desfeita.')) {
-                    try {
-                        await db.collection('posts').doc(id).delete();
-                        console.log("Postagem deletada com sucesso!");
-                        renderPosts();
-                    } catch (error) {
-                        console.error("Erro ao deletar postagem: ", error);
-                        alert("Ocorreu um erro ao deletar a postagem.");
-                    }
-                }
-            };
-            
-            const renderPages = async () => {
-                if (!elements.pagesContainer) return;
-                elements.pagesContainer.innerHTML = '<p class="p-4 text-center text-gray-500">Carregando páginas...</p>';
-                try {
-                    const snapshot = await db.collection('pages').orderBy('createdAt', 'desc').get();
-                    if (snapshot.empty) {
-                        elements.pagesContainer.innerHTML = `<p class="p-4 text-center text-gray-500">Nenhuma página encontrada.</p>`;
-                        return;
-                    }
-                    elements.pagesContainer.innerHTML = '';
-                    snapshot.forEach(doc => {
-                        const page = { id: doc.id, ...doc.data() };
-                        elements.pagesContainer.appendChild(createPageElement(page));
-                    });
-                    lucide.createIcons();
-                } catch (error) {
-                    console.error("Erro ao carregar as páginas: ", error);
-                    elements.pagesContainer.innerHTML = `<p class="p-4 text-center text-red-500">Ocorreu um erro ao carregar as páginas.</p>`;
-                }
-            };
-            const createPageElement = (page) => {
-                const el = document.createElement('div');
-                el.className = 'list-item flex items-center p-4 border-b last:border-b-0';
-                const pageDate = page.createdAt && page.createdAt.toDate ? new Date(page.createdAt.toDate()).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }) : 'Data indisponível';
-                el.innerHTML = `<div class="flex-1 cursor-pointer" onclick="editPage('${page.id}')"><p class="font-medium text-gray-800 hover:underline">${page.title || '(Sem título)'}</p><div class="text-sm text-gray-500 mt-1"><span>${page.status}</span> &middot; <span>${pageDate}</span></div></div><div class="item-actions flex items-center gap-3 text-gray-500"><button onclick="deletePage('${page.id}')" title="Excluir" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
-                return el;
-            };
-            window.editPage = async (id) => {
-                try {
-                    const docRef = db.collection('pages').doc(id);
-                    const docSnap = await docRef.get();
-                    if (docSnap.exists) {
-                        const page = docSnap.data();
-                        currentEditor = 'page';
-                        elements.editorTitleInput.value = page.title;
-                        pageQuill.root.innerHTML = page.content;
-                        elements.publishBtn.dataset.id = id;
-                        switchView('pageEditor');
-                    }
-                } catch (error) {
-                    console.error("Erro ao buscar página para edição: ", error);
-                    alert("Erro ao carregar página.");
-                }
-            };
-            window.deletePage = async (id) => {
-                if (confirm('Tem certeza que deseja excluir esta página?')) {
-                    try {
-                        await db.collection('pages').doc(id).delete();
-                        renderPages();
-                    } catch (error) {
-                        console.error("Erro ao deletar página: ", error);
-                        alert("Ocorreu um erro ao deletar a página.");
-                    }
-                }
-            };
-            
-            const saveComments = () => localStorage.setItem('adminComments', JSON.stringify(comments));
-            const renderComments = () => {
-                if (!elements.publishedCommentsList) return;
-                elements.publishedCommentsList.innerHTML = '';
-                elements.spamCommentsList.innerHTML = '';
-                const published = comments.filter(c => c.status === 'published');
-                const spam = comments.filter(c => c.status === 'spam');
-                elements.publishedCommentsList.innerHTML = published.length === 0 ? `<div class="text-center py-12 bg-white rounded-lg border"><p class="text-gray-500">Nenhum comentário publicado.</p></div>` : '';
-                published.forEach(c => elements.publishedCommentsList.appendChild(createCommentElement(c)));
-                elements.spamCommentsList.innerHTML = spam.length === 0 ? `<div class="text-center py-12 bg-white rounded-lg border"><p class="text-gray-500">Nenhum comentário marcado como spam.</p></div>` : '';
-                spam.forEach(c => elements.spamCommentsList.appendChild(createCommentElement(c)));
-                lucide.createIcons();
-            };
-            const createCommentElement = (comment) => {
-                const el = document.createElement('div');
-                el.className = 'comment-item bg-white p-4 border rounded-lg mb-4 group';
-                const commentDate = new Date(comment.date).toLocaleDateString('pt-BR', {day: 'numeric', month: 'long', year: 'numeric'});
-                const isSpam = comment.status === 'spam';
-                const moveIcon = isSpam ? 'shield-check' : 'shield-alert';
-                const moveText = isSpam ? 'Não é spam' : 'Spam';
-                const moveTarget = isSpam ? 'published' : 'spam';
-                el.innerHTML = `<div class="flex items-start space-x-4"><img src="${comment.avatar}" alt="Avatar" class="w-10 h-10 rounded-full"><div class="flex-1"><div class="flex items-center justify-between"><div><span class="font-semibold">${comment.author}</span><span class="text-sm text-gray-500 ml-2">${commentDate}</span></div><div class="comment-actions flex items-center space-x-3 text-gray-500"><button onclick="replyToComment('${comment.id}')" title="Responder" class="hover:text-blue-600"><i data-lucide="corner-up-left" class="w-4 h-4"></i></button><button onclick="editComment('${comment.id}')" title="Editar" class="hover:text-green-600"><i data-lucide="pencil" class="w-4 h-4"></i></button><button onclick="moveComment('${comment.id}', '${moveTarget}')" title="${moveText}" class="hover:text-orange-600"><i data-lucide="${moveIcon}" class="w-4 h-4"></i></button><button onclick="deleteComment('${comment.id}')" title="Excluir" class="hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div><p class="text-gray-600 mt-2">${comment.content}</p><p class="text-sm text-gray-400 mt-2">em: <a href="#" class="hover:underline">${comment.postTitle}</a></p></div></div>`;
-                return el;
-            };
-            window.replyToComment = (id) => alert(`Responder ao comentário ${id}`);
-            window.editComment = (id) => {
-                const c = comments.find(c => c.id === id);
-                const newContent = prompt('Editar comentário:', c.content);
-                if (newContent) { c.content = newContent; saveComments(); renderComments(); }
-            };
-            window.moveComment = (id, status) => {
-                const c = comments.find(c => c.id === id);
-                c.status = status; saveComments(); renderComments();
-            };
-            window.deleteComment = (id) => {
-                if (confirm('Excluir este comentário permanentemente?')) {
-                    comments = comments.filter(c => c.id !== id); saveComments(); renderComments();
+                if (confirm('Tem certeza que deseja excluir este post?')) {
+                    await db.collection('posts').doc(id).delete();
+                    renderPosts();
                 }
             };
 
-            const createChart = (id, config) => {
-                 if (charts[id]) charts[id].destroy();
-                 const ctx = document.getElementById(id);
-                 if (ctx) charts[id] = new Chart(ctx, config);
-            };
-            const createLineChart = (id, labels, data, label) => createChart(id, { type: 'line', data: { labels, datasets: [{ label, data, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } } });
-            const createDonutChart = (id, labels, data, colors) => createChart(id, { type: 'doughnut', data: { labels, datasets: [{ data, backgroundColor: colors }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } } });
-            const createMapChart = (id, features, data) => createChart(id, { type: 'choropleth', data: { labels: features.map(f => f.properties.name), datasets: [{ label: 'Países', outline: features, data: data.map(d => ({ feature: d.feature, value: d.value })) }] }, options: { showOutline: true, showGraticule: false, plugins: { legend: { display: false } }, scales: { xy: { projection: 'equalEarth' }, color: { axis: 'x', interpolate: (v) => v < 0.5 ? '#ccebc5' : '#7bccc4' } } } });
-            const updateDashboard = (period = 'week') => {
-                document.getElementById('stats-followers-count').textContent = '0';
-                db.collection('posts').get().then(snap => {
-                    document.getElementById('stats-posts-count').textContent = snap.size;
-                });
-                document.getElementById('stats-comments-count').textContent = comments.filter(c => c.status === 'published').length;
-                const sample = {
-                    week: { labels: ['21 jun', '22 jun', '23 jun', '24 jun', '25 jun', '26 jun', '27 jun'], views: [3, 2, 2, 2, 6, 3, 6] },
-                    month: { labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'], views: [15, 22, 18, 37] },
-                    all: { labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'], views: [120, 150, 200, 180, 250, 310] }
-                };
-                createLineChart('overallViewsChart', sample[period].labels, sample[period].views, 'Visualizações');
-                createDonutChart('countryDonutChart', ['Brasil', 'EUA', 'Austrália'], [62, 14, 6], ['#ef4444', '#f97316', '#22c55e']);
-                createDonutChart('browserDonutChart', ['Chrome', 'Firefox', 'Safari'], [70, 20, 10], ['#ef4444', '#f97316', '#22c55e']);
-                createDonutChart('osDonutChart', ['Windows', 'Macintosh', 'Linux'], [65, 25, 10], ['#ef4444', '#f97316', '#22c55e']);
-                fetch('https://unpkg.com/world-atlas/countries-110m.json').then(r => r.json()).then(mapData => {
-                     const countries = ChartGeo.topojson.feature(mapData, mapData.objects.countries).features;
-                     createMapChart('countryMapChart', countries, [
-                        { feature: countries.find(c => c.properties.name === 'Brazil'), value: 62 },
-                        { feature: countries.find(c => c.properties.name === 'United States of America'), value: 14 },
-                        { feature: countries.find(c => c.properties.name === 'Australia'), value: 6 },
-                     ]);
-                });
-            };
-
+            elements.publishBtn.addEventListener('click', async () => {
+                const id = elements.publishBtn.dataset.id;
+                const title = elements.editorTitleInput.value.trim();
+                if (!title) return alert('Adicione um título.');
+                let content = (currentEditor === 'post') ? postQuill.root.innerHTML : pageQuill.root.innerHTML;
+                const dataToSave = { title, content, updatedAt: new Date() };
+                if (currentEditor === 'post') dataToSave.tags = elements.tagsInput.value.split(',').map(t => t.trim()).filter(Boolean);
+                try {
+                    const collectionName = currentEditor + 's';
+                    if (id) { await db.collection(collectionName).doc(id).update(dataToSave); }
+                    else { dataToSave.createdAt = new Date(); await db.collection(collectionName).add(dataToSave); }
+                    switchView(collectionName);
+                } catch (error) { console.error("Erro ao salvar:", error); alert("Erro ao salvar."); }
+            });
+            
             const switchView = (viewKey) => {
-                Object.values(views).forEach(v => v.classList.remove('active-view'));
-                Object.values(navLinks).forEach(l => l && l.classList.remove('active'));
+                Object.values(views).forEach(v => { if(v) v.classList.remove('active-view'); });
                 if(views[viewKey]) views[viewKey].classList.add('active-view');
                 const isEditor = viewKey === 'postEditor' || viewKey === 'pageEditor' || viewKey === 'themeCustomizer';
                 elements.mainHeader.style.display = isEditor ? 'none' : 'flex';
                 elements.editorHeader.style.display = (viewKey === 'postEditor' || viewKey === 'pageEditor') ? 'flex' : 'none';
-                if (navLinks[viewKey]) {
-                    navLinks[viewKey].classList.add('active');
-                    if (!isEditor) lastListView = viewKey;
-                }
-                if (viewKey === 'posts') renderPosts();
-                if (viewKey === 'stats') updateDashboard('week');
-                if (viewKey === 'comments') renderComments();
-                if (viewKey === 'pages') renderPages();
-                if (viewKey === 'layout') loadLayout();
-                if(viewKey === 'theme') renderThemeView();
-                if (viewKey === 'settings') renderSettings();
+                if(viewKey === 'themeCustomizer') elements.editorHeader.style.display = 'none'; // Esconde header principal no customizer
+                
+                Object.values(navLinks).forEach(l => l && l.classList.remove('active'));
+                if(navLinks[viewKey]) { navLinks[viewKey].classList.add('active'); if(!isEditor) lastListView = viewKey; }
             };
-            const switchCommentTab = (tabName) => {
-                if (!elements.commentsTabs) return;
-                elements.commentsTabs.querySelectorAll('a').forEach(tab => {
-                    tab.classList.remove('active');
-                    if (tab.dataset.tab === tabName) tab.classList.add('active');
-                });
-                elements.publishedCommentsList.style.display = tabName === 'published' ? 'block' : 'none';
-                elements.spamCommentsList.style.display = tabName === 'spam' ? 'block' : 'none';
-            };
-
-            const saveThemeSettings = () => {
-                localStorage.setItem('adminThemeSettings', JSON.stringify(themeSettings));
-            };
-            const renderThemeView = () => {
-                const activeTheme = availableThemes.find(t => t.id === themeSettings.activeThemeId);
-                elements.currentThemeName.textContent = activeTheme.name;
-                elements.currentThemeThumbnail.innerHTML = `<img src="${activeTheme.thumbnail}" alt="${activeTheme.name}" class="w-full rounded-lg border">`;
-                elements.themeGallery.innerHTML = '';
-                availableThemes.forEach(theme => {
-                    if (theme.id === themeSettings.activeThemeId) return;
-                    const card = document.createElement('div');
-                    card.className = 'theme-card bg-white p-4 rounded-lg shadow-sm border cursor-pointer';
-                    card.dataset.themeId = theme.id;
-                    card.innerHTML = `<img src="${theme.thumbnail}" alt="${theme.name}" class="w-full rounded-md border mb-3"><h4 class="font-semibold text-center">${theme.name}</h4><div class="mt-2 text-center apply-button-container"><button class="apply-theme-btn bg-green-500 text-white text-sm font-semibold py-1 px-3 rounded-md">Aplicar</button></div>`;
-                    elements.themeGallery.appendChild(card);
-                });
-            };
-            const applyTheme = (themeId) => {
-                themeSettings.activeThemeId = themeId;
-                saveThemeSettings();
-                renderThemeView();
-            };
-            const openThemeCustomizer = () => {
-                const customizations = themeSettings.customizations[themeSettings.activeThemeId];
-                elements.bgColorPicker.value = customizations.bg;
-                elements.textColorPicker.value = customizations.text;
-                elements.linkColorPicker.value = customizations.link;
-                switchView('themeCustomizer');
-            };
-            const openHtmlEditor = () => {
-                elements.themeHtmlEditor.value = `\n<p>Exemplo de código.</p>`;
-                elements.editHtmlModal.classList.remove('hidden');
-            };
-
-            const saveBlogSettings = () => {
-                localStorage.setItem('adminBlogSettings', JSON.stringify(blogSettings));
-                renderSettings();
-            };
-            const renderSettings = () => {
-                document.getElementById('setting-title-value').textContent = blogSettings.title;
-                document.getElementById('setting-description-value').textContent = blogSettings.description;
-                document.getElementById('setting-language-value').textContent = blogSettings.language === 'pt-br' ? 'Português (Brasil)' : blogSettings.language;
-            };
-            const openSettingsModal = (setting) => {
-                elements.settingsModal.classList.remove('hidden');
-                let content = '';
-                let title = '';
-                switch(setting) {
-                    case 'title':
-                        title = 'Título do blog';
-                        content = `<input type="text" id="modal-input" class="w-full border-gray-300 rounded-md" value="${blogSettings.title}">`;
-                        break;
-                    case 'description':
-                        title = 'Descrição';
-                        content = `<textarea id="modal-input" class="w-full h-24 border-gray-300 rounded-md">${blogSettings.description}</textarea>`;
-                        break;
-                    case 'language':
-                        title = 'Idioma do blog';
-                        content = `<select id="modal-input" class="w-full border-gray-300 rounded-md"><option value="pt-br" ${blogSettings.language === 'pt-br' ? 'selected' : ''}>Português (Brasil)</option><option value="en" ${blogSettings.language === 'en' ? 'selected' : ''}>English</option></select>`;
-                        break;
-                    case 'favicon':
-                        title = 'Favicon';
-                        content = `<p class="text-sm mb-2">Faça upload de um ícone quadrado.</p><input type="file" id="modal-input" class="w-full">`;
-                        break;
-                    case 'custom-domain':
-                        title = 'Domínio personalizado';
-                        content = `<p class="text-sm mb-2">Insira o domínio que você comprou.</p><input type="text" id="modal-input" class="w-full border-gray-300 rounded-md" placeholder="exemplo.com">`;
-                        break;
-                    case 'invite-authors':
-                        title = 'Convidar mais autores';
-                        content = `<p class="text-sm mb-2">Insira o e-mail do autor a ser convidado.</p><input type="email" id="modal-input" class="w-full border-gray-300 rounded-md" placeholder="email@exemplo.com">`;
-                        break;
-                    case 'import':
-                        title = 'Importar conteúdo';
-                        content = `<p class="text-sm mb-2">Selecione um arquivo .xml do seu computador.</p><input type="file" id="modal-input" accept=".xml" class="w-full">`;
-                        break;
-                }
-                elements.settingsModalTitle.textContent = title;
-                elements.settingsModalContent.innerHTML = content;
-                elements.saveSettingsBtn.dataset.setting = setting;
-            };
-
-            Object.keys(navLinks).forEach(key => navLinks[key].addEventListener('click', (e) => { e.preventDefault(); switchView(key); }));
             
-            elements.newPostBtn.addEventListener('click', () => {
-                currentEditor = 'post';
-                elements.editorTitleInput.value = '';
-                elements.tagsInput.value = '';
-                postQuill.root.innerHTML = '';
-                elements.publishBtn.dataset.id = '';
-                switchView('postEditor');
-            });
-
-            elements.newPageBtn.addEventListener('click', () => {
-                currentEditor = 'page';
-                elements.editorTitleInput.value = '';
-                pageQuill.root.innerHTML = '';
-                elements.publishBtn.dataset.id = '';
-                switchView('pageEditor');
-            });
-
-            elements.backBtn.addEventListener('click', () => switchView(lastListView));
+            // Funções para renderizar as outras seções
+            const renderPages = () => { views.pages.innerHTML = `<div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-normal text-gray-800">Páginas</h2><button id="new-page-btn-inner" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-md">NOVA PÁGINA</button></div><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de páginas em breve.</p>`; };
+            const updateDashboard = () => { views.stats.innerHTML = `<h2 class="text-2xl font-normal text-gray-800 mb-6">Estatísticas</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de estatísticas em breve.</p>`; };
+            const renderComments = () => { views.comments.innerHTML = `<h2 class="text-2xl font-normal text-gray-800 mb-6">Comentários</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de comentários em breve.</p>`; };
+            const loadLayout = () => { views.layout.innerHTML = `<h2 class="text-2xl font-normal text-gray-800 mb-6">Layout</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de layout em breve.</p>`; };
+            const renderSettings = () => { views.settings.innerHTML = `<h2 class="text-2xl font-normal text-gray-800 mb-6">Configurações</h2><p class="mt-4 p-4 bg-white rounded-lg">Funcionalidade de configurações em breve.</p>`; };
             
-            elements.publishBtn.addEventListener('click', async () => {
-                const id = elements.publishBtn.dataset.id;
-                const title = elements.editorTitleInput.value.trim();
-                if (!title) return alert('Por favor, adicione um título.');
-
-                if (currentEditor === 'post') {
-                    const postData = {
-                        title: title,
-                        content: postQuill.root.innerHTML,
-                        tags: elements.tagsInput.value.split(',').map(t => t.trim()).filter(t => t),
-                        status: 'Publicada',
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    try {
-                        if (id) {
-                            await db.collection('posts').doc(id).update(postData);
-                        } else {
-                            postData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                            await db.collection('posts').add(postData);
-                        }
-                        switchView('posts');
-                    } catch (error) {
-                        console.error("Erro ao salvar postagem: ", error);
-                        alert("Ocorreu um erro ao salvar a postagem. Verifique o console.");
-                    }
-                } else if (currentEditor === 'page') {
-                    const pageData = {
-                        title: title,
-                        content: pageQuill.root.innerHTML,
-                        status: 'Publicada',
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    try {
-                        if (id) {
-                            await db.collection('pages').doc(id).update(pageData);
-                        } else {
-                            pageData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                            await db.collection('pages').add(pageData);
-                        }
-                        switchView('pages');
-                    } catch (error) {
-                        console.error("Erro ao salvar página: ", error);
-                        alert("Ocorreu um erro ao salvar a página.");
-                    }
-                }
-            });
-
-            if (elements.commentsTabs) {
-                elements.commentsTabs.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const target = e.target.closest('a');
-                    if (target) switchCommentTab(target.dataset.tab);
-                });
-            }
-
-            if (elements.timeFilterOptions) {
-                elements.timeFilterOptions.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const target = e.target;
-                    if (target.tagName === 'A') {
-                        elements.timeFilterLabel.textContent = target.textContent;
-                        updateDashboard(target.dataset.period);
-                    }
-                });
-            }
-
-            elements.saveLayoutBtn.addEventListener('click', () => saveLayout());
-            elements.addGadgetBtns.forEach(btn => btn.addEventListener('click', () => openGadgetModal(btn.dataset.section)));
-            elements.closeGadgetModalBtn.addEventListener('click', closeGadgetModal);
-            elements.closeConfigureModalBtn.addEventListener('click', closeConfigureModal);
-            elements.cancelConfigureBtn.addEventListener('click', closeConfigureModal);
-            elements.gadgetOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    const type = option.dataset.type;
-                    const newGadget = { id: `gadget_${Date.now()}`, type: type, title: type.charAt(0).toUpperCase() + type.slice(1) };
-                    if (type === 'links') newGadget.links = [];
-                    if (type === 'html') newGadget.content = '';
-                    if (!layout[currentGadgetSection]) {
-                        layout[currentGadgetSection] = [];
-                    }
-                    layout[currentGadgetSection].push(newGadget);
-                    renderLayout();
-                    closeGadgetModal();
-                    editGadget(newGadget.id);
-                });
-            });
-            elements.saveConfigureBtn.addEventListener('click', () => {
-                if (!editingGadgetId) return;
-                let gadget;
-                for (const section in layout) {
-                    const found = layout[section].find(g => g.id === editingGadgetId);
-                    if (found) { gadget = found; break; }
-                }
-                if (!gadget) return;
-                gadget.title = elements.gadgetTitleInput.value;
-                if (gadget.type === 'links') {
-                    gadget.links = [];
-                    document.querySelectorAll('#links-container .flex').forEach(row => {
-                        const name = row.querySelector('.link-name-input').value;
-                        const url = row.querySelector('.link-url-input').value;
-                        if (name && url) { gadget.links.push({ name, url }); }
-                    });
-                } else if (gadget.type === 'html') {
-                    gadget.content = document.getElementById('html-content-input').value;
-                }
-                renderLayout();
-                closeConfigureModal();
-            });
-            
-            elements.customizeThemeBtn.addEventListener('click', openThemeCustomizer);
-            elements.backToThemesBtn.addEventListener('click', () => switchView('theme'));
-            elements.saveCustomizationsBtn.addEventListener('click', () => {
-                const customizations = themeSettings.customizations[themeSettings.activeThemeId];
-                customizations.bg = elements.bgColorPicker.value;
-                customizations.text = elements.textColorPicker.value;
-                customizations.link = elements.linkColorPicker.value;
-                saveThemeSettings();
-                alert('Personalizações salvas!');
+            const renderThemeView = async () => {
                 switchView('theme');
-            });
-
-            elements.editHtmlBtn.addEventListener('click', openHtmlEditor);
-            elements.closeHtmlModalBtn.addEventListener('click', () => elements.editHtmlModal.classList.add('hidden'));
-            elements.cancelHtmlEditBtn.addEventListener('click', () => elements.editHtmlModal.classList.add('hidden'));
-            elements.saveHtmlEditBtn.addEventListener('click', () => {
-                alert('HTML salvo! (funcionalidade de simulação)');
-                elements.editHtmlModal.classList.add('hidden');
-            });
-
-            elements.themeGallery.addEventListener('click', (e) => {
-                const card = e.target.closest('.theme-card');
-                if (!card) return;
-                document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                const applyBtn = card.querySelector('.apply-theme-btn');
-                if(applyBtn) {
-                    applyBtn.onclick = (event) => {
-                        event.stopPropagation();
-                        applyTheme(card.dataset.themeId);
-                    };
-                }
-            });
-
-            let draggedItem = null;
-            document.querySelectorAll('.gadget-container').forEach(container => {
-                container.addEventListener('dragstart', e => {
-                    draggedItem = e.target;
-                    setTimeout(() => e.target.classList.add('dragging'), 0);
-                });
-                container.addEventListener('dragend', e => {
-                    draggedItem.classList.remove('dragging');
-                    draggedItem = null;
-                    saveLayout(false); // Salva o layout após soltar
-                });
-                container.addEventListener('dragover', e => {
-                    e.preventDefault();
-                    const afterElement = getDragAfterElement(container, e.clientY);
-                    if (afterElement == null) { container.appendChild(draggedItem); }
-                    else { container.insertBefore(draggedItem, afterElement); }
-                });
-                container.addEventListener('drop', e => {
-                    e.preventDefault();
-                    const sectionKey = container.id.replace('-gadgets', '');
-                    const newOrder = Array.from(container.querySelectorAll('.gadget')).map(g => g.dataset.id);
-                    const allGadgets = Object.values(layout).flat();
-                    layout[sectionKey] = newOrder.map(id => allGadgets.find(gadget => gadget.id === id)).filter(Boolean);
-                });
-            });
-            function getDragAfterElement(container, y) {
-                const draggableElements = [...container.querySelectorAll('.gadget:not(.dragging)')];
-                return draggableElements.reduce((closest, child) => {
-                    const box = child.getBoundingClientRect();
-                    const offset = y - box.top - box.height / 2;
-                    if (offset < 0 && offset > closest.offset) {
-                        return { offset: offset, element: child };
-                    } else { return closest; }
-                }, { offset: Number.NEGATIVE_INFINITY }).element;
-            }
-
-            document.getElementById('setting-title').addEventListener('click', () => openSettingsModal('title'));
-            document.getElementById('setting-description').addEventListener('click', () => openSettingsModal('description'));
-            document.getElementById('setting-language').addEventListener('click', () => openSettingsModal('language'));
-            document.getElementById('setting-favicon').addEventListener('click', () => openSettingsModal('favicon'));
-            document.getElementById('setting-custom-domain').addEventListener('click', () => openSettingsModal('custom-domain'));
-            document.getElementById('setting-invite-authors').addEventListener('click', () => openSettingsModal('invite-authors'));
-            document.getElementById('setting-import').addEventListener('click', () => openSettingsModal('import'));
-            document.getElementById('setting-backup').addEventListener('click', () => alert('Iniciando download do backup... (simulação)'));
+                try {
+                    const doc = await db.collection('settings').doc('theme').get();
+                    if (doc.exists) {
+                        const themeData = doc.data();
+                        elements.bgColorPicker.value = themeData.colors.background;
+                        elements.textColorPicker.value = themeData.colors.text;
+                        elements.linkColorPicker.value = themeData.colors.link;
+                    }
+                } catch (e) { console.error("Erro ao carregar configurações do tema:", e); }
+            };
             
-            elements.closeSettingsModalBtn.addEventListener('click', () => elements.settingsModal.classList.add('hidden'));
-            elements.cancelSettingsBtn.addEventListener('click', () => elements.settingsModal.classList.add('hidden'));
+            elements.customizeThemeBtn.addEventListener('click', () => switchView('themeCustomizer'));
+            elements.backToThemesBtn.addEventListener('click', () => switchView('theme'));
 
-            elements.saveSettingsBtn.addEventListener('click', (e) => {
-                const setting = e.target.dataset.setting;
-                const input = document.getElementById('modal-input');
-
-                switch(setting) {
-                    case 'title':
-                        blogSettings.title = input.value;
-                        break;
-                    case 'description':
-                        blogSettings.description = input.value;
-                        break;
-                    case 'language':
-                        blogSettings.language = input.value;
-                        break;
-                    case 'favicon':
-                    case 'custom-domain':
-                    case 'invite-authors':
-                    case 'import':
-                        alert('Configuração salva! (simulação)');
-                        break;
+            elements.saveCustomizationsBtn.addEventListener('click', async () => {
+                const colors = {
+                    background: elements.bgColorPicker.value,
+                    text: elements.textColorPicker.value,
+                    link: elements.linkColorPicker.value,
+                };
+                try {
+                    await db.collection('settings').doc('theme').set({ colors });
+                    alert('Tema salvo com sucesso!');
+                    switchView('theme');
+                } catch (e) {
+                    console.error("Erro ao salvar tema:", e);
+                    alert('Ocorreu um erro ao salvar o tema.');
                 }
-                saveBlogSettings();
-                elements.settingsModal.classList.add('hidden');
             });
+
+            elements.restoreThemeBtn.addEventListener('click', async () => {
+                if (confirm('Tem certeza que deseja restaurar as cores padrão do tema?')) {
+                    try {
+                        await db.collection('settings').doc('theme').delete();
+                        // Resetar os inputs de cor para os valores padrão
+                        elements.bgColorPicker.value = '#f0f2f5';
+                        elements.textColorPicker.value = '#374151';
+                        elements.linkColorPicker.value = '#4f46e5';
+                        alert('Tema restaurado para o padrão!');
+                    } catch(e) {
+                        console.error("Erro ao restaurar tema:", e);
+                        alert('Ocorreu um erro ao restaurar o tema.');
+                    }
+                }
+            });
+
+            Object.keys(navLinks).forEach(key => {
+                if(navLinks[key]) {
+                    navLinks[key].addEventListener('click', (e) => {
+                        e.preventDefault();
+                        switchView(key);
+                        if(key === 'posts') renderPosts();
+                        if(key === 'pages') renderPages();
+                        if(key === 'stats') updateDashboard();
+                        if(key === 'comments') renderComments();
+                        if(key === 'layout') loadLayout();
+                        if(key === 'theme') renderThemeView();
+                        if(key === 'settings') renderSettings();
+                    });
+                }
+            });
+
+            elements.newPostBtn.addEventListener('click', () => { currentEditor = 'post'; elements.editorTitleInput.value = ''; elements.tagsInput.value = ''; postQuill.root.innerHTML = ''; elements.publishBtn.dataset.id = ''; switchView('postEditor'); });
+            elements.newPageBtn?.addEventListener('click', () => { currentEditor = 'page'; elements.editorTitleInput.value = ''; pageQuill.root.innerHTML = ''; elements.publishBtn.dataset.id = ''; switchView('pageEditor'); });
+            elements.backBtn.addEventListener('click', () => { switchView(lastListView); });
 
             lucide.createIcons();
             switchView('posts');
+            renderPosts();
         }
     });
     </script>
