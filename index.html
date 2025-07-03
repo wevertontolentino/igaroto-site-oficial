@@ -37,7 +37,8 @@
         
         .animated-gradient-text {
             font-weight: 900;
-            background: linear-gradient(90deg, #ff8a8a, #ffc3c3, #ff8a8a);
+            /* COR AJUSTADA PARA UM TOM MAIS FORTE */
+            background: linear-gradient(90deg, #ff6b6b, #ffc3c3, #ff6b6b);
             background-size: 200% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -397,22 +398,17 @@
                 slidesHtml += '</div></div>';
                 sliderContainer.innerHTML = slidesHtml;
                 
-                // Lógica de Autoplay Inteligente
-                const maxSlidesPerView = 6;
+                // Lógica SIMPLIFICADA: Autoplay e Loop sempre ativos.
                 const swiperOptions = {
                     slidesPerView: 3,
                     spaceBetween: 10,
-                    breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: maxSlidesPerView } },
-                };
-
-                // CORREÇÃO: A condição agora é MAIOR OU IGUAL (>=)
-                if (uniqueTags.length >= maxSlidesPerView) {
-                    swiperOptions.loop = true;
-                    swiperOptions.autoplay = {
+                    loop: true, // Sempre ativo
+                    autoplay: { // Sempre ativo
                         delay: 3000,
                         disableOnInteraction: false,
-                    };
-                }
+                    },
+                    breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: 6 } },
+                };
 
                 new Swiper('.story-slider .swiper-container', swiperOptions);
             }
