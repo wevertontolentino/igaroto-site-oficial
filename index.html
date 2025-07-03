@@ -11,105 +11,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f0f2f5;
-            position: relative;
-        }
-        .main-container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .post-card {
-            background-color: #ffffff;
-            border: 1px solid #e5e7eb;
-        }
-        .sidebar-widget {
-            background-color: #ffffff;
-            border: 1px solid #e5e7eb;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .animated-gradient-text {
-            font-weight: 900;
-            background: linear-gradient(90deg, #ff6b6b, #ffc3c3, #ff6b6b);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 4s linear infinite;
-        }
-
-        @keyframes shine {
-            to {
-                background-position: -200% center;
-            }
-        }
-
-        .story-slider .swiper-slide {
-            text-align: center;
-            font-size: 14px;
-        }
-        .story-slider .story-image-wrapper {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            padding: 3px;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
-            margin: 0 auto 8px;
-        }
-        .story-slider img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid #fff;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #ffffff;
-            min-width: 120px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 50;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #ddd;
-        }
-        .dropdown-content a {
-            color: black;
-            padding: 10px 14px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            font-size: 0.9rem;
-        }
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .language-btn {
-            border: 1px solid #ddd;
-            padding: 6px 12px;
-            border-radius: 20px;
-            transition: all 0.2s ease-in-out;
-        }
-        .language-btn:hover {
-            border-color: #c7c7c7;
-            background-color: #f8f8f8;
-        }
+        html, body { overflow-x: hidden; width: 100%; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f0f2f5; position: relative; }
+        .main-container { max-width: 1100px; margin: 0 auto; }
+        .post-card { background-color: #ffffff; border: 1px solid #e5e7eb; }
+        .sidebar-widget { background-color: #ffffff; border: 1px solid #e5e7eb; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .animated-gradient-text { font-weight: 900; background: linear-gradient(90deg, #ff6b6b, #ffc3c3, #ff6b6b); background-size: 200% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 4s linear infinite; }
+        @keyframes shine { to { background-position: -200% center; } }
+        .story-slider .swiper-slide { text-align: center; font-size: 14px; }
+        .story-slider .story-image-wrapper { width: 90px; height: 90px; border-radius: 50%; padding: 3px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); margin: 0 auto 8px; }
+        .story-slider img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #fff; }
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; right: 0; background-color: #ffffff; min-width: 120px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 50; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+        .dropdown-content a { color: black; padding: 10px 14px; text-decoration: none; display: block; text-align: left; font-size: 0.9rem; }
+        .dropdown-content a:hover { background-color: #f1f1f1; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .language-btn { border: 1px solid #ddd; padding: 6px 12px; border-radius: 20px; transition: all 0.2s ease-in-out; }
+        .language-btn:hover { border-color: #c7c7c7; background-color: #f8f8f8; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -197,8 +115,7 @@
         </div>
         
         <div id="main-content-area" class="main-container px-4 mt-8">
-            <!-- O CONTEÚDO SERÁ INJETADO AQUI PELO JAVASCRIPT -->
-        </div>
+            </div>
 
         <footer class="bg-gray-800 text-white mt-12">
             <div class="main-container px-4 py-8 text-center">
@@ -271,6 +188,7 @@
             async function translatePageContent() {
                 const lang = currentLanguage;
                 
+                // Traduz o conteúdo estático (com chaves)
                 document.querySelectorAll('[data-translate-key]').forEach(element => {
                     const key = element.getAttribute('data-translate-key');
                     if (staticTranslations[key] && staticTranslations[key][lang]) {
@@ -278,6 +196,7 @@
                     }
                 });
 
+                // Se o idioma for português, reverte o conteúdo dinâmico para o original
                 if (lang === 'pt') {
                     document.querySelectorAll('[data-original-text]').forEach(el => {
                         if(el.dataset.originalText) el.innerText = el.dataset.originalText;
@@ -288,6 +207,7 @@
                     return;
                 }
 
+                // Se for outro idioma, traduz o conteúdo dinâmico
                 const elementsToTranslate = document.querySelectorAll('[data-original-text], [data-original-text-html]');
                 for (const el of elementsToTranslate) {
                     let originalText, isHtml = false;
@@ -401,7 +321,7 @@
                                 <aside id="sidebar-container" class="lg:col-span-1"></aside>
                             </div>
                         `;
-                        // AQUI TAMBÉM CHAMAMOS A TRADUÇÃO APÓS RENDERIZAR
+                        // CORREÇÃO DEFINITIVA: Chama a tradução após renderizar o conteúdo do post único
                         await translatePageContent();
                     } else {
                         mainContentArea.innerHTML = '<p class="text-center text-red-500">Postagem não encontrada.</p>';
@@ -468,11 +388,13 @@
                         }
                         renderTagSlider(allPosts);
                         renderPosts(postsToRender);
+                        
+                        // CORREÇÃO DEFINITIVA: Chama a tradução após renderizar a página principal
+                        await translatePageContent();
                     }
                     
                     lucide.createIcons();
                     
-                    // Lógica de menus e pesquisa
                     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                     const mobileMenu = document.getElementById('mobile-menu');
                     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
@@ -489,14 +411,6 @@
                         searchIconBtn.addEventListener('click', (e) => { e.stopPropagation(); searchBar.classList.toggle('hidden'); if (!searchBar.classList.contains('hidden')) { searchBar.querySelector('input').focus(); } });
                         document.addEventListener('click', (e) => { if (!searchBar.contains(e.target) && !searchIconBtn.contains(e.target)) { searchBar.classList.add('hidden'); } });
                     }
-
-                    // APLICA A TRADUÇÃO INICIAL ESTATICA
-                     document.querySelectorAll('[data-translate-key]').forEach(element => {
-                        const key = element.getAttribute('data-translate-key');
-                        if (staticTranslations[key] && staticTranslations[key][currentLanguage]) {
-                            element.innerHTML = staticTranslations[key][currentLanguage];
-                        }
-                    });
 
                 } catch (error) {
                     console.error("Erro fatal ao inicializar o site:", error);
