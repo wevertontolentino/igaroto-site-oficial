@@ -405,8 +405,8 @@
                     breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: maxSlidesPerView } },
                 };
 
-                // Ativa o loop e autoplay apenas se houver mais slides do que o visível na maior tela
-                if (uniqueTags.length > maxSlidesPerView) {
+                // CORREÇÃO: A condição agora é MAIOR OU IGUAL (>=)
+                if (uniqueTags.length >= maxSlidesPerView) {
                     swiperOptions.loop = true;
                     swiperOptions.autoplay = {
                         delay: 3000,
