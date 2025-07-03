@@ -11,23 +11,106 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        html, body { overflow-x: hidden; width: 100%; }
-        body { font-family: 'Poppins', sans-serif; background-color: #f0f2f5; position: relative; }
-        .main-container { max-width: 1100px; margin: 0 auto; }
-        .post-card { background-color: #ffffff; border: 1px solid #e5e7eb; }
-        .sidebar-widget { background-color: #ffffff; border: 1px solid #e5e7eb; padding: 1.5rem; margin-bottom: 1.5rem; }
-        .animated-gradient-text { font-weight: 900; background: linear-gradient(90deg, #ff6b6b, #ffc3c3, #ff6b6b); background-size: 200% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 4s linear infinite; }
-        @keyframes shine { to { background-position: -200% center; } }
-        .story-slider .swiper-slide { text-align: center; font-size: 14px; }
-        .story-slider .story-image-wrapper { width: 90px; height: 90px; border-radius: 50%; padding: 3px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); margin: 0 auto 8px; }
-        .story-slider img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid #fff; }
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content { display: none; position: absolute; right: 0; background-color: #ffffff; min-width: 120px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 50; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
-        .dropdown-content a { color: black; padding: 10px 14px; text-decoration: none; display: block; text-align: left; font-size: 0.9rem; }
-        .dropdown-content a:hover { background-color: #f1f1f1; }
-        .dropdown:hover .dropdown-content { display: block; }
-        .language-btn { border: 1px solid #ddd; padding: 6px 12px; border-radius: 20px; transition: all 0.2s ease-in-out; }
-        .language-btn:hover { border-color: #c7c7c7; background-color: #f8f8f8; }
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            position: relative;
+        }
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .post-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        .sidebar-widget {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .animated-gradient-text {
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff6b6b, #ffc3c3, #ff6b6b);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: -200% center;
+            }
+        }
+
+        .story-slider .swiper-slide {
+            text-align: center;
+            font-size: 14px;
+        }
+        .story-slider .story-image-wrapper {
+            /* TAMANHO AJUSTADO PARA 90PX */
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+            margin: 0 auto 8px;
+        }
+        .story-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #ffffff;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 50;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 10px 14px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .language-btn {
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.2s ease-in-out;
+        }
+        .language-btn:hover {
+            border-color: #c7c7c7;
+            background-color: #f8f8f8;
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -135,6 +218,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const staticTranslations = {
+                top_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
+                top_contact: { pt: 'Contato', en: 'Contact', es: 'Contacto' },
                 top_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
                 nav_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
                 nav_boys: { pt: 'Boys', en: 'Boys', es: 'Chicos' },
@@ -142,6 +227,13 @@
                 nav_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
                 recent_posts: { pt: 'POSTAGENS RECENTES', en: 'RECENT POSTS', es: 'PUBLICACIONES RECIENTES' },
                 read_more: { pt: 'LEIA MAIS &raquo;', en: 'READ MORE &raquo;', es: 'LEER MÁS &raquo;' },
+                social_plugin: { pt: 'SOCIAL PLUGIN', en: 'SOCIAL PLUGIN', es: 'PLUGIN SOCIAL' },
+                advertise_here: { pt: 'ANUNCIE AQUI', en: 'ADVERTISE HERE', es: 'ANUNCIE AQUÍ' },
+                most_popular: { pt: 'MAIS POPULARES', en: 'MOST POPULAR', es: 'MÁS POPULARES' },
+                popular1_title: { pt: 'Dicas de estilo para o verão 2024', en: 'Style tips for summer 2024', es: 'Consejos de estilo para el verano de 2024' },
+                popular1_date: { pt: 'Janeiro 15, 2024', en: 'January 15, 2024', es: '15 de Enero, 2024' },
+                popular2_title: { pt: 'Os melhores perfumes masculinos', en: 'The best male perfumes', es: 'Los mejores perfumes masculinos' },
+                popular2_date: { pt: 'Fevereiro 02, 2024', en: 'February 02, 2024', es: '02 de Febrero, 2024' },
                 footer_rights: { pt: '&copy; 2024 iGaroto. Todos os direitos reservados.', en: '&copy; 2024 iGaroto. All rights reserved.', es: '&copy; 2024 iGaroto. Todos los derechos reservados.' },
                 footer_dev: { pt: 'Desenvolvido com &hearts; para a comunidade.', en: 'Developed with &hearts; for the community.', es: 'Desarrollado com &hearts; para la comunidad.' },
                 admin_login: { pt: 'Admin Login', en: 'Admin Login', es: 'Acceso Admin' }
@@ -157,7 +249,10 @@
               measurementId: "G-B9NBBEZTSW"
             };
             
-            try { firebase.initializeApp(firebaseConfig); } catch(e) { console.error("Firebase Init Error:", e); }
+            try {
+                firebase.initializeApp(firebaseConfig);
+                firebase.analytics();
+            } catch(e) { console.error("Erro ao inicializar o Firebase", e); }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
@@ -165,30 +260,23 @@
             const translationCache = {};
             let currentLanguage = 'pt';
             const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
-            const supportedLangs = ['pt', 'en', 'es'];
             let allPosts = [];
             let swiperInstance = null;
 
             async function callGemini(prompt) {
-                try {
-                    const response = await fetch('/api/translate', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(prompt)
-                    });
-                    if (!response.ok) throw new Error(`API call failed: ${response.statusText}`);
-                    const result = await response.json();
-                    return result.translatedText;
-                } catch (error) {
-                    console.error("Translate API call error:", error);
-                    throw error;
-                }
+                const response = await fetch('/api/translate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(prompt)
+                });
+                if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
+                const result = await response.json();
+                return result.translatedText;
             }
-            
-            async function translatePageContent() {
+
+            async function applyTranslation() {
                 const lang = currentLanguage;
                 
-                // Traduz o conteúdo estático (com chaves)
                 document.querySelectorAll('[data-translate-key]').forEach(element => {
                     const key = element.getAttribute('data-translate-key');
                     if (staticTranslations[key] && staticTranslations[key][lang]) {
@@ -196,102 +284,159 @@
                     }
                 });
 
-                // Se o idioma for português, reverte o conteúdo dinâmico para o original
                 if (lang === 'pt') {
                     document.querySelectorAll('[data-original-text]').forEach(el => {
-                        if(el.dataset.originalText) el.innerText = el.dataset.originalText;
+                        el.innerText = el.dataset.originalText;
                     });
                     document.querySelectorAll('[data-original-text-html]').forEach(el => {
-                        if(el.dataset.originalTextHtml) el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
+                        el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
                     });
                     return;
                 }
 
-                // Se for outro idioma, traduz o conteúdo dinâmico
                 const elementsToTranslate = document.querySelectorAll('[data-original-text], [data-original-text-html]');
                 for (const el of elementsToTranslate) {
-                    let originalText, isHtml = false;
-                    if (el.hasAttribute('data-original-text-html')) {
-                        originalText = decodeURIComponent(el.dataset.originalTextHtml);
-                        isHtml = true;
-                    } else {
-                        originalText = el.dataset.originalText;
-                    }
-
-                    if (!originalText) continue;
-
+                    const isHtml = el.hasAttribute('data-original-text-html');
+                    const originalText = isHtml ? decodeURIComponent(el.dataset.originalTextHtml) : el.dataset.originalText;
                     const cacheKey = `${lang}:${originalText}`;
+
                     if (translationCache[cacheKey]) {
                         el.innerHTML = translationCache[cacheKey];
                         continue;
                     }
-
+                    
+                    const originalContent = el.innerHTML;
+                    el.innerHTML = 'Traduzindo...';
+                    
                     try {
                         const translatedText = await callGemini({ textToTranslate: originalText, targetLang: lang, isHtml: isHtml });
                         translationCache[cacheKey] = translatedText;
                         el.innerHTML = translatedText;
                     } catch (error) {
-                        console.warn(`Could not translate item: ${originalText}`, error);
+                        console.error("Translation error:", error);
+                        el.innerHTML = originalContent;
                     }
                 }
             }
             
             window.setLanguage = (lang) => {
-                if (!supportedLangs.includes(lang) || currentLanguage === lang) return;
                 currentLanguage = lang;
                 document.documentElement.lang = lang;
-                document.getElementById('current-language-name').textContent = languageNames[lang];
-                translatePageContent();
+                const langNameEl = document.getElementById('current-language-name');
+                if (langNameEl) langNameEl.textContent = languageNames[lang];
+                applyTranslation();
             };
 
+            async function renderHomePage(layout, postsData, searchTerm = '', filterTag = '') {
+                mainContentArea.innerHTML = `
+                    <section id="story-slider-container" class="mb-8 story-slider"></section>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2">
+                            <h2 id="page-title" class="text-xl font-bold border-b-4 border-indigo-600 pb-2 mb-6 inline-block"></h2>
+                            <div id="posts-container" class="space-y-8"></div>
+                        </div>
+                        <aside id="sidebar-container" class="lg:col-span-1"></aside>
+                    </div>
+                `;
+                
+                renderTagSlider(postsData);
+                renderGadgets(layout.sidebar, 'sidebar-container');
+                loadPosts(postsData, searchTerm, filterTag);
+            }
+            
             function renderTagSlider(posts) {
                 const sliderContainer = document.getElementById('story-slider-container');
                 if (!sliderContainer) return;
-                if (swiperInstance) { swiperInstance.destroy(true, true); swiperInstance = null; }
+
+                if (swiperInstance) {
+                    swiperInstance.destroy(true, true);
+                    swiperInstance = null;
+                }
                 
                 const allTags = new Set();
-                (posts || []).forEach(post => { (post.tags || []).forEach(tag => { if (typeof tag === 'string' && tag.trim() !== '') allTags.add(tag.trim()); }); });
+                (posts || []).forEach(post => {
+                    if (post && post.tags && Array.isArray(post.tags)) {
+                        post.tags.forEach(tag => {
+                            if (typeof tag === 'string' && tag.trim() !== '') {
+                                allTags.add(tag.trim());
+                            }
+                        });
+                    }
+                });
                 
                 const uniqueTags = [...allTags];
-                if (uniqueTags.length === 0) { sliderContainer.style.display = 'none'; return; }
+                
+                if (uniqueTags.length === 0) {
+                    sliderContainer.style.display = 'none';
+                    return;
+                }
 
-                sliderContainer.innerHTML = '<div class="swiper"><div class="swiper-wrapper"></div></div>';
+                sliderContainer.innerHTML = '<div class="swiper-container"><div class="swiper-wrapper"></div></div>';
                 const swiperWrapper = sliderContainer.querySelector('.swiper-wrapper');
                 
                 uniqueTags.forEach(tag => {
-                    const latestPostForTag = (posts || []).find(p => (p.tags || []).includes(tag));
+                    const latestPostForTag = (posts || []).find(p => p && Array.isArray(p.tags) && p.tags.includes(tag));
                     let imageUrl = '';
+
                     if (latestPostForTag && latestPostForTag.content) {
                         const firstImageMatch = (latestPostForTag.content || '').match(/<img src="([^"]+)"/);
-                        if (firstImageMatch) imageUrl = firstImageMatch[1];
+                        if (firstImageMatch) {
+                            imageUrl = firstImageMatch[1];
+                        }
                     }
+
                     if (!imageUrl) {
                         const color = stringToColor(tag);
-                        imageUrl = `https://placehold.co/110x110/${color.substring(1)}/ffffff?text=${encodeURIComponent(tag.charAt(0).toUpperCase())}`;
+                        const textColor = 'ffffff';
+                        const placeholderLetter = encodeURIComponent(tag.charAt(0).toUpperCase());
+                        imageUrl = `https://placehold.co/110x110/${color.substring(1)}/${textColor}?text=${placeholderLetter}`;
                     }
+
                     const slideEl = document.createElement('div');
                     slideEl.className = 'swiper-slide';
-                    slideEl.innerHTML = `<a href="?tag=${encodeURIComponent(tag)}"><div class="story-image-wrapper"><img src="${imageUrl}" alt="${tag}"></div><span class="font-semibold" data-original-text="${tag}">${tag}</span></a>`;
+                    
+                    slideEl.innerHTML = `
+                        <a href="?tag=${encodeURIComponent(tag)}">
+                            <div class="story-image-wrapper">
+                                <img src="${imageUrl}" alt="${tag}">
+                            </div>
+                            <span class="font-semibold">${tag}</span>
+                        </a>
+                    `;
                     swiperWrapper.appendChild(slideEl);
                 });
                 
-                swiperInstance = new Swiper('.story-slider .swiper', {
-                    slidesPerView: 3, spaceBetween: 10, loop: true,
-                    autoplay: { delay: 3000, disableOnInteraction: false },
-                    breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: 6 } },
+                swiperInstance = new Swiper('.story-slider .swiper-container', {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                    loop: true,
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    },
+                    breakpoints: { 
+                        640: { slidesPerView: 4, spaceBetween: 20 }, 
+                        768: { slidesPerView: 5, spaceBetween: 30 }, 
+                        1024: { slidesPerView: 6, spaceBetween: 30 } 
+                    },
                 });
             }
 
             function stringToColor(str) {
                 if (!str) return '#cccccc';
                 let hash = 0;
-                for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                for (let i = 0; i < str.length; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
                 let color = '#';
-                for (let i = 0; i < 3; i++) color += ('00' + ((hash >> (i * 8)) & 0xFF).toString(16)).substr(-2);
+                for (let i = 0; i < 3; i++) {
+                    let value = (hash >> (i * 8)) & 0xFF;
+                    color += ('00' + value.toString(16)).substr(-2);
+                }
                 return color;
             }
 
-            async function renderSinglePost(postId) {
+            async function renderSinglePost(postId, layout) {
                 mainContentArea.innerHTML = `<p class="text-center text-gray-600">Carregando postagem...</p>`;
                 try {
                     const docRef = db.collection('posts').doc(postId);
@@ -301,14 +446,17 @@
                         const post = docSnap.data();
                         const postTitle = post.title || 'Post sem Título';
                         const postContent = post.content || '<p>Conteúdo indisponível.</p>';
-                        const postDate = post.createdAt?.seconds ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+                        const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
                         
                         document.title = `${postTitle} - iGaroto`;
 
                         mainContentArea.innerHTML = `
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                                 <div class="lg:col-span-2 bg-white p-6 md:p-10 rounded-lg shadow-md">
-                                    <a href="index.html" class="inline-flex items-center text-indigo-600 font-semibold mb-6 hover:underline" data-translate-key="top_home">Voltar para Home</a>
+                                    <a href="index.html" class="inline-flex items-center text-indigo-600 font-semibold mb-6 hover:underline">
+                                        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+                                        Voltar para todos os posts
+                                    </a>
                                     <h1 class="text-4xl md:text-5xl font-bold mb-4" data-original-text="${postTitle.replace(/"/g, '&quot;')}">${postTitle}</h1>
                                     <div class="text-sm text-gray-500 mb-6">
                                         <span>Por <strong>iGaroto</strong></span> &bull;
@@ -318,11 +466,11 @@
                                         ${postContent}
                                     </div>
                                 </div>
-                                <aside id="sidebar-container" class="lg:col-span-1"></aside>
+                                <aside id="sidebar-container" class="lg:col-span-1">
+                                </aside>
                             </div>
                         `;
-                        // CORREÇÃO DEFINITIVA: Chama a tradução após renderizar o conteúdo do post único
-                        await translatePageContent();
+                        renderGadgets(layout.sidebar, 'sidebar-container');
                     } else {
                         mainContentArea.innerHTML = '<p class="text-center text-red-500">Postagem não encontrada.</p>';
                     }
@@ -331,43 +479,111 @@
                     mainContentArea.innerHTML = '<p class="text-center text-red-500">Ocorreu um erro ao carregar a postagem.</p>';
                 }
                 lucide.createIcons();
+                await applyTranslation();
             }
 
-            function renderPosts(posts) {
+            function loadPosts(posts, searchTerm = '', filterTag = '') {
                 const postsContainer = document.getElementById('posts-container');
-                if (!postsContainer) return;
+                const pageTitle = document.getElementById('page-title');
+                if (!postsContainer || !pageTitle) return;
+
+                let filteredPosts = posts || [];
                 
+                if (filterTag) {
+                    pageTitle.setAttribute('data-translate-key', '');
+                    pageTitle.textContent = `Mostrando posts com o marcador: "${filterTag}"`;
+                    filteredPosts = filteredPosts.filter(post => post && post.tags && Array.isArray(post.tags) && post.tags.includes(filterTag));
+                } else if (searchTerm) {
+                    pageTitle.setAttribute('data-translate-key', '');
+                    pageTitle.textContent = `Resultados da busca por: "${searchTerm}"`;
+                    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+                    filteredPosts = filteredPosts.filter(post => post && (post.title || '').toLowerCase().includes(lowerCaseSearchTerm));
+                } else {
+                    pageTitle.setAttribute('data-translate-key', 'recent_posts');
+                    pageTitle.textContent = 'POSTAGENS RECENTES';
+                }
+
+                if (filteredPosts.length === 0) {
+                    postsContainer.innerHTML = `<p class="text-center text-gray-600">Nenhuma postagem encontrada.</p>`;
+                    return;
+                }
+
                 postsContainer.innerHTML = ''; 
-                (posts || []).forEach(post => {
+                filteredPosts.forEach(post => {
                     if (!post || !post.id) return;
+
                     const postTitle = post.title || 'Post sem Título';
                     const postContent = post.content || '';
+                    
                     const postElement = document.createElement('article');
                     postElement.className = 'post-card flex flex-col md:flex-row rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300';
                     
                     const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = postContent;
-                    const summary = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 150) + ( (tempDiv.textContent || tempDiv.innerText || "").length > 150 ? '...' : '');
+                    const summary = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 150) + ((tempDiv.textContent || tempDiv.innerText || "").length > 150 ? '...' : '');
 
-                    const postDate = post.createdAt?.seconds ? new Date(post.createdAt.seconds * 1000).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+                    const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
                     
                     const firstImageMatch = postContent.match(/<img src="([^"]+)"/);
                     const imageUrl = firstImageMatch ? firstImageMatch[1] : `https://placehold.co/400x400/111827/ffffff?text=iGaroto`;
                     
                     const category = post.tags && post.tags.length > 0 ? post.tags[0] : 'Novidades';
 
-                    postElement.innerHTML = `<div class="md:w-1/3"><a href="?post=${post.id}"><img src="${imageUrl}" class="w-full h-full object-cover" alt="${postTitle}"></a></div><div class="p-6 flex flex-col justify-center md:w-2/3"><span class="text-white bg-red-600 px-2 py-1 text-xs font-bold rounded self-start mb-2" data-original-text="${category}">${category}</span><h3 class="text-2xl font-bold mb-2 hover:text-indigo-600" data-original-text="${postTitle.replace(/"/g, '&quot;')}"><a href="?post=${post.id}">${postTitle}</a></h3><p class="text-gray-600 text-sm mb-4" data-original-text="${summary.replace(/"/g, '&quot;')}">${summary}</p><div class="text-xs text-gray-500"><span>By <a href="#" class="font-semibold hover:text-black">iGaroto</a></span> - <span>${postDate}</span></div><a href="?post=${post.id}" class="text-indigo-600 font-semibold mt-4 self-start" data-translate-key="read_more">LEIA MAIS &raquo;</a></div>`;
+                    postElement.innerHTML = `
+                        <div class="md:w-1/3">
+                           <a href="?post=${post.id}"><img src="${imageUrl}" class="w-full h-full object-cover" alt="${postTitle}"></a>
+                        </div>
+                        <div class="p-6 flex flex-col justify-center md:w-2/3">
+                            <span class="text-white bg-red-600 px-2 py-1 text-xs font-bold rounded self-start mb-2" data-original-text="${category}">${category}</span>
+                            <h3 class="text-2xl font-bold mb-2 hover:text-indigo-600" data-original-text="${postTitle.replace(/"/g, '&quot;')}"><a href="?post=${post.id}">${postTitle}</a></h3>
+                            <p class="text-gray-600 text-sm mb-4" data-original-text="${summary.replace(/"/g, '&quot;')}">${summary}</p>
+                            <div class="text-xs text-gray-500"><span>By <a href="#" class="font-semibold hover:text-black">iGaroto</a></span> - <span>${postDate}</span></div>
+                            <a href="?post=${post.id}" class="text-indigo-600 font-semibold mt-4 self-start" data-translate-key="read_more">LEIA MAIS &raquo;</a>
+                        </div>
+                    `;
                     postsContainer.appendChild(postElement);
+                });
+            }
+
+            function renderGadgets(gadgets, containerId) {
+                const container = document.getElementById(containerId);
+                if (!container || !gadgets) return;
+                container.innerHTML = '';
+                (gadgets || []).forEach(gadget => {
+                    const widget = document.createElement('div');
+                    widget.className = 'sidebar-widget';
+                    let content = `<h4 class="font-bold border-b pb-2 mb-4">${gadget.title}</h4>`;
+                    if (gadget.type === 'search') {
+                        content += `<form action="index.html" method="GET"><input type="text" name="q" placeholder="Pesquisar no blog..." class="w-full border border-gray-300 rounded-md p-2"></form>`;
+                    } else if (gadget.type === 'html') {
+                        content += `<div>${gadget.content || ''}</div>`;
+                    } else if (gadget.type === 'social') {
+                        content += `<div class="flex gap-4">
+                            <a href="https://www.facebook.com/igaroto" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                            <a href="https://www.instagram.com/igaroto" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                            <a href="https://www.x.com/igarotoinsta" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-black text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-1.8 13.05h1.56l-4.726-5.462-1.634-1.89-1.56-1.807H3.08l4.726 5.462 1.634 1.89 1.56 1.807Z"/></svg></a>
+                        </div>`;
+                    }
+                    widget.innerHTML = content;
+                    container.appendChild(widget);
                 });
             }
             
             async function initializeSite() {
                 try {
-                    mainContentArea.innerHTML = `<section id="story-slider-container" class="mb-8 story-slider"></section><div class="grid grid-cols-1 lg:grid-cols-3 gap-8"><div class="lg:col-span-2"><h2 id="page-title" class="text-xl font-bold border-b-4 border-indigo-600 pb-2 mb-6 inline-block" data-translate-key="recent_posts"></h2><div id="posts-container" class="space-y-8"><p>Carregando posts...</p></div></div><aside id="sidebar-container" class="lg:col-span-1"></aside></div>`;
+                    const [layoutDoc, postsSnapshot] = await Promise.all([
+                        db.collection('settings').doc('layout').get(),
+                        db.collection('posts').orderBy('createdAt', 'desc').get()
+                    ]);
+
+                    const layout = layoutDoc.exists ? layoutDoc.data() : { sidebar: [], 'main-menu': [] };
                     
-                    const postsSnapshot = await db.collection('posts').orderBy('createdAt', 'desc').get();
                     allPosts = [];
-                    postsSnapshot.forEach(doc => { if (doc.exists) allPosts.push({ id: doc.id, ...doc.data() }); });
+                    postsSnapshot.forEach(doc => {
+                        if (doc && doc.exists) {
+                            allPosts.push({ id: doc.id, ...doc.data() });
+                        }
+                    });
 
                     const urlParams = new URLSearchParams(window.location.search);
                     const postId = urlParams.get('post');
@@ -375,22 +591,9 @@
                     const filterTag = urlParams.get('tag');
 
                     if (postId) {
-                        await renderSinglePost(postId);
+                        await renderSinglePost(postId, layout);
                     } else {
-                        let postsToRender = allPosts;
-                        const pageTitleEl = document.getElementById('page-title');
-                        if (filterTag) {
-                            pageTitleEl.textContent = `Mostrando posts com o marcador: "${filterTag}"`;
-                            postsToRender = allPosts.filter(p => (p.tags || []).includes(filterTag));
-                        } else if (searchTerm) {
-                            pageTitleEl.textContent = `Resultados da busca por: "${searchTerm}"`;
-                            postsToRender = allPosts.filter(p => (p.title || '').toLowerCase().includes(searchTerm.toLowerCase()));
-                        }
-                        renderTagSlider(allPosts);
-                        renderPosts(postsToRender);
-                        
-                        // CORREÇÃO DEFINITIVA: Chama a tradução após renderizar a página principal
-                        await translatePageContent();
+                        await renderHomePage(layout, allPosts, searchTerm, filterTag);
                     }
                     
                     lucide.createIcons();
@@ -400,17 +603,36 @@
                     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
                     const closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
                     if (mobileMenuBtn) {
-                        const closeMenu = () => { mobileMenu.classList.add('-translate-x-full'); mobileMenuOverlay.classList.add('hidden'); };
-                        mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.remove('-translate-x-full'); mobileMenuOverlay.classList.remove('hidden'); });
+                        const closeMenu = () => {
+                            if (mobileMenu) mobileMenu.classList.add('-translate-x-full');
+                            if (mobileMenuOverlay) mobileMenuOverlay.classList.add('hidden');
+                        };
+                        mobileMenuBtn.addEventListener('click', () => {
+                            if (mobileMenu) mobileMenu.classList.remove('-translate-x-full');
+                            if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('hidden');
+                        });
                         if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMenu);
                         if (closeMobileMenuBtn) closeMobileMenuBtn.addEventListener('click', closeMenu);
                     }
+
                     const searchIconBtn = document.getElementById('search-icon-btn');
                     const searchBar = document.getElementById('search-bar');
                     if(searchIconBtn && searchBar) {
-                        searchIconBtn.addEventListener('click', (e) => { e.stopPropagation(); searchBar.classList.toggle('hidden'); if (!searchBar.classList.contains('hidden')) { searchBar.querySelector('input').focus(); } });
-                        document.addEventListener('click', (e) => { if (!searchBar.contains(e.target) && !searchIconBtn.contains(e.target)) { searchBar.classList.add('hidden'); } });
+                        searchIconBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            searchBar.classList.toggle('hidden');
+                            if (!searchBar.classList.contains('hidden')) {
+                                searchBar.querySelector('input').focus();
+                            }
+                        });
+                        document.addEventListener('click', (e) => {
+                            if (!searchBar.contains(e.target) && !searchIconBtn.contains(e.target)) {
+                                searchBar.classList.add('hidden');
+                            }
+                        });
                     }
+                    
+                    setLanguage(currentLanguage);
 
                 } catch (error) {
                     console.error("Erro fatal ao inicializar o site:", error);
@@ -418,9 +640,14 @@
                 }
             }
 
-            firebase.auth().signInAnonymously().then(initializeSite).catch(error => {
-                console.error("Erro no login anônimo:", error);
-            });
+            auth.signInAnonymously()
+                .then(() => {
+                    initializeSite();
+                })
+                .catch((error) => {
+                    console.error("Erro no login anônimo:", error);
+                    mainContentArea.innerHTML = `<p class="text-center text-red-500">Erro de conexão. Não foi possível carregar o conteúdo.</p>`;
+                });
         });
     </script>
 </body>
