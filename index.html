@@ -55,6 +55,7 @@
             font-size: 14px;
         }
         .story-slider .story-image-wrapper {
+            /* TAMANHO AJUSTADO PARA 90PX */
             width: 90px;
             height: 90px;
             border-radius: 50%;
@@ -259,112 +260,72 @@
             const translationCache = {};
             let currentLanguage = 'pt';
             const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
-            const supportedLangs = ['pt', 'en', 'es'];
             let allPosts = [];
             let swiperInstance = null;
 
-            // ==================================================================
-            // FUNÇÕES DE TRADUÇÃO RESTAURADAS E APRIMORADAS
-            // ==================================================================
             async function callGemini(prompt) {
-                try {
-                    const response = await fetch('/api/translate', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(prompt)
-                    });
-                    if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
-                    const result = await response.json();
-                    return result.translatedText;
-                } catch (error) {
-                    console.error("Erro ao chamar API de tradução:", error);
-                    throw error; // Propaga o erro para ser tratado
-                }
+                const response = await fetch('/api/translate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(prompt)
+                });
+                if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
+                const result = await response.json();
+                return result.translatedText;
             }
 
             async function applyTranslation() {
-                try {
-                    const lang = currentLanguage;
-                    
-                    document.querySelectorAll('[data-translate-key]').forEach(element => {
-                        const key = element.getAttribute('data-translate-key');
-                        if (staticTranslations[key] && staticTranslations[key][lang]) {
-                            element.innerHTML = staticTranslations[key][lang];
-                        }
+                const lang = currentLanguage;
+                
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    if (staticTranslations[key] && staticTranslations[key][lang]) {
+                        element.innerHTML = staticTranslations[key][lang];
+                    }
+                });
+
+                if (lang === 'pt') {
+                    document.querySelectorAll('[data-original-text]').forEach(el => {
+                        el.innerText = el.dataset.originalText;
                     });
+                    document.querySelectorAll('[data-original-text-html]').forEach(el => {
+                        el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
+                    });
+                    return;
+                }
 
-                    if (lang === 'pt') {
-                        document.querySelectorAll('[data-original-text]').forEach(el => {
-                            if(el.dataset.originalText) el.innerText = el.dataset.originalText;
-                        });
-                        document.querySelectorAll('[data-original-text-html]').forEach(el => {
-                            if(el.dataset.originalTextHtml) el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
-                        });
-                        return;
+                const elementsToTranslate = document.querySelectorAll('[data-original-text], [data-original-text-html]');
+                for (const el of elementsToTranslate) {
+                    const isHtml = el.hasAttribute('data-original-text-html');
+                    const originalText = isHtml ? decodeURIComponent(el.dataset.originalTextHtml) : el.dataset.originalText;
+                    const cacheKey = `${lang}:${originalText}`;
+
+                    if (translationCache[cacheKey]) {
+                        el.innerHTML = translationCache[cacheKey];
+                        continue;
                     }
-
-                    const elementsToTranslate = document.querySelectorAll('[data-original-text], [data-original-text-html]');
-                    const translationPromises = [];
-
-                    for (const el of elementsToTranslate) {
-                        const isHtml = el.hasAttribute('data-original-text-html');
-                        const originalText = isHtml ? decodeURIComponent(el.dataset.originalTextHtml) : el.dataset.originalText;
-                        if (!originalText) continue;
-
-                        const cacheKey = `${lang}:${originalText}`;
-
-                        if (translationCache[cacheKey]) {
-                            el.innerHTML = translationCache[cacheKey];
-                            continue;
-                        }
-                        
-                        // Não mostra "Traduzindo..." para não poluir a tela, a tradução será rápida
-                        const promise = callGemini({ textToTranslate: originalText, targetLang: lang, isHtml: isHtml })
-                            .then(translatedText => {
-                                translationCache[cacheKey] = translatedText;
-                                el.innerHTML = translatedText;
-                            })
-                            .catch(error => {
-                                console.error("Falha na tradução de um item:", error);
-                                // Não reverte, mantém o texto original que já estava na tela
-                            });
-                        translationPromises.push(promise);
+                    
+                    const originalContent = el.innerHTML;
+                    el.innerHTML = 'Traduzindo...';
+                    
+                    try {
+                        const translatedText = await callGemini({ textToTranslate: originalText, targetLang: lang, isHtml: isHtml });
+                        translationCache[cacheKey] = translatedText;
+                        el.innerHTML = translatedText;
+                    } catch (error) {
+                        console.error("Translation error:", error);
+                        el.innerHTML = originalContent;
                     }
-                    await Promise.all(translationPromises);
-
-                } catch (e) {
-                    console.error("Erro geral na função applyTranslation:", e);
                 }
             }
             
             window.setLanguage = (lang) => {
-                if(!supportedLangs.includes(lang)) return;
-
                 currentLanguage = lang;
                 document.documentElement.lang = lang;
                 const langNameEl = document.getElementById('current-language-name');
                 if (langNameEl) langNameEl.textContent = languageNames[lang];
-                
                 applyTranslation();
             };
-
-            // ==================================================================
-            // NOVA FUNÇÃO DEFINITIVA para tradução automática
-            // ==================================================================
-            function detectAndSetInitialLanguage() {
-                try {
-                    const userLang = (navigator.language || navigator.userLanguage || 'pt').slice(0, 2);
-                    if (supportedLangs.includes(userLang)) {
-                        setLanguage(userLang);
-                    } else {
-                        setLanguage('pt'); // Padrão
-                    }
-                } catch(e) {
-                    console.error("Erro ao detectar idioma, usando português como padrão.", e);
-                    setLanguage('pt');
-                }
-            }
-
 
             async function renderHomePage(layout, postsData, searchTerm = '', filterTag = '') {
                 mainContentArea.innerHTML = `
@@ -410,7 +371,7 @@
                     return;
                 }
 
-                sliderContainer.innerHTML = '<div class="swiper"><div class="swiper-wrapper"></div></div>';
+                sliderContainer.innerHTML = '<div class="swiper-container"><div class="swiper-wrapper"></div></div>';
                 const swiperWrapper = sliderContainer.querySelector('.swiper-wrapper');
                 
                 uniqueTags.forEach(tag => {
@@ -445,7 +406,7 @@
                     swiperWrapper.appendChild(slideEl);
                 });
                 
-                swiperInstance = new Swiper('.story-slider .swiper', {
+                swiperInstance = new Swiper('.story-slider .swiper-container', {
                     slidesPerView: 3,
                     spaceBetween: 10,
                     loop: true,
@@ -610,9 +571,6 @@
             
             async function initializeSite() {
                 try {
-                    // DETECÇÃO DE IDIOMA VEM PRIMEIRO
-                    detectAndSetInitialLanguage();
-
                     const [layoutDoc, postsSnapshot] = await Promise.all([
                         db.collection('settings').doc('layout').get(),
                         db.collection('posts').orderBy('createdAt', 'desc').get()
@@ -674,13 +632,7 @@
                         });
                     }
                     
-                    // A tradução inicial já foi chamada pela `detectAndSetInitialLanguage`
-                    // Uma chamada extra aqui pode ser redundante, mas não causa erro.
-                    // Se a linguagem foi definida manualmente, a `setLanguage` já terá sido chamada.
-                    if(!autoLanguageSet) {
-                       applyTranslation();
-                    }
-
+                    setLanguage(currentLanguage);
 
                 } catch (error) {
                     console.error("Erro fatal ao inicializar o site:", error);
