@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iGaroto - Seu Portal de Estilo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
-    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -55,10 +55,11 @@
             font-size: 14px;
         }
         .story-slider .story-image-wrapper {
-            width: 110px;
-            height: 110px;
+            /* TAMANHO AJUSTADO PARA 90PX */
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            padding: 4px;
+            padding: 3px;
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
             margin: 0 auto 8px;
         }
@@ -67,7 +68,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            border: 3px solid #fff;
+            border: 2px solid #fff;
         }
 
         .dropdown {
@@ -347,7 +348,6 @@
                 const sliderContainer = document.getElementById('story-slider-container');
                 if (!sliderContainer) return;
 
-                // Destrói a instância anterior do Swiper, se existir, para evitar conflitos
                 if (swiperInstance) {
                     swiperInstance.destroy(true, true);
                     swiperInstance = null;
@@ -371,11 +371,9 @@
                     return;
                 }
 
-                // Cria a estrutura HTML base para o Swiper
                 sliderContainer.innerHTML = '<div class="swiper-container"><div class="swiper-wrapper"></div></div>';
                 const swiperWrapper = sliderContainer.querySelector('.swiper-wrapper');
                 
-                // Cria cada slide programaticamente para maior segurança
                 uniqueTags.forEach(tag => {
                     const latestPostForTag = (posts || []).find(p => p && Array.isArray(p.tags) && p.tags.includes(tag));
                     let imageUrl = '';
@@ -408,7 +406,6 @@
                     swiperWrapper.appendChild(slideEl);
                 });
                 
-                // Inicializa o Swiper com autoplay e loop sempre ativos
                 swiperInstance = new Swiper('.story-slider .swiper-container', {
                     slidesPerView: 3,
                     spaceBetween: 10,
