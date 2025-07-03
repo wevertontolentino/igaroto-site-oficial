@@ -55,7 +55,6 @@
             font-size: 14px;
         }
         .story-slider .story-image-wrapper {
-            /* TAMANHO AJUSTADO PARA 90PX */
             width: 90px;
             height: 90px;
             border-radius: 50%;
@@ -260,8 +259,10 @@
             const translationCache = {};
             let currentLanguage = 'pt';
             const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
+            const supportedLangs = ['pt', 'en', 'es'];
             let allPosts = [];
             let swiperInstance = null;
+            let autoLanguageSet = false;
 
             async function callGemini(prompt) {
                 const response = await fetch('/api/translate', {
@@ -320,10 +321,17 @@
             }
             
             window.setLanguage = (lang) => {
+                // Se a linguagem já for a correta, não faz nada
+                if(currentLanguage === lang && autoLanguageSet) return;
+
                 currentLanguage = lang;
                 document.documentElement.lang = lang;
                 const langNameEl = document.getElementById('current-language-name');
                 if (langNameEl) langNameEl.textContent = languageNames[lang];
+                
+                // Marca que a linguagem foi definida (seja auto ou manual)
+                autoLanguageSet = true;
+                
                 applyTranslation();
             };
 
@@ -371,7 +379,7 @@
                     return;
                 }
 
-                sliderContainer.innerHTML = '<div class="swiper-container"><div class="swiper-wrapper"></div></div>';
+                sliderContainer.innerHTML = '<div class="swiper"><div class="swiper-wrapper"></div></div>';
                 const swiperWrapper = sliderContainer.querySelector('.swiper-wrapper');
                 
                 uniqueTags.forEach(tag => {
@@ -406,7 +414,7 @@
                     swiperWrapper.appendChild(slideEl);
                 });
                 
-                swiperInstance = new Swiper('.story-slider .swiper-container', {
+                swiperInstance = new Swiper('.story-slider .swiper', {
                     slidesPerView: 3,
                     spaceBetween: 10,
                     loop: true,
@@ -632,7 +640,15 @@
                         });
                     }
                     
-                    setLanguage(currentLanguage);
+                    // LÓGICA DE TRADUÇÃO AUTOMÁTICA
+                    if (!autoLanguageSet) {
+                        const userLang = (navigator.language || navigator.userLanguage).slice(0, 2);
+                        if (supportedLangs.includes(userLang)) {
+                            setLanguage(userLang);
+                        } else {
+                            setLanguage('pt'); // Padrão
+                        }
+                    }
 
                 } catch (error) {
                     console.error("Erro fatal ao inicializar o site:", error);
