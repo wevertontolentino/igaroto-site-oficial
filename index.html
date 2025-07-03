@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iGaroto - Seu Portal de Estilo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.css" />
-    <script src="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -37,7 +37,7 @@
         
         .animated-gradient-text {
             font-weight: 900;
-            background: linear-gradient(90deg, #ff6b6b, #ffc3c3, #ff6b6b);
+            background: linear-gradient(90deg, #ff8a8a, #ffc3c3, #ff8a8a);
             background-size: 200% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -55,11 +55,10 @@
             font-size: 14px;
         }
         .story-slider .story-image-wrapper {
-            /* TAMANHO AJUSTADO PARA 90PX */
-            width: 90px;
-            height: 90px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            padding: 3px;
+            padding: 4px;
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
             margin: 0 auto 8px;
         }
@@ -68,7 +67,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            border: 2px solid #fff;
+            border: 3px solid #fff;
         }
 
         .dropdown {
@@ -261,7 +260,6 @@
             let currentLanguage = 'pt';
             const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
             let allPosts = [];
-            let swiperInstance = null;
 
             async function callGemini(prompt) {
                 const response = await fetch('/api/translate', {
@@ -348,11 +346,6 @@
                 const sliderContainer = document.getElementById('story-slider-container');
                 if (!sliderContainer) return;
 
-                if (swiperInstance) {
-                    swiperInstance.destroy(true, true);
-                    swiperInstance = null;
-                }
-                
                 const allTags = new Set();
                 (posts || []).forEach(post => {
                     if (post && post.tags && Array.isArray(post.tags)) {
@@ -371,9 +364,7 @@
                     return;
                 }
 
-                sliderContainer.innerHTML = '<div class="swiper-container"><div class="swiper-wrapper"></div></div>';
-                const swiperWrapper = sliderContainer.querySelector('.swiper-wrapper');
-                
+                let slidesHtml = '<div class="swiper-container"><div class="swiper-wrapper">';
                 uniqueTags.forEach(tag => {
                     const latestPostForTag = (posts || []).find(p => p && Array.isArray(p.tags) && p.tags.includes(tag));
                     let imageUrl = '';
@@ -392,34 +383,38 @@
                         imageUrl = `https://placehold.co/110x110/${color.substring(1)}/${textColor}?text=${placeholderLetter}`;
                     }
 
-                    const slideEl = document.createElement('div');
-                    slideEl.className = 'swiper-slide';
-                    
-                    slideEl.innerHTML = `
-                        <a href="?tag=${encodeURIComponent(tag)}">
-                            <div class="story-image-wrapper">
-                                <img src="${imageUrl}" alt="${tag}">
-                            </div>
-                            <span class="font-semibold">${tag}</span>
-                        </a>
+                    slidesHtml += `
+                        <div class="swiper-slide">
+                            <a href="?tag=${encodeURIComponent(tag)}">
+                                <div class="story-image-wrapper">
+                                    <img src="${imageUrl}" alt="${tag}">
+                                </div>
+                                <span class="font-semibold">${tag}</span>
+                            </a>
+                        </div>
                     `;
-                    swiperWrapper.appendChild(slideEl);
                 });
+                slidesHtml += '</div></div>';
+                sliderContainer.innerHTML = slidesHtml;
                 
-                swiperInstance = new Swiper('.story-slider .swiper-container', {
+                // Lógica de Autoplay Inteligente
+                const maxSlidesPerView = 6;
+                const swiperOptions = {
                     slidesPerView: 3,
                     spaceBetween: 10,
-                    loop: true,
-                    autoplay: {
+                    breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: maxSlidesPerView } },
+                };
+
+                // Ativa o loop e autoplay apenas se houver mais slides do que o visível na maior tela
+                if (uniqueTags.length > maxSlidesPerView) {
+                    swiperOptions.loop = true;
+                    swiperOptions.autoplay = {
                         delay: 3000,
                         disableOnInteraction: false,
-                    },
-                    breakpoints: { 
-                        640: { slidesPerView: 4, spaceBetween: 20 }, 
-                        768: { slidesPerView: 5, spaceBetween: 30 }, 
-                        1024: { slidesPerView: 6, spaceBetween: 30 } 
-                    },
-                });
+                    };
+                }
+
+                new Swiper('.story-slider .swiper-container', swiperOptions);
             }
 
             function stringToColor(str) {
