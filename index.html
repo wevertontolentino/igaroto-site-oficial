@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iGaroto - Seu Portal de Estilo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -260,6 +260,7 @@
             let currentLanguage = 'pt';
             const languageNames = { pt: 'Português', en: 'English', es: 'Español' };
             let allPosts = [];
+            let swiperInstance = null;
 
             async function callGemini(prompt) {
                 const response = await fetch('/api/translate', {
@@ -346,6 +347,12 @@
                 const sliderContainer = document.getElementById('story-slider-container');
                 if (!sliderContainer) return;
 
+                // Destrói a instância anterior do Swiper, se existir, para evitar conflitos
+                if (swiperInstance) {
+                    swiperInstance.destroy(true, true);
+                    swiperInstance = null;
+                }
+                
                 const allTags = new Set();
                 (posts || []).forEach(post => {
                     if (post && post.tags && Array.isArray(post.tags)) {
@@ -364,7 +371,11 @@
                     return;
                 }
 
-                let slidesHtml = '<div class="swiper-container"><div class="swiper-wrapper">';
+                // Cria a estrutura HTML base para o Swiper
+                sliderContainer.innerHTML = '<div class="swiper-container"><div class="swiper-wrapper"></div></div>';
+                const swiperWrapper = sliderContainer.querySelector('.swiper-wrapper');
+                
+                // Cria cada slide programaticamente para maior segurança
                 uniqueTags.forEach(tag => {
                     const latestPostForTag = (posts || []).find(p => p && Array.isArray(p.tags) && p.tags.includes(tag));
                     let imageUrl = '';
@@ -383,32 +394,34 @@
                         imageUrl = `https://placehold.co/110x110/${color.substring(1)}/${textColor}?text=${placeholderLetter}`;
                     }
 
-                    slidesHtml += `
-                        <div class="swiper-slide">
-                            <a href="?tag=${encodeURIComponent(tag)}">
-                                <div class="story-image-wrapper">
-                                    <img src="${imageUrl}" alt="${tag}">
-                                </div>
-                                <span class="font-semibold">${tag}</span>
-                            </a>
-                        </div>
+                    const slideEl = document.createElement('div');
+                    slideEl.className = 'swiper-slide';
+                    
+                    slideEl.innerHTML = `
+                        <a href="?tag=${encodeURIComponent(tag)}">
+                            <div class="story-image-wrapper">
+                                <img src="${imageUrl}" alt="${tag}">
+                            </div>
+                            <span class="font-semibold">${tag}</span>
+                        </a>
                     `;
+                    swiperWrapper.appendChild(slideEl);
                 });
-                slidesHtml += '</div></div>';
-                sliderContainer.innerHTML = slidesHtml;
                 
-                // LÓGICA FINAL E SIMPLIFICADA: Autoplay e Rewind sempre ativos para garantir o movimento.
-                new Swiper('.story-slider .swiper-container', {
+                // Inicializa o Swiper com autoplay e loop sempre ativos
+                swiperInstance = new Swiper('.story-slider .swiper-container', {
                     slidesPerView: 3,
                     spaceBetween: 10,
-                    // 'rewind' é mais seguro que 'loop' quando há poucos slides.
-                    // Ele vai até o final e volta para o começo.
-                    rewind: true, 
+                    loop: true,
                     autoplay: {
                         delay: 3000,
                         disableOnInteraction: false,
                     },
-                    breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
+                    breakpoints: { 
+                        640: { slidesPerView: 4, spaceBetween: 20 }, 
+                        768: { slidesPerView: 5, spaceBetween: 30 }, 
+                        1024: { slidesPerView: 6, spaceBetween: 30 } 
+                    },
                 });
             }
 
