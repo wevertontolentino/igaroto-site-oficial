@@ -198,12 +198,8 @@
                     throw error;
                 }
             }
-
-            // ==================================================================
-            // NOVA ARQUITETURA DE TRADUÇÃO - MOTOR ÚNICO E ROBUSTO
-            // ==================================================================
+            
             async function translatePageContent() {
-                // 1. Reverte para o português se for o idioma alvo, para garantir consistência
                 if (currentLanguage === 'pt') {
                     document.querySelectorAll('[data-original-text]').forEach(el => {
                         if(el.dataset.originalText) el.innerText = el.dataset.originalText;
@@ -211,7 +207,6 @@
                     document.querySelectorAll('[data-original-text-html]').forEach(el => {
                         if(el.dataset.originalTextHtml) el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
                     });
-                    // Traduz as chaves estáticas para português
                     document.querySelectorAll('[data-translate-key]').forEach(element => {
                         const key = element.getAttribute('data-translate-key');
                         if (staticTranslations[key] && staticTranslations[key]['pt']) {
@@ -221,7 +216,6 @@
                     return;
                 }
 
-                // 2. Traduz todo o resto
                 const elementsToTranslate = document.querySelectorAll('[data-translate-key], [data-original-text], [data-original-text-html]');
                 const translationPromises = [];
 
@@ -267,20 +261,6 @@
                 if (langNameEl) langNameEl.textContent = languageNames[lang];
                 translatePageContent();
             };
-
-            function detectAndSetInitialLanguage() {
-                try {
-                    const userLang = (navigator.language || navigator.userLanguage || 'pt').slice(0, 2);
-                    const langToSet = supportedLangs.includes(userLang) ? userLang : 'pt';
-                    currentLanguage = langToSet;
-                    document.documentElement.lang = langToSet;
-                    const langNameEl = document.getElementById('current-language-name');
-                    if (langNameEl) langNameEl.textContent = languageNames[langToSet];
-                } catch(e) {
-                    console.error("Erro ao detectar idioma, usando português como padrão.", e);
-                    currentLanguage = 'pt';
-                }
-            }
 
             async function renderHomePage(layout, postsData, searchTerm = '', filterTag = '') {
                 mainContentArea.innerHTML = `
@@ -583,7 +563,6 @@
                         });
                     }
                     
-                    // A tradução é chamada ao final de tudo
                     await translatePageContent();
 
                 } catch (error) {
