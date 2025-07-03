@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iGaroto - Seu Portal de Estilo</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- VERSÃO DO SWIPER TRAVADA PARA MÁXIMA ESTABILIDADE -->
     <link rel="stylesheet" href="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.js"></script>
     
@@ -197,7 +198,8 @@
         </div>
         
         <div id="main-content-area" class="main-container px-4 mt-8">
-            </div>
+            <!-- O CONTEÚDO SERÁ INJETADO AQUI PELO JAVASCRIPT -->
+        </div>
 
         <footer class="bg-gray-800 text-white mt-12">
             <div class="main-container px-4 py-8 text-center">
@@ -262,78 +264,85 @@
             const supportedLangs = ['pt', 'en', 'es'];
             let allPosts = [];
             let swiperInstance = null;
-            let autoLanguageSet = false;
 
             async function callGemini(prompt) {
-                const response = await fetch('/api/translate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(prompt)
-                });
-                if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
-                const result = await response.json();
-                return result.translatedText;
+                try {
+                    const response = await fetch('/api/translate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(prompt)
+                    });
+                    if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
+                    const result = await response.json();
+                    return result.translatedText;
+                } catch (error) {
+                    console.error("Erro ao chamar API de tradução:", error);
+                    throw error;
+                }
             }
 
-            async function applyTranslation() {
-                const lang = currentLanguage;
-                
-                document.querySelectorAll('[data-translate-key]').forEach(element => {
-                    const key = element.getAttribute('data-translate-key');
-                    if (staticTranslations[key] && staticTranslations[key][lang]) {
-                        element.innerHTML = staticTranslations[key][lang];
-                    }
-                });
+            async function applyDynamicTranslation(containerElement) {
+                if (currentLanguage === 'pt') return;
 
-                if (lang === 'pt') {
-                    document.querySelectorAll('[data-original-text]').forEach(el => {
-                        el.innerText = el.dataset.originalText;
-                    });
-                    document.querySelectorAll('[data-original-text-html]').forEach(el => {
-                        el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
-                    });
-                    return;
-                }
+                const elementsToTranslate = containerElement.querySelectorAll('[data-original-text], [data-original-text-html]');
+                const translationPromises = [];
 
-                const elementsToTranslate = document.querySelectorAll('[data-original-text], [data-original-text-html]');
                 for (const el of elementsToTranslate) {
                     const isHtml = el.hasAttribute('data-original-text-html');
                     const originalText = isHtml ? decodeURIComponent(el.dataset.originalTextHtml) : el.dataset.originalText;
-                    const cacheKey = `${lang}:${originalText}`;
+                    if (!originalText) continue;
+
+                    const cacheKey = `${currentLanguage}:${originalText}`;
 
                     if (translationCache[cacheKey]) {
                         el.innerHTML = translationCache[cacheKey];
                         continue;
                     }
                     
-                    const originalContent = el.innerHTML;
-                    el.innerHTML = 'Traduzindo...';
-                    
-                    try {
-                        const translatedText = await callGemini({ textToTranslate: originalText, targetLang: lang, isHtml: isHtml });
-                        translationCache[cacheKey] = translatedText;
-                        el.innerHTML = translatedText;
-                    } catch (error) {
-                        console.error("Translation error:", error);
-                        el.innerHTML = originalContent;
-                    }
+                    const promise = callGemini({ textToTranslate: originalText, targetLang: currentLanguage, isHtml: isHtml })
+                        .then(translatedText => {
+                            translationCache[cacheKey] = translatedText;
+                            el.innerHTML = translatedText;
+                        })
+                        .catch(error => {
+                            console.error("Falha na tradução de um item:", error);
+                        });
+                    translationPromises.push(promise);
                 }
+                await Promise.all(translationPromises);
             }
             
             window.setLanguage = (lang) => {
-                // Se a linguagem já for a correta, não faz nada
-                if(currentLanguage === lang && autoLanguageSet) return;
+                if(!supportedLangs.includes(lang) || currentLanguage === lang) return;
 
                 currentLanguage = lang;
                 document.documentElement.lang = lang;
                 const langNameEl = document.getElementById('current-language-name');
                 if (langNameEl) langNameEl.textContent = languageNames[lang];
                 
-                // Marca que a linguagem foi definida (seja auto ou manual)
-                autoLanguageSet = true;
-                
-                applyTranslation();
+                // Traduz o conteúdo estático e dinâmico que já está na tela
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    if (staticTranslations[key] && staticTranslations[lang]) {
+                        element.innerHTML = staticTranslations[key][lang];
+                    }
+                });
+                applyDynamicTranslation(document.body);
             };
+
+            function detectAndSetInitialLanguage() {
+                try {
+                    const userLang = (navigator.language || navigator.userLanguage || 'pt').slice(0, 2);
+                    if (supportedLangs.includes(userLang)) {
+                        setLanguage(userLang);
+                    } else {
+                        setLanguage('pt');
+                    }
+                } catch(e) {
+                    console.error("Erro ao detectar idioma, usando português como padrão.", e);
+                    setLanguage('pt');
+                }
+            }
 
             async function renderHomePage(layout, postsData, searchTerm = '', filterTag = '') {
                 mainContentArea.innerHTML = `
@@ -408,7 +417,7 @@
                             <div class="story-image-wrapper">
                                 <img src="${imageUrl}" alt="${tag}">
                             </div>
-                            <span class="font-semibold">${tag}</span>
+                            <span class="font-semibold" data-original-text="${tag}">${tag}</span>
                         </a>
                     `;
                     swiperWrapper.appendChild(slideEl);
@@ -461,21 +470,17 @@
                         mainContentArea.innerHTML = `
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                                 <div class="lg:col-span-2 bg-white p-6 md:p-10 rounded-lg shadow-md">
-                                    <a href="index.html" class="inline-flex items-center text-indigo-600 font-semibold mb-6 hover:underline">
-                                        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
-                                        Voltar para todos os posts
-                                    </a>
+                                    <a href="index.html" class="inline-flex items-center text-indigo-600 font-semibold mb-6 hover:underline" data-translate-key="back_to_posts">Voltar para todos os posts</a>
                                     <h1 class="text-4xl md:text-5xl font-bold mb-4" data-original-text="${postTitle.replace(/"/g, '&quot;')}">${postTitle}</h1>
                                     <div class="text-sm text-gray-500 mb-6">
-                                        <span>Por <strong>iGaroto</strong></span> &bull;
+                                        <span data-translate-key="by">Por</span> <strong>iGaroto</strong> &bull;
                                         <span>${postDate}</span>
                                     </div>
                                     <div class="prose lg:prose-xl max-w-none single-post-content" data-original-text-html="${encodeURIComponent(postContent)}">
                                         ${postContent}
                                     </div>
                                 </div>
-                                <aside id="sidebar-container" class="lg:col-span-1">
-                                </aside>
+                                <aside id="sidebar-container" class="lg:col-span-1"></aside>
                             </div>
                         `;
                         renderGadgets(layout.sidebar, 'sidebar-container');
@@ -487,7 +492,8 @@
                     mainContentArea.innerHTML = '<p class="text-center text-red-500">Ocorreu um erro ao carregar a postagem.</p>';
                 }
                 lucide.createIcons();
-                await applyTranslation();
+                // A tradução é chamada após o conteúdo ser renderizado
+                applyDynamicTranslation(mainContentArea);
             }
 
             function loadPosts(posts, searchTerm = '', filterTag = '') {
@@ -508,7 +514,6 @@
                     filteredPosts = filteredPosts.filter(post => post && (post.title || '').toLowerCase().includes(lowerCaseSearchTerm));
                 } else {
                     pageTitle.setAttribute('data-translate-key', 'recent_posts');
-                    pageTitle.textContent = 'POSTAGENS RECENTES';
                 }
 
                 if (filteredPosts.length === 0) {
@@ -551,6 +556,9 @@
                     `;
                     postsContainer.appendChild(postElement);
                 });
+                
+                // CHAMA A TRADUÇÃO DEPOIS QUE OS POSTS FORAM ADICIONADOS
+                applyDynamicTranslation(postsContainer);
             }
 
             function renderGadgets(gadgets, containerId) {
@@ -560,11 +568,11 @@
                 (gadgets || []).forEach(gadget => {
                     const widget = document.createElement('div');
                     widget.className = 'sidebar-widget';
-                    let content = `<h4 class="font-bold border-b pb-2 mb-4">${gadget.title}</h4>`;
+                    let content = `<h4 class="font-bold border-b pb-2 mb-4" data-original-text="${gadget.title}">${gadget.title}</h4>`;
                     if (gadget.type === 'search') {
                         content += `<form action="index.html" method="GET"><input type="text" name="q" placeholder="Pesquisar no blog..." class="w-full border border-gray-300 rounded-md p-2"></form>`;
                     } else if (gadget.type === 'html') {
-                        content += `<div>${gadget.content || ''}</div>`;
+                        content += `<div data-original-text-html="${encodeURIComponent(gadget.content || '')}">${gadget.content || ''}</div>`;
                     } else if (gadget.type === 'social') {
                         content += `<div class="flex gap-4">
                             <a href="https://www.facebook.com/igaroto" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
@@ -575,10 +583,15 @@
                     widget.innerHTML = content;
                     container.appendChild(widget);
                 });
+                // CHAMA A TRADUÇÃO DEPOIS QUE OS GADGETS FORAM ADICIONADOS
+                applyDynamicTranslation(container);
             }
             
             async function initializeSite() {
                 try {
+                    // DETECÇÃO DE IDIOMA VEM PRIMEIRO
+                    detectAndSetInitialLanguage();
+
                     const [layoutDoc, postsSnapshot] = await Promise.all([
                         db.collection('settings').doc('layout').get(),
                         db.collection('posts').orderBy('createdAt', 'desc').get()
@@ -639,17 +652,6 @@
                             }
                         });
                     }
-                    
-                    // LÓGICA DE TRADUÇÃO AUTOMÁTICA
-                    if (!autoLanguageSet) {
-                        const userLang = (navigator.language || navigator.userLanguage).slice(0, 2);
-                        if (supportedLangs.includes(userLang)) {
-                            setLanguage(userLang);
-                        } else {
-                            setLanguage('pt'); // Padrão
-                        }
-                    }
-
                 } catch (error) {
                     console.error("Erro fatal ao inicializar o site:", error);
                     mainContentArea.innerHTML = `<p class="text-center text-red-500">Ocorreu um erro fatal ao carregar o site. Verifique o console para mais detalhes.</p>`;
