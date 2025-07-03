@@ -37,7 +37,6 @@
         
         .animated-gradient-text {
             font-weight: 900;
-            /* COR AJUSTADA PARA UM TOM MAIS FORTE */
             background: linear-gradient(90deg, #ff6b6b, #ffc3c3, #ff6b6b);
             background-size: 200% 100%;
             -webkit-background-clip: text;
@@ -398,11 +397,13 @@
                 slidesHtml += '</div></div>';
                 sliderContainer.innerHTML = slidesHtml;
                 
-                // Lógica SIMPLIFICADA E CORRIGIDA: Autoplay e Loop sempre ativos.
+                // LÓGICA FINAL E SIMPLIFICADA: Autoplay e Rewind sempre ativos para garantir o movimento.
                 new Swiper('.story-slider .swiper-container', {
                     slidesPerView: 3,
                     spaceBetween: 10,
-                    loop: true,
+                    // 'rewind' é mais seguro que 'loop' quando há poucos slides.
+                    // Ele vai até o final e volta para o começo.
+                    rewind: true, 
                     autoplay: {
                         delay: 3000,
                         disableOnInteraction: false,
