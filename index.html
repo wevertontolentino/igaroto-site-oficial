@@ -398,19 +398,17 @@
                 slidesHtml += '</div></div>';
                 sliderContainer.innerHTML = slidesHtml;
                 
-                // Lógica SIMPLIFICADA: Autoplay e Loop sempre ativos.
-                const swiperOptions = {
+                // Lógica SIMPLIFICADA E CORRIGIDA: Autoplay e Loop sempre ativos.
+                new Swiper('.story-slider .swiper-container', {
                     slidesPerView: 3,
                     spaceBetween: 10,
-                    loop: true, // Sempre ativo
-                    autoplay: { // Sempre ativo
+                    loop: true,
+                    autoplay: {
                         delay: 3000,
                         disableOnInteraction: false,
                     },
-                    breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: 6 } },
-                };
-
-                new Swiper('.story-slider .swiper-container', swiperOptions);
+                    breakpoints: { 640: { slidesPerView: 4, spaceBetween: 20 }, 768: { slidesPerView: 5, spaceBetween: 30 }, 1024: { slidesPerView: 6, spaceBetween: 30 } },
+                });
             }
 
             function stringToColor(str) {
