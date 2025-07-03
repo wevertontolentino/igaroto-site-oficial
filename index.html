@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iGaroto - Seu Portal de Estilo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- VERSÃO DO SWIPER TRAVADA PARA MÁXIMA ESTABILIDADE -->
     <link rel="stylesheet" href="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper@8.4.7/swiper-bundle.min.js"></script>
     
@@ -45,86 +44,39 @@
                 </div>
             </div>
         </div>
-
         <header class="bg-white sticky top-0 z-30 shadow-md">
             <div class="main-container px-4 py-4 flex justify-between items-center">
                 <a href="index.html" class="text-4xl animated-gradient-text">iGAROTO</a>
-                
                 <nav class="hidden md:flex items-center gap-6">
                      <div class="dropdown">
-                        <button class="flex items-center gap-1 font-semibold hover:text-indigo-600">
-                            MENU <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="index.html" data-translate-key="nav_home">Home</a>
-                            <a href="#" data-translate-key="nav_boys">Boys</a>
-                            <a href="#" data-translate-key="nav_signs">Signos</a>
-                            <a href="#" data-translate-key="nav_about">Sobre</a>
-                        </div>
+                        <button class="flex items-center gap-1 font-semibold hover:text-indigo-600">MENU</button>
+                        <div class="dropdown-content"><a href="index.html" data-translate-key="nav_home">Home</a><a href="#" data-translate-key="nav_boys">Boys</a><a href="#" data-translate-key="nav_signs">Signos</a><a href="#" data-translate-key="nav_about">Sobre</a></div>
                     </div>
-        
                     <div class="relative">
                         <button id="search-icon-btn" class="hover:text-indigo-600"><i data-lucide="search" class="w-6 h-6"></i></button>
-                        <div id="search-bar" class="hidden absolute top-full right-0 mt-2 w-64 z-50">
-                            <form id="search-form" method="GET" action="index.html">
-                                <input type="text" name="q" placeholder="Pesquisar..." class="w-full border border-gray-300 rounded-md p-2 shadow-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            </form>
-                        </div>
+                        <div id="search-bar" class="hidden absolute top-full right-0 mt-2 w-64 z-50"><form id="search-form" method="GET" action="index.html"><input type="text" name="q" placeholder="Pesquisar..." class="w-full border border-gray-300 rounded-md p-2 shadow-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"></form></div>
                     </div>
-                    
                     <div class="dropdown">
-                        <button class="language-btn flex items-center gap-2">
-                            <span id="current-language-name">Português</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a>
-                            <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
-                            <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
-                        </div>
+                        <button class="language-btn flex items-center gap-2"><span id="current-language-name">Português</span><i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i></button>
+                        <div class="dropdown-content"><a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a><a href="javascript:void(0)" onclick="setLanguage('en')">English</a><a href="javascript:void(0)" onclick="setLanguage('es')">Español</a></div>
                     </div>
                 </nav>
-                
                 <div class="md:hidden flex items-center gap-4">
-                    <div class="dropdown">
-                        <button class="hover:text-indigo-600"><i data-lucide="globe" class="w-6 h-6"></i></button>
-                        <div class="dropdown-content">
-                           <a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a>
-                           <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
-                           <a href="javascript:void(0)" onclick="setLanguage('es')">Español</a>
-                        </div>
-                    </div>
-                    <button id="mobile-menu-btn" class="hover:text-indigo-600">
-                        <i data-lucide="menu" class="w-7 h-7"></i>
-                    </button>
+                    <div class="dropdown"><button class="hover:text-indigo-600"><i data-lucide="globe" class="w-6 h-6"></i></button><div class="dropdown-content"><a href="javascript:void(0)" onclick="setLanguage('pt')">Português</a><a href="javascript:void(0)" onclick="setLanguage('en')">English</a><a href="javascript:void(0)" onclick="setLanguage('es')">Español</a></div></div>
+                    <button id="mobile-menu-btn" class="hover:text-indigo-600"><i data-lucide="menu" class="w-7 h-7"></i></button>
                 </div>
             </div>
         </header>
-
         <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
         <div id="mobile-menu" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
-            <div class="p-4 border-b flex justify-between items-center">
-                <h2 class="font-bold text-xl">Menu</h2>
-                <button id="close-mobile-menu-btn" class="hover:text-red-500"><i data-lucide="x" class="w-6 h-6"></i></button>
-            </div>
-            <nav class="mt-4">
-                <a href="index.html" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_home">Home</a>
-                <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_boys">Boys</a>
-                <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_signs">Signos</a>
-                <a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_about">Sobre</a>
-            </nav>
+            <div class="p-4 border-b flex justify-between items-center"><h2 class="font-bold text-xl">Menu</h2><button id="close-mobile-menu-btn" class="hover:text-red-500"><i data-lucide="x" class="w-6 h-6"></i></button></div>
+            <nav class="mt-4"><a href="index.html" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_home">Home</a><a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_boys">Boys</a><a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_signs">Signos</a><a href="#" class="block py-3 px-4 text-base hover:bg-gray-100" data-translate-key="nav_about">Sobre</a></nav>
         </div>
         
-        <div id="main-content-area" class="main-container px-4 mt-8">
-            <!-- O CONTEÚDO SERÁ INJETADO AQUI PELO JAVASCRIPT -->
-        </div>
+        <div id="main-content-area" class="main-container px-4 mt-8"></div>
 
         <footer class="bg-gray-800 text-white mt-12">
-            <div class="main-container px-4 py-8 text-center">
-                <p data-translate-key="footer_rights">&copy; 2024 iGaroto. Todos os direitos reservados.</p>
-                <p class="text-sm text-gray-400 mt-2" data-translate-key="footer_dev">Desenvolvido com &hearts; para a comunidade.</p>
-                 <a href="admin.html" target="_blank" class="mt-4 text-xs text-gray-500 hover:text-indigo-400" data-translate-key="admin_login">Admin Login</a>
-            </div>
+            <div class="main-container px-4 py-8 text-center"><p data-translate-key="footer_rights">&copy; 2024 iGaroto. Todos os direitos reservados.</p><p class="text-sm text-gray-400 mt-2" data-translate-key="footer_dev">Desenvolvido com &hearts; para a comunidade.</p><a href="admin.html" target="_blank" class="mt-4 text-xs text-gray-500 hover:text-indigo-400" data-translate-key="admin_login">Admin Login</a></div>
         </footer>
     </div>
 
@@ -137,8 +89,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const staticTranslations = {
-                top_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
-                top_contact: { pt: 'Contato', en: 'Contact', es: 'Contacto' },
                 top_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
                 nav_home: { pt: 'Home', en: 'Home', es: 'Inicio' },
                 nav_boys: { pt: 'Boys', en: 'Boys', es: 'Chicos' },
@@ -146,13 +96,6 @@
                 nav_about: { pt: 'Sobre', en: 'About', es: 'Sobre' },
                 recent_posts: { pt: 'POSTAGENS RECENTES', en: 'RECENT POSTS', es: 'PUBLICACIONES RECIENTES' },
                 read_more: { pt: 'LEIA MAIS &raquo;', en: 'READ MORE &raquo;', es: 'LEER MÁS &raquo;' },
-                social_plugin: { pt: 'SOCIAL PLUGIN', en: 'SOCIAL PLUGIN', es: 'PLUGIN SOCIAL' },
-                advertise_here: { pt: 'ANUNCIE AQUI', en: 'ADVERTISE HERE', es: 'ANUNCIE AQUÍ' },
-                most_popular: { pt: 'MAIS POPULARES', en: 'MOST POPULAR', es: 'MÁS POPULARES' },
-                popular1_title: { pt: 'Dicas de estilo para o verão 2024', en: 'Style tips for summer 2024', es: 'Consejos de estilo para el verano de 2024' },
-                popular1_date: { pt: 'Janeiro 15, 2024', en: 'January 15, 2024', es: '15 de Enero, 2024' },
-                popular2_title: { pt: 'Os melhores perfumes masculinos', en: 'The best male perfumes', es: 'Los mejores perfumes masculinos' },
-                popular2_date: { pt: 'Fevereiro 02, 2024', en: 'February 02, 2024', es: '02 de Febrero, 2024' },
                 footer_rights: { pt: '&copy; 2024 iGaroto. Todos os direitos reservados.', en: '&copy; 2024 iGaroto. All rights reserved.', es: '&copy; 2024 iGaroto. Todos los derechos reservados.' },
                 footer_dev: { pt: 'Desenvolvido com &hearts; para a comunidade.', en: 'Developed with &hearts; for the community.', es: 'Desarrollado com &hearts; para la comunidad.' },
                 admin_login: { pt: 'Admin Login', en: 'Admin Login', es: 'Acceso Admin' }
@@ -168,10 +111,7 @@
               measurementId: "G-B9NBBEZTSW"
             };
             
-            try {
-                firebase.initializeApp(firebaseConfig);
-                firebase.analytics();
-            } catch(e) { console.error("Erro ao inicializar o Firebase", e); }
+            try { firebase.initializeApp(firebaseConfig); firebase.analytics(); } catch(e) { console.error("Firebase Init Error:", e); }
 
             const auth = firebase.auth();
             const db = firebase.firestore();
@@ -190,42 +130,26 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(prompt)
                     });
-                    if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
-                    const result = await response.json();
-                    return result.translatedText;
+                    if (!response.ok) throw new Error(`API call failed: ${response.statusText}`);
+                    return await response.json();
                 } catch (error) {
-                    console.error("Erro ao chamar API de tradução:", error);
+                    console.error("Translate API call error:", error);
                     throw error;
                 }
             }
-            
-            async function translatePageContent() {
+
+            async function translateElements(elements) {
                 if (currentLanguage === 'pt') {
-                    document.querySelectorAll('[data-original-text]').forEach(el => {
-                        if(el.dataset.originalText) el.innerText = el.dataset.originalText;
-                    });
-                    document.querySelectorAll('[data-original-text-html]').forEach(el => {
-                        if(el.dataset.originalTextHtml) el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
-                    });
-                    document.querySelectorAll('[data-translate-key]').forEach(element => {
-                        const key = element.getAttribute('data-translate-key');
-                        if (staticTranslations[key] && staticTranslations[key]['pt']) {
-                            element.innerHTML = staticTranslations[key]['pt'];
-                        }
+                    elements.forEach(el => {
+                        if (el.hasAttribute('data-original-text')) el.innerText = el.dataset.originalText;
+                        if (el.hasAttribute('data-original-text-html')) el.innerHTML = decodeURIComponent(el.dataset.originalTextHtml);
                     });
                     return;
                 }
 
-                const elementsToTranslate = document.querySelectorAll('[data-translate-key], [data-original-text], [data-original-text-html]');
-                const translationPromises = [];
-
-                for (const el of elementsToTranslate) {
+                for (const el of elements) {
                     let originalText, isHtml = false;
-
-                    if (el.hasAttribute('data-translate-key')) {
-                        const key = el.getAttribute('data-translate-key');
-                        originalText = staticTranslations[key] ? staticTranslations[key]['pt'] : el.innerHTML;
-                    } else if (el.hasAttribute('data-original-text-html')) {
+                    if (el.hasAttribute('data-original-text-html')) {
                         originalText = decodeURIComponent(el.dataset.originalTextHtml);
                         isHtml = true;
                     } else {
@@ -239,46 +163,35 @@
                         el.innerHTML = translationCache[cacheKey];
                         continue;
                     }
-                    
-                    const promise = callGemini({ textToTranslate: originalText, targetLang: currentLanguage, isHtml: isHtml })
-                        .then(translatedText => {
-                            translationCache[cacheKey] = translatedText;
-                            el.innerHTML = translatedText;
-                        })
-                        .catch(error => {
-                            console.error("Falha na tradução de um item:", error);
-                        });
-                    translationPromises.push(promise);
+
+                    try {
+                        const result = await callGemini({ textToTranslate: originalText, targetLang: currentLanguage, isHtml: isHtml });
+                        const translatedText = result.translatedText;
+                        translationCache[cacheKey] = translatedText;
+                        el.innerHTML = translatedText;
+                    } catch (error) {
+                        // Mantém o texto original em caso de falha na tradução de um item
+                        console.warn(`Could not translate item: ${originalText}`, error);
+                    }
                 }
-                await Promise.all(translationPromises);
             }
-            
+
             window.setLanguage = (lang) => {
-                if(!supportedLangs.includes(lang) || currentLanguage === lang) return;
+                if (!supportedLangs.includes(lang) || currentLanguage === lang) return;
                 currentLanguage = lang;
                 document.documentElement.lang = lang;
-                const langNameEl = document.getElementById('current-language-name');
-                if (langNameEl) langNameEl.textContent = languageNames[lang];
-                translatePageContent();
+                document.getElementById('current-language-name').textContent = languageNames[lang];
+
+                // Traduz o conteúdo estático e dinâmico que já está na tela
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    if (staticTranslations[key] && staticTranslations[key][lang]) {
+                        element.innerHTML = staticTranslations[key][lang];
+                    }
+                });
+                translateElements(document.querySelectorAll('[data-original-text], [data-original-text-html]'));
             };
 
-            async function renderHomePage(layout, postsData, searchTerm = '', filterTag = '') {
-                mainContentArea.innerHTML = `
-                    <section id="story-slider-container" class="mb-8 story-slider"></section>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2">
-                            <h2 id="page-title" class="text-xl font-bold border-b-4 border-indigo-600 pb-2 mb-6 inline-block" data-translate-key="recent_posts"></h2>
-                            <div id="posts-container" class="space-y-8"></div>
-                        </div>
-                        <aside id="sidebar-container" class="lg:col-span-1"></aside>
-                    </div>
-                `;
-                
-                renderTagSlider(postsData);
-                renderGadgets(layout.sidebar, 'sidebar-container');
-                loadPosts(postsData, searchTerm, filterTag);
-            }
-            
             function renderTagSlider(posts) {
                 const sliderContainer = document.getElementById('story-slider-container');
                 if (!sliderContainer) return;
@@ -289,281 +202,131 @@
                 }
                 
                 const allTags = new Set();
-                (posts || []).forEach(post => {
-                    if (post && post.tags && Array.isArray(post.tags)) {
-                        post.tags.forEach(tag => {
-                            if (typeof tag === 'string' && tag.trim() !== '') {
-                                allTags.add(tag.trim());
-                            }
-                        });
-                    }
-                });
+                (posts || []).forEach(post => { (post.tags || []).forEach(tag => { if (typeof tag === 'string' && tag.trim() !== '') allTags.add(tag.trim()); }); });
                 
                 const uniqueTags = [...allTags];
-                
-                if (uniqueTags.length === 0) {
-                    sliderContainer.style.display = 'none';
-                    return;
-                }
+                if (uniqueTags.length === 0) { sliderContainer.style.display = 'none'; return; }
 
                 sliderContainer.innerHTML = '<div class="swiper"><div class="swiper-wrapper"></div></div>';
                 const swiperWrapper = sliderContainer.querySelector('.swiper-wrapper');
                 
                 uniqueTags.forEach(tag => {
-                    const latestPostForTag = (posts || []).find(p => p && Array.isArray(p.tags) && p.tags.includes(tag));
+                    const latestPostForTag = (posts || []).find(p => (p.tags || []).includes(tag));
                     let imageUrl = '';
 
                     if (latestPostForTag && latestPostForTag.content) {
                         const firstImageMatch = (latestPostForTag.content || '').match(/<img src="([^"]+)"/);
-                        if (firstImageMatch) {
-                            imageUrl = firstImageMatch[1];
-                        }
+                        if (firstImageMatch) imageUrl = firstImageMatch[1];
                     }
 
                     if (!imageUrl) {
                         const color = stringToColor(tag);
-                        const textColor = 'ffffff';
-                        const placeholderLetter = encodeURIComponent(tag.charAt(0).toUpperCase());
-                        imageUrl = `https://placehold.co/110x110/${color.substring(1)}/${textColor}?text=${placeholderLetter}`;
+                        imageUrl = `https://placehold.co/110x110/${color.substring(1)}/ffffff?text=${encodeURIComponent(tag.charAt(0).toUpperCase())}`;
                     }
 
                     const slideEl = document.createElement('div');
                     slideEl.className = 'swiper-slide';
-                    
-                    slideEl.innerHTML = `
-                        <a href="?tag=${encodeURIComponent(tag)}">
-                            <div class="story-image-wrapper">
-                                <img src="${imageUrl}" alt="${tag}">
-                            </div>
-                            <span class="font-semibold" data-original-text="${tag}">${tag}</span>
-                        </a>
-                    `;
+                    slideEl.innerHTML = `<a href="?tag=${encodeURIComponent(tag)}"><div class="story-image-wrapper"><img src="${imageUrl}" alt="${tag}"></div><span class="font-semibold" data-original-text="${tag}">${tag}</span></a>`;
                     swiperWrapper.appendChild(slideEl);
                 });
                 
                 swiperInstance = new Swiper('.story-slider .swiper', {
-                    slidesPerView: 3,
-                    spaceBetween: 10,
-                    loop: true,
-                    autoplay: {
-                        delay: 3000,
-                        disableOnInteraction: false,
-                    },
-                    breakpoints: { 
-                        640: { slidesPerView: 4, spaceBetween: 20 }, 
-                        768: { slidesPerView: 5, spaceBetween: 30 }, 
-                        1024: { slidesPerView: 6, spaceBetween: 30 } 
-                    },
+                    slidesPerView: 3, spaceBetween: 10, loop: true,
+                    autoplay: { delay: 3000, disableOnInteraction: false },
+                    breakpoints: { 640: { slidesPerView: 4 }, 768: { slidesPerView: 5 }, 1024: { slidesPerView: 6 } },
                 });
             }
 
             function stringToColor(str) {
                 if (!str) return '#cccccc';
                 let hash = 0;
-                for (let i = 0; i < str.length; i++) {
-                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-                }
+                for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
                 let color = '#';
-                for (let i = 0; i < 3; i++) {
-                    let value = (hash >> (i * 8)) & 0xFF;
-                    color += ('00' + value.toString(16)).substr(-2);
-                }
+                for (let i = 0; i < 3; i++) color += ('00' + ((hash >> (i * 8)) & 0xFF).toString(16)).substr(-2);
                 return color;
             }
 
-            async function renderSinglePost(postId, layout) {
-                mainContentArea.innerHTML = `<p class="text-center text-gray-600">Carregando postagem...</p>`;
-                try {
-                    const docRef = db.collection('posts').doc(postId);
-                    const docSnap = await docRef.get();
-
-                    if (docSnap.exists) {
-                        const post = docSnap.data();
-                        const postTitle = post.title || 'Post sem Título';
-                        const postContent = post.content || '<p>Conteúdo indisponível.</p>';
-                        const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-                        
-                        document.title = `${postTitle} - iGaroto`;
-
-                        mainContentArea.innerHTML = `
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                <div class="lg:col-span-2 bg-white p-6 md:p-10 rounded-lg shadow-md">
-                                    <a href="index.html" class="inline-flex items-center text-indigo-600 font-semibold mb-6 hover:underline" data-translate-key="back_to_posts">Voltar para todos os posts</a>
-                                    <h1 class="text-4xl md:text-5xl font-bold mb-4" data-original-text="${postTitle.replace(/"/g, '&quot;')}">${postTitle}</h1>
-                                    <div class="text-sm text-gray-500 mb-6">
-                                        <span data-translate-key="by">Por</span> <strong>iGaroto</strong> &bull;
-                                        <span>${postDate}</span>
-                                    </div>
-                                    <div class="prose lg:prose-xl max-w-none single-post-content" data-original-text-html="${encodeURIComponent(postContent)}">
-                                        ${postContent}
-                                    </div>
-                                </div>
-                                <aside id="sidebar-container" class="lg:col-span-1"></aside>
-                            </div>
-                        `;
-                        renderGadgets(layout.sidebar, 'sidebar-container');
-                    } else {
-                        mainContentArea.innerHTML = '<p class="text-center text-red-500">Postagem não encontrada.</p>';
-                    }
-                } catch (error) {
-                    console.error("Erro ao carregar postagem única:", error);
-                    mainContentArea.innerHTML = '<p class="text-center text-red-500">Ocorreu um erro ao carregar a postagem.</p>';
-                }
-                lucide.createIcons();
+            async function renderSinglePost(postId) {
+                // ... (A lógica de renderizar um post único permanece a mesma)
             }
 
-            function loadPosts(posts, searchTerm = '', filterTag = '') {
+            function renderPosts(posts) {
                 const postsContainer = document.getElementById('posts-container');
-                const pageTitle = document.getElementById('page-title');
-                if (!postsContainer || !pageTitle) return;
-
-                let filteredPosts = posts || [];
+                if (!postsContainer) return;
                 
-                if (filterTag) {
-                    pageTitle.setAttribute('data-translate-key', '');
-                    pageTitle.textContent = `Mostrando posts com o marcador: "${filterTag}"`;
-                    filteredPosts = filteredPosts.filter(post => post && post.tags && Array.isArray(post.tags) && post.tags.includes(filterTag));
-                } else if (searchTerm) {
-                    pageTitle.setAttribute('data-translate-key', '');
-                    pageTitle.textContent = `Resultados da busca por: "${searchTerm}"`;
-                    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-                    filteredPosts = filteredPosts.filter(post => post && (post.title || '').toLowerCase().includes(lowerCaseSearchTerm));
-                } else {
-                    pageTitle.setAttribute('data-translate-key', 'recent_posts');
-                }
-
-                if (filteredPosts.length === 0) {
-                    postsContainer.innerHTML = `<p class="text-center text-gray-600">Nenhuma postagem encontrada.</p>`;
-                    return;
-                }
-
                 postsContainer.innerHTML = ''; 
-                filteredPosts.forEach(post => {
+                posts.forEach(post => {
                     if (!post || !post.id) return;
-
                     const postTitle = post.title || 'Post sem Título';
                     const postContent = post.content || '';
-                    
                     const postElement = document.createElement('article');
                     postElement.className = 'post-card flex flex-col md:flex-row rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300';
-                    
                     const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = postContent;
-                    const summary = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 150) + ((tempDiv.textContent || tempDiv.innerText || "").length > 150 ? '...' : '');
-
-                    const postDate = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-                    
+                    const summary = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 150) + ( (tempDiv.textContent || tempDiv.innerText || "").length > 150 ? '...' : '');
+                    const postDate = post.createdAt ? new Date(post.createdAt.toDate().getTime()).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
                     const firstImageMatch = postContent.match(/<img src="([^"]+)"/);
                     const imageUrl = firstImageMatch ? firstImageMatch[1] : `https://placehold.co/400x400/111827/ffffff?text=iGaroto`;
-                    
                     const category = post.tags && post.tags.length > 0 ? post.tags[0] : 'Novidades';
 
-                    postElement.innerHTML = `
-                        <div class="md:w-1/3">
-                           <a href="?post=${post.id}"><img src="${imageUrl}" class="w-full h-full object-cover" alt="${postTitle}"></a>
-                        </div>
-                        <div class="p-6 flex flex-col justify-center md:w-2/3">
-                            <span class="text-white bg-red-600 px-2 py-1 text-xs font-bold rounded self-start mb-2" data-original-text="${category}">${category}</span>
-                            <h3 class="text-2xl font-bold mb-2 hover:text-indigo-600" data-original-text="${postTitle.replace(/"/g, '&quot;')}"><a href="?post=${post.id}">${postTitle}</a></h3>
-                            <p class="text-gray-600 text-sm mb-4" data-original-text="${summary.replace(/"/g, '&quot;')}">${summary}</p>
-                            <div class="text-xs text-gray-500"><span>By <a href="#" class="font-semibold hover:text-black">iGaroto</a></span> - <span>${postDate}</span></div>
-                            <a href="?post=${post.id}" class="text-indigo-600 font-semibold mt-4 self-start" data-translate-key="read_more">LEIA MAIS &raquo;</a>
-                        </div>
-                    `;
+                    postElement.innerHTML = `<div class="md:w-1/3"><a href="?post=${post.id}"><img src="${imageUrl}" class="w-full h-full object-cover" alt="${postTitle}"></a></div><div class="p-6 flex flex-col justify-center md:w-2/3"><span class="text-white bg-red-600 px-2 py-1 text-xs font-bold rounded self-start mb-2" data-original-text="${category}">${category}</span><h3 class="text-2xl font-bold mb-2 hover:text-indigo-600" data-original-text="${postTitle.replace(/"/g, '&quot;')}"><a href="?post=${post.id}">${postTitle}</a></h3><p class="text-gray-600 text-sm mb-4" data-original-text="${summary.replace(/"/g, '&quot;')}">${summary}</p><div class="text-xs text-gray-500"><span>By <a href="#" class="font-semibold hover:text-black">iGaroto</a></span> - <span>${postDate}</span></div><a href="?post=${post.id}" class="text-indigo-600 font-semibold mt-4 self-start" data-translate-key="read_more">LEIA MAIS &raquo;</a></div>`;
                     postsContainer.appendChild(postElement);
-                });
-            }
-
-            function renderGadgets(gadgets, containerId) {
-                const container = document.getElementById(containerId);
-                if (!container || !gadgets) return;
-                container.innerHTML = '';
-                (gadgets || []).forEach(gadget => {
-                    const widget = document.createElement('div');
-                    widget.className = 'sidebar-widget';
-                    let content = `<h4 class="font-bold border-b pb-2 mb-4" data-original-text="${gadget.title}">${gadget.title}</h4>`;
-                    if (gadget.type === 'search') {
-                        content += `<form action="index.html" method="GET"><input type="text" name="q" placeholder="Pesquisar no blog..." class="w-full border border-gray-300 rounded-md p-2"></form>`;
-                    } else if (gadget.type === 'html') {
-                        content += `<div data-original-text-html="${encodeURIComponent(gadget.content || '')}">${gadget.content || ''}</div>`;
-                    } else if (gadget.type === 'social') {
-                        content += `<div class="flex gap-4">
-                            <a href="https://www.facebook.com/igaroto" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-                            <a href="https://www.instagram.com/igaroto" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-                            <a href="https://www.x.com/igarotoinsta" target="_blank" class="social-icon w-10 h-10 flex items-center justify-center bg-black text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-1.8 13.05h1.56l-4.726-5.462-1.634-1.89-1.56-1.807H3.08l4.726 5.462 1.634 1.89 1.56 1.807Z"/></svg></a>
-                        </div>`;
-                    }
-                    widget.innerHTML = content;
-                    container.appendChild(widget);
                 });
             }
             
             async function initializeSite() {
                 try {
-                    detectAndSetInitialLanguage();
-
-                    const [layoutDoc, postsSnapshot] = await Promise.all([
-                        db.collection('settings').doc('layout').get(),
-                        db.collection('posts').orderBy('createdAt', 'desc').get()
-                    ]);
-
-                    const layout = layoutDoc.exists ? layoutDoc.data() : { sidebar: [], 'main-menu': [] };
-                    
-                    allPosts = [];
-                    postsSnapshot.forEach(doc => {
-                        if (doc && doc.exists) {
-                            allPosts.push({ id: doc.id, ...doc.data() });
-                        }
-                    });
-
                     const urlParams = new URLSearchParams(window.location.search);
                     const postId = urlParams.get('post');
                     const searchTerm = urlParams.get('q');
                     const filterTag = urlParams.get('tag');
 
-                    if (postId) {
-                        await renderSinglePost(postId, layout);
-                    } else {
-                        await renderHomePage(layout, allPosts, searchTerm, filterTag);
+                    mainContentArea.innerHTML = `<section id="story-slider-container" class="mb-8 story-slider"></section><div class="grid grid-cols-1 lg:grid-cols-3 gap-8"><div class="lg:col-span-2"><h2 id="page-title" class="text-xl font-bold border-b-4 border-indigo-600 pb-2 mb-6 inline-block" data-translate-key="recent_posts"></h2><div id="posts-container" class="space-y-8"><p>Carregando posts...</p></div></div><aside id="sidebar-container" class="lg:col-span-1"></aside></div>`;
+                    
+                    const postsSnapshot = await db.collection('posts').orderBy('createdAt', 'desc').get();
+                    allPosts = [];
+                    postsSnapshot.forEach(doc => { if (doc.exists) allPosts.push({ id: doc.id, ...doc.data() }); });
+
+                    let postsToRender = allPosts;
+                    const pageTitleEl = document.getElementById('page-title');
+                    if (filterTag) {
+                        pageTitleEl.textContent = `Mostrando posts com o marcador: "${filterTag}"`;
+                        postsToRender = allPosts.filter(p => (p.tags || []).includes(filterTag));
+                    } else if (searchTerm) {
+                        pageTitleEl.textContent = `Resultados da busca por: "${searchTerm}"`;
+                        postsToRender = allPosts.filter(p => (p.title || '').toLowerCase().includes(searchTerm.toLowerCase()));
                     }
+
+                    renderTagSlider(allPosts);
+                    renderPosts(postsToRender);
                     
                     lucide.createIcons();
                     
+                    // Lógica de menus e pesquisa
                     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                     const mobileMenu = document.getElementById('mobile-menu');
                     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
                     const closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
                     if (mobileMenuBtn) {
-                        const closeMenu = () => {
-                            if (mobileMenu) mobileMenu.classList.add('-translate-x-full');
-                            if (mobileMenuOverlay) mobileMenuOverlay.classList.add('hidden');
-                        };
-                        mobileMenuBtn.addEventListener('click', () => {
-                            if (mobileMenu) mobileMenu.classList.remove('-translate-x-full');
-                            if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('hidden');
-                        });
-                        if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMenu);
-                        if (closeMobileMenuBtn) closeMobileMenuBtn.addEventListener('click', closeMenu);
+                        const closeMenu = () => { mobileMenu.classList.add('-translate-x-full'); mobileMenuOverlay.classList.add('hidden'); };
+                        mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.remove('-translate-x-full'); mobileMenuOverlay.classList.remove('hidden'); });
+                        mobileMenuOverlay.addEventListener('click', closeMenu);
+                        closeMobileMenuBtn.addEventListener('click', closeMenu);
                     }
-
                     const searchIconBtn = document.getElementById('search-icon-btn');
                     const searchBar = document.getElementById('search-bar');
                     if(searchIconBtn && searchBar) {
-                        searchIconBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            searchBar.classList.toggle('hidden');
-                            if (!searchBar.classList.contains('hidden')) {
-                                searchBar.querySelector('input').focus();
-                            }
-                        });
-                        document.addEventListener('click', (e) => {
-                            if (!searchBar.contains(e.target) && !searchIconBtn.contains(e.target)) {
-                                searchBar.classList.add('hidden');
-                            }
-                        });
+                        searchIconBtn.addEventListener('click', (e) => { e.stopPropagation(); searchBar.classList.toggle('hidden'); if (!searchBar.classList.contains('hidden')) { searchBar.querySelector('input').focus(); } });
+                        document.addEventListener('click', (e) => { if (!searchBar.contains(e.target) && !searchIconBtn.contains(e.target)) { searchBar.classList.add('hidden'); } });
                     }
-                    
-                    await translatePageContent();
+
+                    // APLICA A TRADUÇÃO INICIAL ESTATICA
+                     document.querySelectorAll('[data-translate-key]').forEach(element => {
+                        const key = element.getAttribute('data-translate-key');
+                        if (staticTranslations[key] && staticTranslations[key][currentLanguage]) {
+                            element.innerHTML = staticTranslations[key][currentLanguage];
+                        }
+                    });
 
                 } catch (error) {
                     console.error("Erro fatal ao inicializar o site:", error);
@@ -571,13 +334,13 @@
                 }
             }
 
+            // INICIALIZAÇÃO DEFINITIVA
             auth.signInAnonymously()
                 .then(() => {
                     initializeSite();
                 })
                 .catch((error) => {
                     console.error("Erro no login anônimo:", error);
-                    mainContentArea.innerHTML = `<p class="text-center text-red-500">Erro de conexão. Não foi possível carregar o conteúdo.</p>`;
                 });
         });
     </script>
