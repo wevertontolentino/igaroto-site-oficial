@@ -264,6 +264,7 @@
             const supportedLangs = ['pt', 'en', 'es'];
             let allPosts = [];
             let swiperInstance = null;
+            let languageHasBeenSet = false;
 
             async function callGemini(prompt) {
                 try {
@@ -320,10 +321,9 @@
                 const langNameEl = document.getElementById('current-language-name');
                 if (langNameEl) langNameEl.textContent = languageNames[lang];
                 
-                // Traduz o conteúdo estático e dinâmico que já está na tela
                 document.querySelectorAll('[data-translate-key]').forEach(element => {
                     const key = element.getAttribute('data-translate-key');
-                    if (staticTranslations[key] && staticTranslations[lang]) {
+                    if (staticTranslations[key] && staticTranslations[key][lang]) {
                         element.innerHTML = staticTranslations[key][lang];
                     }
                 });
@@ -331,16 +331,18 @@
             };
 
             function detectAndSetInitialLanguage() {
+                if(languageHasBeenSet) return;
                 try {
                     const userLang = (navigator.language || navigator.userLanguage || 'pt').slice(0, 2);
-                    if (supportedLangs.includes(userLang)) {
-                        setLanguage(userLang);
-                    } else {
-                        setLanguage('pt');
-                    }
+                    const langToSet = supportedLangs.includes(userLang) ? userLang : 'pt';
+                    currentLanguage = langToSet;
+                    document.documentElement.lang = langToSet;
+                    const langNameEl = document.getElementById('current-language-name');
+                    if (langNameEl) langNameEl.textContent = languageNames[langToSet];
+                    languageHasBeenSet = true;
                 } catch(e) {
                     console.error("Erro ao detectar idioma, usando português como padrão.", e);
-                    setLanguage('pt');
+                    currentLanguage = 'pt';
                 }
             }
 
@@ -437,6 +439,7 @@
                         1024: { slidesPerView: 6, spaceBetween: 30 } 
                     },
                 });
+                applyDynamicTranslation(sliderContainer);
             }
 
             function stringToColor(str) {
@@ -492,7 +495,6 @@
                     mainContentArea.innerHTML = '<p class="text-center text-red-500">Ocorreu um erro ao carregar a postagem.</p>';
                 }
                 lucide.createIcons();
-                // A tradução é chamada após o conteúdo ser renderizado
                 applyDynamicTranslation(mainContentArea);
             }
 
@@ -557,7 +559,6 @@
                     postsContainer.appendChild(postElement);
                 });
                 
-                // CHAMA A TRADUÇÃO DEPOIS QUE OS POSTS FORAM ADICIONADOS
                 applyDynamicTranslation(postsContainer);
             }
 
@@ -583,13 +584,11 @@
                     widget.innerHTML = content;
                     container.appendChild(widget);
                 });
-                // CHAMA A TRADUÇÃO DEPOIS QUE OS GADGETS FORAM ADICIONADOS
                 applyDynamicTranslation(container);
             }
             
             async function initializeSite() {
                 try {
-                    // DETECÇÃO DE IDIOMA VEM PRIMEIRO
                     detectAndSetInitialLanguage();
 
                     const [layoutDoc, postsSnapshot] = await Promise.all([
@@ -652,6 +651,17 @@
                             }
                         });
                     }
+                    
+                    // A tradução inicial já foi chamada pela `detectAndSetInitialLanguage`
+                    // e pelas funções de renderização.
+                    document.querySelectorAll('[data-translate-key]').forEach(element => {
+                        const key = element.getAttribute('data-translate-key');
+                        if (staticTranslations[key] && staticTranslations[key][currentLanguage]) {
+                            element.innerHTML = staticTranslations[key][currentLanguage];
+                        }
+                    });
+
+
                 } catch (error) {
                     console.error("Erro fatal ao inicializar o site:", error);
                     mainContentArea.innerHTML = `<p class="text-center text-red-500">Ocorreu um erro fatal ao carregar o site. Verifique o console para mais detalhes.</p>`;
